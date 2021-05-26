@@ -14,7 +14,32 @@
         <button type="submit">전송</button>
     </form>
 
-    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io_client.connect('http://localhost:3000/chat');
+        let submitBtn;
+        let submitContent;
+
+        socket.on('msg', (res) => {
+            const chat_ul = document.getElementById('messages');
+            const new_li = document.createElement('li');
+
+            new_li.innerText = res;
+
+            chat_ul.appendChild(new_li);
+        })
+
+        function getInfor() {
+            submitBtn = document.getElementById('submit');
+            submitContent = document.getElementById('msg_input').value;
+
+            submitBtn.addEventListener('click', () => {
+                socket.emit('msg', submitContent);
+            });
+        }
+
+        submitBtn.addEventListener('click', () => {
+            socket.emit('msg', submitContent);
+        });
     </script>
 </body>
 </html>

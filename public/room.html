@@ -9,35 +9,11 @@
 
 <body>
     <form action="/room" method="post">
-        <input name="roomNum" type='submit' value=1>
-        <input name="roomNum" type='submit' value=2>
-        <input name="roomNum" type='submit' value=3>
-        <input name="roomNum" type='submit' value=4>
+        <input name="roomNum" type='submit' value='고수만'>
+        <input name="roomNum" type='submit' value='초보오세요'>
+        <input name="roomNum" type='submit' value='창의력 좋은 사람만'>
+        <input name="roomNum" type='submit' value='들어올까 말까'>
     </form>
-
-    <script>
-        let namespace;
-
-        function setNamespace(num) {
-            namespace = io.of(`/namespace${num}`);
-
-            socket.on('roomEnter', () => {
-                console.log(`namespace${num}으로 접근 시도`);
-            });
-        }
-
-        // function sendGet(e) {
-        //     e.preventDefault();
-
-        //     fetch('http://localhost:3000/room')
-        // }
-
-        // const rooms = document.getElementsByClassName('roomBtn');
-        // Array.from(rooms).forEach((item) => {
-        //     item.addEventListener('click', sendGet)
-        //     console.log(item)
-        // })
-    </script>
 </body>
 
 </html>

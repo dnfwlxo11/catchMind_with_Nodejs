@@ -2,14 +2,14 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const path = require('path');
-const io = require('socket.io-client');
+const io_client = require('socket.io-client');
 const PORT = 5000;
 
 app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const chat = io.connect('http://localhost:3000/chat')
+const chat = io_client.connect('http://localhost:3000/chat')
 
 chat.on('message', (msg) => {
     console.log(msg)
