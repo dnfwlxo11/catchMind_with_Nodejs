@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>방을 고르세요!</title>
+</head>
+
+<body>
+    <form action="/room" method="post">
+        <input name="roomNum" type='submit' value=1>
+        <input name="roomNum" type='submit' value=2>
+        <input name="roomNum" type='submit' value=3>
+        <input name="roomNum" type='submit' value=4>
+    </form>
+
+    <script>
+        let namespace;
+
+        function setNamespace(num) {
+            namespace = io.of(`/namespace${num}`);
+
+            socket.on('roomEnter', () => {
+                console.log(`namespace${num}으로 접근 시도`);
+            });
+        }
+
+        // function sendGet(e) {
+        //     e.preventDefault();
+
+        //     fetch('http://localhost:3000/room')
+        // }
+
+        // const rooms = document.getElementsByClassName('roomBtn');
+        // Array.from(rooms).forEach((item) => {
+        //     item.addEventListener('click', sendGet)
+        //     console.log(item)
+        // })
+    </script>
+</body>
+
+</html>
