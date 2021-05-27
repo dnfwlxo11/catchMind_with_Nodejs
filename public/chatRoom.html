@@ -5,41 +5,17 @@
     <title>Socket.IO 예제</title>
 </head>
 <body>
-    <ul id="messages" type="none">
-        <li id="userNum"></li>
-    </ul>
+    <h2 id='title'></h2>
 
     <form id="msgForm">
         <input id="msg_input" autocomplete="off" type="text">
-        <button type="submit">전송</button>
+        <button id="submit">전송</button>
     </form>
 
-    <script>
-        const socket = io_client.connect('http://localhost:3000/chat');
-        let submitBtn;
-        let submitContent;
-
-        socket.on('msg', (res) => {
-            const chat_ul = document.getElementById('messages');
-            const new_li = document.createElement('li');
-
-            new_li.innerText = res;
-
-            chat_ul.appendChild(new_li);
-        })
-
-        function getInfor() {
-            submitBtn = document.getElementById('submit');
-            submitContent = document.getElementById('msg_input').value;
-
-            submitBtn.addEventListener('click', () => {
-                socket.emit('msg', submitContent);
-            });
-        }
-
-        submitBtn.addEventListener('click', () => {
-            socket.emit('msg', submitContent);
-        });
-    </script>
+    <ul id="messages" type="none">
+        <li id="userNum"></li>
+    </ul>
 </body>
+<script src="/socket.io/socket.io.js"></script>
+<script src="../js/main.js"></script>
 </html>
