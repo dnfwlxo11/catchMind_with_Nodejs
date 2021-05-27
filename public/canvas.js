@@ -1,13 +1,13 @@
-const $canvas = document.createElement('canvas');
+const canvas = document.createElement('canvas');
 
-const ctx = $canvas.getContext('2d'),
+const ctx = canvas.getContext('2d'),
     colors = document.getElementsByClassName('jsColor');
 
-$canvas.setAttribute('id', 'jsCanvas');
-$canvas.setAttribute('class', 'jsCanvas');
+canvas.setAttribute('id', 'jsCanvas');
+canvas.setAttribute('class', 'jsCanvas');
 
-$canvas.width = 700;
-$canvas.height = 700;
+canvas.width = 700;
+canvas.height = 700;
 
 ctx.fillStyle = 'white';
 ctx.fillRect(0, 0, 700, 700);
@@ -18,14 +18,16 @@ let mode = false;
 const socket = io('/chat');
 
 socket.on('mouseMove', (res) => {
-    console.log(res)
-})
+    if(res.stat === 'start') {
+        ctx.beginPath();
+        return ctx.moveTo(res.x_pos, res.y_pos);
+    } else {
+        ctx.lineTo(res.x_pos, res.y_pos);
+        return ctx.stroke();
+    }
+}) 
 
-socket.on('getCanvasOption', (res) => {
-    // console.log(res)
-})
-
-function setCanvas(color, width) {
+function setCtx(color, width) {
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
     ctx.lineWidth = width;
@@ -48,19 +50,13 @@ function onMouseMove(e) {
     const y_pos = e.offsetY;
 
     if (!painting) {
+        socket.emit('mouseMove', { x_pos, y_pos, painting, stat: 'start' })
+        
         ctx.beginPath();
         ctx.moveTo(x_pos, y_pos);
-        // socket.emit('mouseMove', { x_pos, y_pos, painting })
-        // socket.on('mouseMove', (res) => {
-        //     ctx.beginPath();
-        //     ctx.moveTo(res.x_pos, res.y_pos);
-        // })  
     } else {
-        // socket.emit('mouseMove', { x_pos, y_pos, painting })
-        // socket.on('mouseMove', (res) => {
-        //     ctx.lineTo(res.x_pos, res.y_pos);
-        //     ctx.stroke();
-        // })
+        socket.emit('mouseMove', { x_pos, y_pos, painting, stat: 'draw' })
+        
         ctx.lineTo(x_pos, y_pos);
         ctx.stroke();
     }
@@ -75,13 +71,13 @@ function handleMenu(e) {
 }
 
 function canvasEvent() {
-    if ($canvas) {
-        $canvas.addEventListener('mousemove', onMouseMove);
-        $canvas.addEventListener('mousedown', startPainting);
-        $canvas.addEventListener('mouseup', stopPainting);
-        $canvas.addEventListener('mouseleave', stopPainting);
-        $canvas.addEventListener('click', fillMode);
-        $canvas.addEventListener('contextmenu', handleMenu);
+    if (canvas) {
+        canvas.addEventListener('mousemove', onMouseMove);
+        canvas.addEventListener('mousedown', startPainting);
+        canvas.addEventListener('mouseup', stopPainting);
+        canvas.addEventListener('mouseleave', stopPainting);
+        canvas.addEventListener('click', fillMode);
+        canvas.addEventListener('contextmenu', handleMenu);
     }
 }
 
@@ -101,7 +97,7 @@ function handleMode() {
 }
 
 function handleSave() {
-    const img = $canvas.toDataURL('image/png');
+    const img = canvas.toDataURL('image/png');
     const link = document.createElement('a');
     link.href = img;
     link.download = 'export_Image';
@@ -121,14 +117,12 @@ function enterRoom() {
     roomTitle.innerText = roomName;
 }
 
-
-
 function init() {
     const body = document.querySelector('body');
 
-    body.appendChild($canvas);
+    body.appendChild(canvas);
 
-    setCanvas('#2c2c2c', '2.5');
+    setCtx('#2c2c2c', '2.5');
 
     enterRoom();
     socket.emit('getCanvasOption', {
