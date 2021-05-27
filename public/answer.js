@@ -1,4 +1,4 @@
-import question from './question.js'
+import question from './catchMind/question.js'
 
 const $ans_div = document.createElement('div'),
     $ans_title = document.createElement('h2'),

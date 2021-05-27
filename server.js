@@ -48,6 +48,20 @@ chat.on('connection', (socket) => {
     socket.on('error', (res) => {
         console.log(res)
     })
+
+    socket.on('mouseMove', (res) => {
+        console.log(res)
+
+        chat.to(myRoom)
+            .emit('mouseMove', res);
+    })
+
+    socket.on('getCanvasOption', (res) => {
+        console.log(res)
+
+        chat.to(myRoom)
+            .emit('getCanvasOption', res);
+    })
 });
 
 app.get('/', (req, res) => {

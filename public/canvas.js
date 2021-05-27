@@ -15,6 +15,16 @@ ctx.fillRect(0, 0, 700, 700);
 let painting = false;
 let mode = false;
 
+const socket = io('/chat');
+
+socket.on('mouseMove', (res) => {
+    console.log(res)
+})
+
+socket.on('getCanvasOption', (res) => {
+    console.log(res)
+})
+
 function setCanvas(color, width) {
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
@@ -38,6 +48,12 @@ function onMouseMove(e) {
     const y_pos = e.offsetY;
 
     if (!painting) {
+        socket.emit('mouseMove', {
+            begin: ctx.beginPath(),
+            x_pos,
+            y_pos
+        })
+
         ctx.beginPath();
         ctx.moveTo(x_pos, y_pos);
     } else {
@@ -101,6 +117,14 @@ function init() {
     body.appendChild($canvas);
 
     setCanvas('#2c2c2c', '2.5');
+
+    socket.emit('getCanvasOption', {
+        color: '#2c2c2c',
+        painting: painting,
+        mode: mode,
+        range: '2.5'
+    })
+
     canvasEvent();
 
     setTimeout(() => {
