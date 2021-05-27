@@ -50,14 +50,14 @@ chat.on('connection', (socket) => {
     })
 
     socket.on('mouseMove', (res) => {
-        console.log(res)
+        // console.log(res)
 
         chat.to(myRoom)
             .emit('mouseMove', res);
     })
 
     socket.on('getCanvasOption', (res) => {
-        console.log(res)
+        // console.log(res)
 
         chat.to(myRoom)
             .emit('getCanvasOption', res);

@@ -22,7 +22,7 @@ socket.on('mouseMove', (res) => {
 })
 
 socket.on('getCanvasOption', (res) => {
-    console.log(res)
+    // console.log(res)
 })
 
 function setCanvas(color, width) {
@@ -48,15 +48,19 @@ function onMouseMove(e) {
     const y_pos = e.offsetY;
 
     if (!painting) {
-        socket.emit('mouseMove', {
-            begin: ctx.beginPath(),
-            x_pos,
-            y_pos
-        })
-
         ctx.beginPath();
         ctx.moveTo(x_pos, y_pos);
+        // socket.emit('mouseMove', { x_pos, y_pos, painting })
+        // socket.on('mouseMove', (res) => {
+        //     ctx.beginPath();
+        //     ctx.moveTo(res.x_pos, res.y_pos);
+        // })  
     } else {
+        // socket.emit('mouseMove', { x_pos, y_pos, painting })
+        // socket.on('mouseMove', (res) => {
+        //     ctx.lineTo(res.x_pos, res.y_pos);
+        //     ctx.stroke();
+        // })
         ctx.lineTo(x_pos, y_pos);
         ctx.stroke();
     }
@@ -111,6 +115,14 @@ function getRange() {
     return parseInt(range.value);
 }
 
+function enterRoom() {
+    const roomName = decodeURI(extractURL())
+    socket.emit('joinRoom_chat', roomName);
+    roomTitle.innerText = roomName;
+}
+
+
+
 function init() {
     const body = document.querySelector('body');
 
@@ -118,6 +130,7 @@ function init() {
 
     setCanvas('#2c2c2c', '2.5');
 
+    enterRoom();
     socket.emit('getCanvasOption', {
         color: '#2c2c2c',
         painting: painting,

@@ -15,7 +15,7 @@ socket.on('msg', (res) => {
 })
 
 socket.on('roomEnter', (res) => {
-    console.log(res);
+    // console.log(res);
 })
 
 socket.on('success', (res) => {
