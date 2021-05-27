@@ -50,19 +50,9 @@ chat.on('connection', (socket) => {
     })
 
     socket.on('mouseMove', (res) => {
-        // console.log(res)
-
         socket.broadcast
             .to(myRoom)
             .emit('mouseMove', res);
-    })
-
-    socket.on('getCanvasOption', (res) => {
-        // console.log(res)
-
-        socket.broadcast
-            .to(myRoom)
-            .emit('getCanvasOption', res);
     })
 });
 
@@ -71,8 +61,6 @@ app.get('/', (req, res) => {
 })
 
 app.post('/room/:roomName', (req, res) => {
-    console.log('신호왔어')
-
     res.sendFile(path.join(__dirname, 'catchMind_with_Nodejs', '../public/chatRoom.html'));
 });
 
