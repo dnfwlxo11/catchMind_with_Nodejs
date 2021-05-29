@@ -21,8 +21,6 @@ const socket = io('/chat');
 socket.on('mouseMove', (res) => {
     setOption(res.options.mode, res.options.color, res.options.width, res.options.painting);
 
-    console.log(res)
-
     if (!mode) {
         if(res.stat === 'start') {
             ctx.beginPath();
@@ -58,11 +56,11 @@ function setOption(drawMode, color, width, canPaint) {
 function getRange() {
     const range = document.getElementsByClassName('controls-range-input');
 
-    return parseInt(range.value);
+    return range.jsRange.value;
 }
 
 function handleRangeChange(e) {
-    setOption(mode, ctx.strokeStyle, e.target.value);
+    setOption(mode, ctx.strokeStyle, e.target.value, painting);
 }
 
 function startPainting() {
@@ -78,12 +76,12 @@ function onMouseMove(e) {
     const y_pos = e.offsetY;
 
     if (!painting) {
-        socket.emit('mouseMove', { x_pos, y_pos, painting, stat: 'start', options: getOption(color, getRange(), painting) })
+        socket.emit('mouseMove', { x_pos, y_pos, painting, stat: 'start', options: getOption(color, getRange()) })
         
         ctx.beginPath();
         ctx.moveTo(x_pos, y_pos);
     } else {
-        socket.emit('mouseMove', { x_pos, y_pos, painting, stat: 'draw', options: getOption(color, getRange(), painting) })
+        socket.emit('mouseMove', { x_pos, y_pos, painting, stat: 'draw', options: getOption(color, getRange()) })
         
         ctx.lineTo(x_pos, y_pos);
         ctx.stroke();
@@ -111,7 +109,7 @@ function canvasEvent() {
 
 function handleColorClick(e) {
     color = e.target.style.backgroundColor;
-    setOption(mode, color, getRange())
+    setOption(mode, color, getRange(), painting)
 }
 
 function handleMode() {
