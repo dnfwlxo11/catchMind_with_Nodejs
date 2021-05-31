@@ -36,6 +36,16 @@ chat.on('connection', (socket) => {
             .emit('msg', res);
     })
 
+    socket.on('getUserNum', () => {
+        chat.to(myRoom)
+            .emit('userNum', io.engine.clientsCount);
+    })
+
+    socket.on('canvasBtn', (res) => {
+        chat.to(myRoom)
+            .emit('canvasBtn', res);
+    })
+
     socket.on('roomEnter', (res) => {
         // console.log(res)
     })
@@ -52,11 +62,6 @@ chat.on('connection', (socket) => {
         socket.broadcast
             .to(myRoom)
             .emit('mouseMove', res);
-    })
-
-    socket.on('getUserNum', () => {
-        chat.to(myRoom)
-            .emit('userNum', io.engine.clientsCount);
     })
 });
 

@@ -18,6 +18,23 @@ let color = '#2c2c2c';
 
 const socket = io('/chat');
 
+socket.on('canvasBtn', (res) => {
+    const modeBtn = document.getElementById('jsMode');
+    const rangeBtn = document.getElementById('jsRange')
+
+    if (res.btn === 'init') {
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, 700, 700);
+        setOption(false, '#2c2c2c', 2.5, false);
+        rangeBtn.value = 2.5;
+    } else if (res.btn === 'range') {
+        rangeBtn.value = res.range;
+    } else if (res.btn === 'mode') {
+        console.log(res.mode)
+        modeBtn.innerText = res.mode;
+    }
+})
+
 socket.on('mouseMove', (res) => {
     setOption(res.options.mode, res.options.color, res.options.width, res.options.painting);
 
@@ -47,6 +64,7 @@ function getOption(color, width) {
 
 function setOption(drawMode, color, width, canPaint) {
     mode = drawMode;
+    color = color;
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
     ctx.lineWidth = width;
@@ -54,13 +72,15 @@ function setOption(drawMode, color, width, canPaint) {
 }
 
 function getRange() {
-    const range = document.getElementsByClassName('controls-range-input');
+    const range = document.getElementById('jsRange');
 
-    return range.jsRange.value;
+    return range.value;
 }
 
 function handleRangeChange(e) {
     setOption(mode, ctx.strokeStyle, e.target.value, painting);
+
+    socket.emit('canvasBtn', { btn: 'range', range: e.target.value});
 }
 
 function startPainting() {
@@ -119,6 +139,8 @@ function handleMode() {
         mode ? mode = false : mode = true;
         mode ? modeBtn.innerText = '채우기모드' : modeBtn.innerText = '연필모드'
         canvasEvent();
+
+        socket.emit('canvasBtn', { btn: 'mode', mode: modeBtn.innerText});
     })
 }
 
@@ -137,12 +159,16 @@ function enterRoom() {
     roomTitle.innerText = roomName;
 }
 
+function initCanvas() {
+    socket.emit('canvasBtn', { btn: 'init'});
+}
+
 function init() {
     const body = document.querySelector('body');
 
     body.appendChild(canvas);
 
-    setOption(mode, '#2c2c2c', '2.5');
+    setOption(mode, '#2c2c2c', 2.5, painting);
     enterRoom();
     userNum();
     canvasEvent();
@@ -150,6 +176,7 @@ function init() {
     setTimeout(() => {
         const range = document.getElementById('jsRange');
         const saveBtn = document.getElementById('jsSave');
+        const initBtn = document.getElementById('jsInit')
 
         if (range)
             range.addEventListener('input', handleRangeChange);
@@ -162,6 +189,10 @@ function init() {
 
         if (saveBtn) {
             saveBtn.addEventListener('click', handleSave);
+        }
+
+        if (initBtn) {
+            initBtn.addEventListener('click', initCanvas);
         }
     }, 0);
 }
