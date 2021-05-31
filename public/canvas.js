@@ -144,6 +144,7 @@ function init() {
 
     setOption(mode, '#2c2c2c', '2.5');
     enterRoom();
+    userNum();
     canvasEvent();
 
     setTimeout(() => {

@@ -21,7 +21,6 @@ chat.on('connection', (socket) => {
 
     socket.on('joinRoom_chat', (room) => {
         if (roomName.includes(room)) {
-            console.log(room)
             socket.join(room);
             chat.to(room).emit('roomEnter', { roomNAme: room})
             myRoom = room;
@@ -53,6 +52,11 @@ chat.on('connection', (socket) => {
         socket.broadcast
             .to(myRoom)
             .emit('mouseMove', res);
+    })
+
+    socket.on('getUserNum', () => {
+        chat.to(myRoom)
+            .emit('userNum', io.engine.clientsCount);
     })
 });
 

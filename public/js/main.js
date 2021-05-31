@@ -3,6 +3,7 @@ const submitBtn = document.getElementById('submit');
 const chat_ul = document.getElementById('messages');
 const chat_input = document.getElementById('msg_input');
 const roomTitle = document.getElementById('title');
+const userNumber = document.getElementById('userNumber');
 
 const socket = io('/chat');
 
@@ -26,6 +27,10 @@ socket.on('error', (res) => {
     console.log(res)
 })
 
+socket.on('userNum', (res) => {
+    userNumber.innerText = res;
+})
+
 submitBtn.addEventListener('click', (e) => {
     e.preventDefault();
 
@@ -45,4 +50,13 @@ function enterRoom() {
     roomTitle.innerText = roomName;
 }
 
-enterRoom();
+function userNum() {
+    socket.emit('getUserNum');
+}
+
+function init() {    
+    enterRoom();
+    userNum();
+}
+
+init();
