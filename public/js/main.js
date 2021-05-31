@@ -1,9 +1,10 @@
-const rooms = document.getElementsByClassName('roomNum');
-const submitBtn = document.getElementById('submit');
-const chat_ul = document.getElementById('messages');
-const chat_input = document.getElementById('msg_input');
-const roomTitle = document.getElementById('title');
-const userNumber = document.getElementById('userNumber');
+const rooms = document.getElementsByClassName('roomNum'),
+    submitBtn = document.getElementById('submit'),
+    chat_ul = document.getElementById('messages'),
+    chat_input = document.getElementById('msg_input'),
+    roomTitle = document.getElementById('title'),
+    userNumber = document.getElementById('userNumber'),
+    leave_btn = document.getElementById('leave_room');
 
 const socket = io('/chat');
 
@@ -46,7 +47,7 @@ function extractURL() {
 
 function enterRoom() {
     const roomName = decodeURI(extractURL())
-    socket.emit('joinRoom_chat', roomName);
+    socket.emit('joinRoom_chat', { room: roomName, stat: 'chat'});
     roomTitle.innerText = roomName;
 }
 
@@ -57,6 +58,11 @@ function userNum() {
 function init() {    
     enterRoom();
     userNum();
+
+    leave_btn.addEventListener('click', () => {
+        socket.emit('leave');
+        window.history.back();
+    })
 }
 
 init();

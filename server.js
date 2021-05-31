@@ -15,15 +15,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+connectCounter = [];
+
 const chat = io.of('/chat');
 chat.on('connection', (socket) => {
     let myRoom = 'open';
 
     socket.on('joinRoom_chat', (room) => {
-        if (roomName.includes(room)) {
-            socket.join(room);
-            chat.to(room).emit('roomEnter', { roomNAme: room})
-            myRoom = room;
+        if (roomName.includes(room.room)) {
+            socket.join(room.room);
+            myRoom = room.room;
+            if (isNaN(connectCounter[myRoom])) connectCounter.push(connectCounter[myRoom] = 1);
+            else if (room.stat === 'chat') connectCounter[myRoom]++;
+            console.log(connectCounter[myRoom])
             return socket.emit('success', '방에 들어오는데 성공했습니다.')
         } else {
             return socket.emit('error', '해당 방은 없습니다, ' + room)
@@ -38,7 +42,7 @@ chat.on('connection', (socket) => {
 
     socket.on('getUserNum', () => {
         chat.to(myRoom)
-            .emit('userNum', io.engine.clientsCount);
+            .emit('userNum', connectCounter[myRoom]);
     })
 
     socket.on('canvasBtn', (res) => {
@@ -56,6 +60,15 @@ chat.on('connection', (socket) => {
 
     socket.on('error', (res) => {
         console.log(res)
+    })
+
+    socket.on('leave', () => {
+        console.log(myRoom)
+        connectCounter[myRoom]--;
+        console.log(connectCounter[myRoom]);
+        
+        chat.to(myRoom)
+            .emit('userNum', connectCounter[myRoom]);
     })
 
     socket.on('mouseMove', (res) => {

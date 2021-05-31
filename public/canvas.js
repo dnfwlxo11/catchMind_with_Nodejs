@@ -36,6 +36,12 @@ socket.on('canvasBtn', (res) => {
     }
 })
 
+socket.on('userNum', (res) => {
+    console.log(res)
+    const usernum = document.getElementById('userNumber');
+    usernum.innerText = res;
+})
+
 socket.on('mouseMove', (res) => {
     setOption(res.options.mode, res.options.color, res.options.width, res.options.painting);
 
@@ -166,6 +172,10 @@ function initCanvas() {
     socket.emit('canvasBtn', { btn: 'init', color: '#2c2c2c'});
 }
 
+function getUserNum() {
+    socket.emit('getUserNum');
+}
+
 function init() {
     const body = document.querySelector('body');
 
@@ -173,8 +183,8 @@ function init() {
 
     setOption(mode, '#2c2c2c', 2.5, painting);
     enterRoom();
-    userNum();
     canvasEvent();
+    getUserNum();
 
     setTimeout(() => {
         const range = document.getElementById('jsRange');
