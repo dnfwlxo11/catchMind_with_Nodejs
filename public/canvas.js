@@ -20,17 +20,18 @@ const socket = io('/chat');
 
 socket.on('canvasBtn', (res) => {
     const modeBtn = document.getElementById('jsMode');
-    const rangeBtn = document.getElementById('jsRange')
+    const rangeBtn = document.getElementById('jsRange');
 
     if (res.btn === 'init') {
         ctx.fillStyle = 'white';
         ctx.fillRect(0, 0, 700, 700);
-        setOption(false, '#2c2c2c', 2.5, false);
         rangeBtn.value = 2.5;
+        color = '#2c2c2c'
+        console.log(typeof(res.color), res.color)
+        setOption(false, res.color, 2.5, false);
     } else if (res.btn === 'range') {
         rangeBtn.value = res.range;
     } else if (res.btn === 'mode') {
-        console.log(res.mode)
         modeBtn.innerText = res.mode;
     }
 })
@@ -47,7 +48,7 @@ socket.on('mouseMove', (res) => {
             return ctx.stroke();
         }
     } else if (mode && painting) {
-        fillMode();
+        fillMode(color);
     }
 }) 
 
@@ -62,11 +63,11 @@ function getOption(color, width) {
     return data
 }
 
-function setOption(drawMode, color, width, canPaint) {
+function setOption(drawMode, lineColor, width, canPaint) {
     mode = drawMode;
-    color = color;
-    ctx.strokeStyle = color;
-    ctx.fillStyle = color;
+    color = lineColor;
+    ctx.strokeStyle = lineColor;
+    ctx.fillStyle = lineColor;
     ctx.lineWidth = width;
     painting = canPaint;
 }
@@ -109,7 +110,9 @@ function onMouseMove(e) {
 }
 
 function fillMode() {
-    if (mode) ctx.fillRect(0, 0, 700, 700);
+    if (mode) {
+        ctx.fillRect(0, 0, 700, 700);
+    }
 }
 
 function handleMenu(e) {
@@ -129,7 +132,7 @@ function canvasEvent() {
 
 function handleColorClick(e) {
     color = e.target.style.backgroundColor;
-    setOption(mode, color, getRange(), painting)
+    setOption(mode, color, getRange(), painting);
 }
 
 function handleMode() {
@@ -160,7 +163,7 @@ function enterRoom() {
 }
 
 function initCanvas() {
-    socket.emit('canvasBtn', { btn: 'init'});
+    socket.emit('canvasBtn', { btn: 'init', color: '#2c2c2c'});
 }
 
 function init() {
