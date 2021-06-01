@@ -7,28 +7,36 @@
 </head>
 <body>
     <div id='content_wrap'>
-        <div id='infor_wrap'>
-            <div class='infor_text_div' style="float: left;padding: 10px;">
-                아이디(ID)
-                <p></p>
-                비밀번호(PASS)
-                <p></p>
-                메모(MEMO)
-            </div>
-            <div class='infor_input_div' style="float: left;padding: 10px;">
-                <form method="GET" action='/' id='infor_form'>
-                    <input type='text' style="width: 300px;" id='usr_id'> <button type='button' id='id_chk'>중복
-                        체크</button> <label id='id_status' style="display: none;"></label>
-                    <p></p>
-                    <input type='password' style="width: 300px;" id='usr_pass'>
-                    <p></p>
-                    <textarea rows='5' style="width: 300px; text-align: left;"
-                        placeholder="간단한 자기소개를 써주세요 (Write down you'r information)" id='usr_memo'></textarea>
-                    <p></p>
-                    <button type='button' id='sub_btn' style="height: 50px;width: 200px;">제출</button>
-                </form>
-            </div>
+        <div>
+            아이디(ID) <input type="text" id='register-id'>
+            <button onclick='checkName()'>중복체크</button>
+            <br>
+            비밀번호(PASSWORD) <input type="password"><br>
+            메모(MEMO) <input type="memo"><br>
+            <button onclick='register()'>회원가입</button>
         </div>
     </div>
 </body>
+<script>
+    function checkName() {
+        const name = document.getElementById('register-id').value;
+
+        fetch(`http://localhost:3000/api/users/check`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ name: name })
+        })
+        .then((res) => {
+            res.json().then((data) => {
+                if (data.success)
+                    alert(data.msg);
+                else 
+                    alert(data.msg);
+            });
+        })
+
+    }
+</script>
 </html>

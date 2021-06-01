@@ -66,7 +66,22 @@ router.post('/submitRegister', (req, res) => {
     })
 })
 
-router.get('/check/:name', (req, res) => {
+router.post('/check', (req, res) => {
+    console.log(req.body)
+
+    User.findOne({ name: req.body.name }, (err, user) => {
+        if (!user) {
+            return res.json({
+                success: true,
+                msg: '사용 가능한 아이디입니다.'
+            })
+        } else {
+            return res.json({
+                success: false,
+                msg: '이미 사용 중인 아이디입니다.'
+            })
+        }
+    });
 });
 
 router.post('/register/:id/:pass/:memo', (req, res) => {
