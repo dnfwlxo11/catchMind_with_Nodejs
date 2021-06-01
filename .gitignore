@@ -1,4 +1,4 @@
 # nodemodules
 node_modules
 package-lock.json
-key.js
+/server/config/key.js

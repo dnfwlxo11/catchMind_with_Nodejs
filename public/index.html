@@ -1,34 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>환영합니다.</title>
 </head>
+
 <body>
     <div class='content_wrap'>
-        <form method='GET' action='/api/rooms/roomList' id='infor_form'>
-            <div class='infor_wrap'>
-                <div class='infor_text_div' style="float: left;padding: 10px;">
-                    아이디(ID)
-                    <p></p>
-                    비밀번호(PASS)
-                </div>
-                <div class='infor_input_div' style="float: left;padding: 10px;">
-                    <input id='usr_id' type='text'>
-                    <p></p>
-                    <input id='usr_pass' type='password'>
-                </div>
-                <div class='infor_btn_div' style="float: left;padding: 10px;">
-                    <button type='submit' id='sub_btn' style="height: 70px;width: 100px;">제출</button>
-                </div>
-            </div>
-        </form>
-        <div style="text-align: right;padding: 10px;">
-            <form method='GET' action='/api/users/register'>
-                <button type=submit id='reg_btn' style="height: 30px;width: 100px;">회원가입</button>
-            </form>
+        <div>
+            ID : <input type="text" id='id'>
+            PASS : <input type="password" id='pass'>
+            <button onclick="submitLogin()">로그인</button>
         </div>
+        <form action="/api/users/register" method="GET">
+            <button type="submit">회원가입</button>
+        </form>
     </div>
 </body>
+<script>
+    function submitLogin() {
+        const id = document.getElementById('id').value;
+        const pass = document.getElementById('pass').value;
+
+        let data = {
+            name: id,
+            pass: pass
+        }
+
+        fetch('http://localhost:3000/api/users/login', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        .then((res) => {
+            res.json().then(data => {
+                if (!data.success) alert(data.msg);
+            })
+        })
+    }
+</script>
+
 </html>

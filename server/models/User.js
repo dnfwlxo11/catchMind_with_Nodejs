@@ -30,9 +30,9 @@ userSchema.pre('save', function (next) {
     // password 필드가 변환될 때만 실행됨
     if (user.isModified('password')) {
         // 비밀번호를 암호화, bcrypt의 salt를 만들며 동작
-        bcrypt.genSalt(saltRounds, function (err, salt) {
+        bcrypt.genSalt(saltRounds, (err, salt) => {
             if (err) return next(err)
-            bcrypt.hash(user.password, salt, function (err, hash) {
+            bcrypt.hash(user.password, salt, (err, hash) => {
                 if (err) return next(err)
                 user.password = hash
                 next()
@@ -43,36 +43,36 @@ userSchema.pre('save', function (next) {
     }
 })
 
-userSchema.methods.comparePassword = function(plainPass, cb) {
+userSchema.methods.comparePassword = (plainPass, cb) => {
     // 비밀번호 비교, plainPass와 cryptPass
-    bcrypt.compare(plainPass, this.password, function(err, isMatch) {
+    bcrypt.compare(plainPass, this.password, (err, isMatch) => {
         if (err) return cb(err)
         cb(null, isMatch)
     })
 }
 
-userSchema.methods.generateToken = function(cb) {
+userSchema.methods.generateToken = (cb) => {
     var user = this;
 
     // jwt을 이용해 token을 생성
     var token = jwt.sign(user._id.toHexString(), 'secretToken');
     user.token = token
-    user.save(function(err, user) {
+    user.save((err, user) => {
         if (err) return cb(err)
         cb(null, user)
     })
 }
 
-userSchema.statics.findByToken = function (token, cb) {
+userSchema.statics.findByToken = (token, cb) => {
     var user = this;
 
     // 토큰을 복호화
-    jwt.verify(token, 'secretToken', function(err, decoded) {
+    jwt.verify(token, 'secretToken', (err, decoded) => {
         // 유저 아이디를 이용해 조회 후, 클라이언트에서 가져온 토큰과 DB의 토큰과 비교
         user.findOne({
             "_id": decoded,
             "token": token
-        }, function (err, user) {
+        }, (err, user) => {
             if (err) return cb(err);
             cb(null, user)
         })

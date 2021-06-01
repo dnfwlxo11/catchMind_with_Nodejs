@@ -27,7 +27,9 @@ mongoose.connect(config.mongoURI, {
 }).then(() => console.log('MongoDB Connected...'))
     .catch(err => console.log(err))
 
-app.use('/', users);
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/index.html'));
+})
 app.use('/api/users', users);
 app.use('/api/rooms', rooms)
 
