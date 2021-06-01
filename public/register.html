@@ -11,7 +11,7 @@
             아이디(ID) <input type="text" id='register-id'>
             <button onclick='checkName()'>중복체크</button>
             <br>
-            비밀번호(PASSWORD) <input type="password"><br>
+            비밀번호(PASSWORD) <input type="password" id='register-pass'><br>
             메모(MEMO) <input type="memo"><br>
             <button onclick='register()'>회원가입</button>
         </div>
@@ -21,7 +21,7 @@
     function checkName() {
         const name = document.getElementById('register-id').value;
 
-        fetch(`http://localhost:3000/api/users/check`, {
+        fetch('http://localhost:3000/api/users/check', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json"
@@ -36,7 +36,35 @@
                     alert(data.msg);
             });
         })
+    }
 
+    function register() {
+        const name = document.getElementById('register-id').value;
+        const pass = document.getElementById('register-pass').value;
+
+        const data = {
+            name,
+            password: pass
+        }
+
+        fetch('http://localhost:3000/api/users/submitRegister', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        .then((res) => {
+            res.json().then((data) => {
+                console.log(data)
+                if (data.success) {
+                    alert(data.msg);
+                    fetch('http://localhost:3000/api/users/register', {method: 'GET'});
+                } else { 
+                    alert(data.msg);
+                }
+            });
+        })
     }
 </script>
 </html>

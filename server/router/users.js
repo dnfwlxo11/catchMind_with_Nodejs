@@ -56,12 +56,15 @@ router.get('/register', (req, res) => {
 })
 
 router.post('/submitRegister', (req, res) => {
+    console.log(req.body)
     const user = new User(req.body);
+    console.log(user);
 
     user.save((err, userInfo) => {
         if (err) return res.json({ success: false, err })
         return res.status(200).json({
-            success: true
+            success: true,
+            msg: '회원가입에 성공했습니다 메인페이지로 이동합니다.'
         })
     })
 })

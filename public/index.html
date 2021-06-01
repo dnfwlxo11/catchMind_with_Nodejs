@@ -21,12 +21,12 @@
 </body>
 <script>
     function submitLogin() {
-        const id = document.getElementById('id').value;
+        const name = document.getElementById('id').value;
         const pass = document.getElementById('pass').value;
 
-        let data = {
-            name: id,
-            pass: pass
+        const data = {
+            name,
+            pass
         }
 
         fetch('http://localhost:3000/api/users/login', {
