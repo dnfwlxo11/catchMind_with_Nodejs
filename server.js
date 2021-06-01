@@ -5,6 +5,11 @@ const server = http.createServer(app);
 const io = require('socket.io')(server);
 const path = require('path');
 const bodyParser = require('body-parser');
+const session = require('express-session');
+const mysqlSession = require('express-mysql-session')(session);
+const session_router = require('./session');
+
+const db_infor = require('./key');
 
 const PORT = 3000;
 
@@ -14,6 +19,16 @@ const roomName = ['고수만', '초보오세요', '창의력 좋은 사람만', 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(session({
+    secret: '#@^!@#&&^$!@', // 쿠키 변조를 방지하기 위한 값
+    saveUninitialized: true, // 세션이 저장되기 전 초기화되지 않은 상태로 만들어 저장
+    store: new mysqlSession(db_infor),
+    cookie: {
+        maxAge: 1000*60*10
+    }
+}))
+
+app.use('/api', session_router);
 
 connectCounter = [];
 
@@ -22,12 +37,9 @@ chat.on('connection', (socket) => {
     let myRoom = 'open';
 
     socket.on('joinRoom_chat', (room) => {
-        if (roomName.includes(room.room)) {
-            socket.join(room.room);
-            myRoom = room.room;
-            if (isNaN(connectCounter[myRoom])) connectCounter.push(connectCounter[myRoom] = 1);
-            else if (room.stat === 'chat') connectCounter[myRoom]++;
-            console.log(connectCounter[myRoom])
+        if (roomName.includes(room)) {
+            socket.join(room);
+            myRoom = room;
             return socket.emit('success', '방에 들어오는데 성공했습니다.')
         } else {
             return socket.emit('error', '해당 방은 없습니다, ' + room)
@@ -41,8 +53,10 @@ chat.on('connection', (socket) => {
     })
 
     socket.on('getUserNum', () => {
+        console.log(io.sockets)
+
         chat.to(myRoom)
-            .emit('userNum', connectCounter[myRoom]);
+            .emit('userNum', io.engine.clientsCount);
     })
 
     socket.on('canvasBtn', (res) => {
@@ -61,16 +75,6 @@ chat.on('connection', (socket) => {
     socket.on('error', (res) => {
         console.log(res)
     })
-
-    socket.on('leave', () => {
-        console.log(myRoom)
-        connectCounter[myRoom]--;
-        console.log(connectCounter[myRoom]);
-        
-        chat.to(myRoom)
-            .emit('userNum', connectCounter[myRoom]);
-    })
-
     socket.on('mouseMove', (res) => {
         socket.broadcast
             .to(myRoom)

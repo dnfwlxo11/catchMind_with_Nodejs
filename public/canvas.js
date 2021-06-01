@@ -172,10 +172,6 @@ function initCanvas() {
     socket.emit('canvasBtn', { btn: 'init', color: '#2c2c2c'});
 }
 
-function getUserNum() {
-    socket.emit('getUserNum');
-}
-
 function init() {
     const body = document.querySelector('body');
 
@@ -184,7 +180,6 @@ function init() {
     setOption(mode, '#2c2c2c', 2.5, painting);
     enterRoom();
     canvasEvent();
-    getUserNum();
 
     setTimeout(() => {
         const range = document.getElementById('jsRange');

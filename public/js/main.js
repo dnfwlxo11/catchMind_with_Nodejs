@@ -47,7 +47,7 @@ function extractURL() {
 
 function enterRoom() {
     const roomName = decodeURI(extractURL())
-    socket.emit('joinRoom_chat', { room: roomName, stat: 'chat' });
+    socket.emit('joinRoom_chat', roomName);
     roomTitle.innerText = roomName;
 }
 
@@ -55,26 +55,11 @@ function userNum() {
     socket.emit('getUserNum');
 }
 
-// 새로고침 처리
-document.onkeydown = (e) => {
-    /* F5, Ctrl+r, Ctrl+F5 */
-    if (e.keyCode == 116 || e.ctrlKey == true && (e.keyCode == 82)) {
-        e.cancelBubble = true;
-        e.returnValue = false;
-        socket.emit('leave');
-        setTimeout(function () {
-            window.location.reload();
-        }, 0);
-        return false;
-    }
-}
-
 function init() {
     enterRoom();
     userNum();
 
     leave_btn.addEventListener('click', () => {
-        socket.emit('leave');
         window.location.href = 'http://localhost:3000/'
     })
 }
