@@ -1,13 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>방을 고르세요!</title>
+    <title>환영합니다.</title>
 </head>
-
 <body>
-    <script src="js/move.js"></script>
+    <div class='content_wrap'>
+        <form method='GET' action='/api/rooms/roomList' id='infor_form'>
+            <div class='infor_wrap'>
+                <div class='infor_text_div' style="float: left;padding: 10px;">
+                    아이디(ID)
+                    <p></p>
+                    비밀번호(PASS)
+                </div>
+                <div class='infor_input_div' style="float: left;padding: 10px;">
+                    <input id='usr_id' type='text'>
+                    <p></p>
+                    <input id='usr_pass' type='password'>
+                </div>
+                <div class='infor_btn_div' style="float: left;padding: 10px;">
+                    <button type='submit' id='sub_btn' style="height: 70px;width: 100px;">제출</button>
+                </div>
+            </div>
+        </form>
+        <div style="text-align: right;padding: 10px;">
+            <form method='GET' action='/api/users/register'>
+                <button type=submit id='reg_btn' style="height: 30px;width: 100px;">회원가입</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

@@ -10,7 +10,7 @@ function createSubmit() {
         const button = document.createElement('button');
 
         form.setAttribute('method', 'POST');
-        form.setAttribute('action', `/room/${item}`);
+        form.setAttribute('action', `/api/rooms/${item}`);
 
         button.setAttribute('type', 'submit');
         button.innerText = item;

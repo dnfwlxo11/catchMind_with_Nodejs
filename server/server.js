@@ -5,11 +5,9 @@ const server = http.createServer(app);
 const io = require('socket.io')(server);
 const path = require('path');
 const bodyParser = require('body-parser');
-const session = require('express-session');
-const mysqlSession = require('express-mysql-session')(session);
-const session_router = require('./session');
-
-const db_infor = require('./key');
+const users = require('./router/users');
+const rooms = require('./router/rooms')
+const config = require('./config/key');
 
 const PORT = 3000;
 
@@ -19,21 +17,25 @@ const roomName = ['고수만', '초보오세요', '창의력 좋은 사람만', 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(session({
-    secret: '#@^!@#&&^$!@', // 쿠키 변조를 방지하기 위한 값
-    saveUninitialized: true, // 세션이 저장되기 전 초기화되지 않은 상태로 만들어 저장
-    store: new mysqlSession(db_infor),
-    cookie: {
-        maxAge: 1000*60*10
-    }
-}))
 
-app.use('/api', session_router);
+const mongoose = require('mongoose')
+mongoose.connect(config.mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false
+}).then(() => console.log('MongoDB Connected...'))
+    .catch(err => console.log(err))
+
+app.use('/', users);
+app.use('/api/users', users);
+app.use('/api/rooms', rooms)
 
 connectCounter = [];
 
 const chat = io.of('/chat');
 chat.on('connection', (socket) => {
+    console.log(db_infor);
     let myRoom = 'open';
 
     socket.on('joinRoom_chat', (room) => {
@@ -80,14 +82,6 @@ chat.on('connection', (socket) => {
             .to(myRoom)
             .emit('mouseMove', res);
     })
-});
-
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'catchMind_with_Nodejs', '../public/room.html'));
-})
-
-app.post('/room/:roomName', (req, res) => {
-    res.sendFile(path.join(__dirname, 'catchMind_with_Nodejs', '../public/chatRoom.html'));
 });
 
 server.listen(PORT, () => {
