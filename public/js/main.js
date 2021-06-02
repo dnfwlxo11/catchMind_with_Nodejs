@@ -49,6 +49,18 @@ function enterRoom() {
     const roomName = decodeURI(extractURL())
     socket.emit('joinRoom_chat', roomName);
     roomTitle.innerText = roomName;
+
+    const data = {
+        roomName
+    }
+
+    // fetch('http://localhost:3000/api/rooms/join', {
+    //     method: 'POST',
+    //     headers: {
+    //         "Content-Type": "application/json"
+    //     },
+    //     body: JSON.stringify(data)
+    // })
 }
 
 function userNum() {

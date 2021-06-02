@@ -14,6 +14,14 @@ const userSchema = mongoose.Schema({
         minlength: 4
     },
 
+    role: {
+        type: Boolean,
+    },
+
+    room: {
+        type: String
+    },
+
     token: {
         type: String,
         default: ""
