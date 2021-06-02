@@ -9,5 +9,20 @@
 
 <body>
     <script src="js/move.js"></script>
+
+    <button onclick="logout()">로그아웃</button>
+
+    <script>
+        function logout() {
+            fetch('http://localhost:3000/api/users/logout')
+            .then((res) => {
+                res.json().then((data) => {
+                    if (!data.success) alert('로그아웃중 오류가 발생했습니다.');
+                    else location.replace('http://localhost:3000/');
+                })
+            })
+        }
+    </script>
+    
 </body>
 </html>

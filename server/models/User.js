@@ -15,7 +15,8 @@ const userSchema = mongoose.Schema({
     },
 
     token: {
-        type: String
+        type: String,
+        default: ""
     },
 
     tokenExp: {
