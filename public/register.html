@@ -14,6 +14,7 @@
             비밀번호(PASSWORD) <input type="password" id='register-pass'><br>
             메모(MEMO) <input type="memo"><br>
             <button onclick='register()'>회원가입</button>
+            <button onclick='location.href="http://localhost:3000/"'>나가기</button>
         </div>
     </div>
 </body>
@@ -58,8 +59,8 @@
             res.json().then((data) => {
                 console.log(data)
                 if (data.success) {
-                    alert(data.msg);
-                    fetch('http://localhost:3000/api/users/register', {method: 'GET'});
+                    alert(data.msg)
+                    location.replace("http://localhost:3000/")
                 } else { 
                     alert(data.msg);
                 }

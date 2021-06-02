@@ -43,7 +43,7 @@ userSchema.pre('save', function (next) {
     }
 })
 
-userSchema.methods.comparePassword = (plainPass, cb) => {
+userSchema.methods.comparePassword = function(plainPass, cb) {
     // 비밀번호 비교, plainPass와 cryptPass
     bcrypt.compare(plainPass, this.password, (err, isMatch) => {
         if (err) return cb(err)
@@ -51,7 +51,7 @@ userSchema.methods.comparePassword = (plainPass, cb) => {
     })
 }
 
-userSchema.methods.generateToken = (cb) => {
+userSchema.methods.generateToken = function(cb) {
     var user = this;
 
     // jwt을 이용해 token을 생성
@@ -63,7 +63,7 @@ userSchema.methods.generateToken = (cb) => {
     })
 }
 
-userSchema.statics.findByToken = (token, cb) => {
+userSchema.statics.findByToken = function(token, cb) {
     var user = this;
 
     // 토큰을 복호화

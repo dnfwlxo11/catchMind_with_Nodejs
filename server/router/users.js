@@ -8,8 +8,6 @@ router.get('/test', (req, res) => {
 })
 
 router.post('/login', (req, res) => {
-    console.log(req.body)
-
     User.findOne({ name: req.body.name }, (err, user) => {
         if (!user) {
             return res.json({
@@ -17,8 +15,8 @@ router.post('/login', (req, res) => {
                 msg: '해당 유저는 없습니다.'
             })
         }
-
-        user.comparePassword(req.body.password, (err, isMatch) => {
+        
+        user.comparePassword(req.body.pass, (err, isMatch) => {
             if (!isMatch) return res.json({
                 success: false,
                 message: '비밀번호가 틀렸습니다.'
