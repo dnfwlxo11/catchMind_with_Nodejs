@@ -60,7 +60,7 @@ function init() {
     userNum();
 
     leave_btn.addEventListener('click', () => {
-        window.location.href = 'http://localhost:3000/'
+        window.location.href = 'http://localhost:3000/api/rooms/roomList'
     })
 }
 

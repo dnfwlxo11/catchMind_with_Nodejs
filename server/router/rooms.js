@@ -2,16 +2,18 @@ const express = require('express');
 const path = require('path');
 const router = express.Router();
 
+const { auth } = require('../middleware/auth')
+
 router.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'catchMind_with_Nodejs', '../public/index.html'));
+    res.sendFile(path.join(__dirname, '../../public/index.html'));
 });
 
-router.get('/roomList', (req, res) => {
-    res.sendFile(path.join(__dirname, 'catchMind_with_Nodejs', '../public/roomList.html'));
+router.get('/roomList', auth, (req, res) => {
+    res.sendFile(path.join(__dirname, '../../public/roomList.html'));
 });
 
-router.post('/room/:roomName', (req, res) => {
-    res.sendFile(path.join(__dirname, 'catchMind_with_Nodejs', '../public/chatRoom.html'));
+router.post('/:roomName', auth, (req, res) => {
+    res.sendFile(path.join(__dirname, '../../public/chatRoom.html'));
 });
 
 module.exports = router

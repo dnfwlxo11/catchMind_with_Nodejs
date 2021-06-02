@@ -5,6 +5,7 @@ const server = http.createServer(app);
 const io = require('socket.io')(server);
 const path = require('path');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const users = require('./router/users');
 const rooms = require('./router/rooms')
 const config = require('./config/key');
@@ -14,9 +15,11 @@ const PORT = 3000;
 // 이걸 DB에서 방들을 불러왔다고 가정, 새로만드는 경우는 포함 x
 const roomName = ['고수만', '초보오세요', '창의력 좋은 사람만', '들어올까 말까'];
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/', express.static('public'));
+app.use('/api/rooms', express.static(path.join(__dirname, '../public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 const mongoose = require('mongoose')
 mongoose.connect(config.mongoURI, {
@@ -37,7 +40,6 @@ connectCounter = [];
 
 const chat = io.of('/chat');
 chat.on('connection', (socket) => {
-    console.log(db_infor);
     let myRoom = 'open';
 
     socket.on('joinRoom_chat', (room) => {
