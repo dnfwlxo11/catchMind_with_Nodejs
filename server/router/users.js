@@ -5,10 +5,6 @@ const router = express.Router();
 const { User } = require('../models/User');
 const { auth } = require('../middleware/auth')
 
-router.get('/test', (req, res) => {
-    console.log(req.body)
-})
-
 router.post('/login', (req, res) => {
     User.findOne({ name: req.body.name }, (err, user) => {
         if (!user) {

@@ -9,6 +9,7 @@ const cookieParser = require('cookie-parser');
 const users = require('./router/users');
 const rooms = require('./router/rooms')
 const config = require('./config/key');
+const { auth } = require('./middleware/auth');
 
 const PORT = 3000;
 
@@ -31,8 +32,11 @@ mongoose.connect(config.mongoURI, {
 }).then(() => console.log('MongoDB Connected...'))
     .catch(err => console.log(err))
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/index.html'));
+app.get('/', auth, (req, res) => {
+    if (!req.token)
+        res.sendFile(path.join(__dirname, '../public/index.html'));
+    else
+        res.redirect('/api/rooms/roomList');
 })
 app.use('/api/users', users);
 app.use('/api/rooms', rooms)
