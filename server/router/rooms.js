@@ -10,6 +10,10 @@ router.get('/roomList', auth, (req, res) => {
     res.sendFile(path.join(__dirname, '../../public/roomList.html'));
 });
 
+router.get('/createRoom', auth, (req, res) => {
+    res.sendFile(path.join(__dirname, '../../public/createRoom.html'));
+});
+
 router.get('/join/:roomName', auth, (req, res) => {
     res.sendFile(path.join(__dirname, '../../public/chatRoom.html'), { room: 'test' })
 })

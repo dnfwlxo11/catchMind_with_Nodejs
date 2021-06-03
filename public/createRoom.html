@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>환영합니다.</title>
+</head>
+<body>
+    <div id='content_wrap'>
+        <div>
+            방이름 <input type="text" id='register-id'>
+            <button onclick='checkName()'>중복체크</button>
+            <br>
+            메모(MEMO) <input type="memo"><br>
+            <button onclick='createRoom()'>방만들기</button>
+            <button onclick='location.href="http://localhost:3000/api/rooms/roomList"'>나가기</button>
+        </div>
+    </div>
+</body>
+<script>
+    function createRoom() {
+        location.replace('http://localhost:3000/api/rooms/roomList')
+    }
+</script>
+</html>

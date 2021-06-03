@@ -10,6 +10,7 @@
 <body>
     <script src="move.js"></script>
 
+    <button onclick="createRoom()">방만들기</button>
     <button onclick="logout()">로그아웃</button>
 
     
@@ -22,6 +23,10 @@
                     else location.replace('http://localhost:3000/');
                 })
             })
+        }
+
+        function createRoom() {
+            location.replace('http://localhost:3000/api/rooms/createRoom');
         }
     </script>
     
