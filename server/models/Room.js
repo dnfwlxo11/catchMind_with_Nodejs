@@ -13,11 +13,11 @@ const roomSchema = Schema({
     },
 
     admin: {
-        type: String
+        type: Boolean
     },
 
     drawer: {
-        type: String
+        type: Boolean
     }
 }, { timestamps: true })
 
