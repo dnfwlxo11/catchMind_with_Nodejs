@@ -9,7 +9,7 @@
     <div id='content_wrap'>
         <div>
             방이름 <input type="text" id='register-id'>
-            <button onclick='checkName()'>중복체크</button>
+            <button onclick='check()'>중복체크</button>
             <br>
             메모(MEMO) <input type="memo"><br>
             <button onclick='createRoom()'>방만들기</button>
@@ -18,8 +18,28 @@
     </div>
 </body>
 <script>
+    function check() {
+        const room = document.getElementById('register-id').value;
+
+        fetch('http://localhost:3000/api/rooms/check', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ room: room })
+        })
+        .then((res) => {
+            res.json().then((data) => {
+                if (data.success)
+                    alert(data.msg);
+                else 
+                    alert(data.msg);
+            });
+        })
+    }
+
     function createRoom() {
-        location.replace('http://localhost:3000/api/rooms/roomList')
+        location.replace('http://localhost:3000/api/rooms/roomList');
     }
 </script>
 </html>

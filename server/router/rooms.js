@@ -14,6 +14,26 @@ router.get('/createRoom', auth, (req, res) => {
     res.sendFile(path.join(__dirname, '../../public/createRoom.html'));
 });
 
+router.post('/createRoom', auth, (req, res) => {
+    Room.findOne({ room: req.body.room }, (err, room) => {
+        if (err) {
+            console.log(err)
+            return res.json({
+                success: false,
+                msg: '에러 발생',
+                err
+            })
+        } else if (!room) {
+            res.json({ success: true })
+        } else {
+            return res.json({
+                success: false,
+                msg: '해당 방은 이미 존재합니다.'
+            })
+        }
+    })
+});
+
 router.get('/join/:roomName', auth, (req, res) => {
     res.sendFile(path.join(__dirname, '../../public/chatRoom.html'), { room: 'test' })
 })
@@ -110,6 +130,24 @@ router.post('/createRoom', auth, (req, res) => {
             })
         }
     })
+});
+
+router.post('/check', (req, res) => {
+    console.log(req.body)
+
+    Room.findOne({ room: req.body.room }, (err, user) => {
+        if (!user) {
+            return res.json({
+                success: true,
+                msg: '사용 가능한 방입니다.'
+            })
+        } else {
+            return res.json({
+                success: false,
+                msg: '이미 사용 중인 방입니다.'
+            })
+        }
+    });
 });
 
 module.exports = router
