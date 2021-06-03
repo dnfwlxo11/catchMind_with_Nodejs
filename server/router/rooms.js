@@ -32,7 +32,7 @@ router.post('/join/:roomName', auth, (req, res) => {
             console.log(room.room, '방으로 들어갑니다.')
             Room.updateOne(
                 { _id: room._id },
-                { $addToSet: { users: req.user._id} }, (err) => {
+                { $addToSet: { users: req.user}}, (err) => {
                     if (err) console.log(err);// return res.json({success: false, err});
             }).exec();
 
@@ -60,11 +60,8 @@ router.post('/leave', auth, (req, res) => {
             })
         } else {
             console.log(room.room, '방에서 나갑니다.')
-            Room.updateOne(
-                { _id: room._id },
-                { $pull: { users: req.user._id} }, (err) => {
-                    if (err) console.log(err);// return res.json({success: false, err});
-            }).exec();
+            room.users.pull(req.user);
+            room.save();
 
             return res.redirect('/api/rooms/roomList');
         }
