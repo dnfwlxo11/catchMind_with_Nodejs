@@ -10,44 +10,59 @@ router.get('/roomList', auth, (req, res) => {
     res.sendFile(path.join(__dirname, '../../public/roomList.html'));
 });
 
-router.post('/join/:roomName', auth, (req, res) => {
-    res.sendFile(path.join(__dirname, '../../public/chatRoom.html'));
+router.post('/join', auth, (req, res) => {
+    Room.findOne({ room: req.body.room })
+    .exec((err, room) => {
+        if (err) {
+            console.log(err)
+            return res.json({
+                success: false,
+                msg: '에러 발생',
+                err
+            })
+        } else if (!room) {
+            return res.json({
+                success: false,
+                msg: '해당 방은 존재하지 않습니다.'
+            })
+        } else {
+            console.log(room.room, '방으로 들어갑니다.')
+            room.users.push(req.user);
+            res.sendFile(path.join(__dirname, '../../public/chatRoom.html'));
+        }
+    })
 });
 
 router.post('/createRoom', auth, (req, res) => {
-    console.log('123')
-    console.log(req.user, req.body)
+    console.log(req.body)
 
     const room = new Room({
-        name: req.body.room,
-        users: req.user._id,
+        room: req.body.room,
         admin: true,
         drawer: true
     })
 
-    room.save((err, roomInfo) => {
-        if (err) return res.json({ success: false, err })
-    })
+    Room.findOne({ room: req.body.room }, (err, room) => {
+        if (!room) {
+            const new_room = new Room({
+                room: req.body.room,
+                admin: true,
+                drawer: true
+            })
 
-    return res.status(200).json({
-        success: true,
-        msg: '방 등록 완료'
+            new_room.save((err, roomInfo) => {
+                if (err) return res.json({
+                    success: true,
+                    msg: '방 등록 완료'
+                })
+            })
+        } else {
+            return res.json({
+                success: false,
+                msg: '이미 사용 중인 방입니다.'
+            })
+        }
     })
 });
-
-router.post('/join', auth, (req, res) => {
-    // const room = new Room({
-    //     room: req.body.roomName,
-    //     users: req.user._id
-    // });
-
-    // room.save((err, roomInfo) => {
-    //     if (err) return res.json({ success: false, err })
-    //     return res.status(200).json({
-    //         success: true,
-    //         msg: `${req.body.roomName}에 성공적으로 들어왔습니다.`
-    //     })
-    // })
-})
 
 module.exports = router

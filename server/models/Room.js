@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { User } = require('./User');
 const Schema = mongoose.Schema;
 
 const roomSchema = Schema({
@@ -7,10 +8,12 @@ const roomSchema = Schema({
         maxlength: 50
     },
 
-    users: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-    },
+    users: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    ],
 
     admin: {
         type: Boolean

@@ -32,9 +32,9 @@ const userSchema = mongoose.Schema({
     }
 }, { timestamps: true })
 
-userSchema.pre('save', function (next) {
+userSchema.pre('save', function(next) {
     // 이 곳을 가리킴
-    var user = this;
+    const user = this;
 
     // password 필드가 변환될 때만 실행됨
     if (user.isModified('password')) {

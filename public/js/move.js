@@ -3,9 +3,9 @@ const rooms = document.getElementsByClassName('roomNum');
 // 이걸 DB에서 방들을 불러왔다고 가정, db를 쓴다면 숫자나 해쉬값이 들어갈 것임
 const roomName = ['고수만', '초보오세요', '창의력 좋은 사람만', '들어올까 말까'];
 
-function createRoom(e) {
+function createRoom(name) {
     const data = {
-        room: e.innerText
+        room: name
     }
 
     const config = {
@@ -23,6 +23,22 @@ function createRoom(e) {
         })
 }
 
+function joinRoom(e) {
+    const data = {
+        room: e.target.innerText
+    }
+
+    const config = {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json; charset=utf-8"
+        },
+        body: JSON.stringify(data)
+    }
+
+    fetch(`http://localhost:3000/api/rooms/join`, config)
+}
+
 function createSubmit() {
     const body = document.querySelector('body');
     const div = document.createElement('div');
@@ -31,21 +47,14 @@ function createSubmit() {
     roomName.forEach((item) => {
         const button = document.createElement('button');
 
-        button.setAttribute('class', 'room-btn');
-        button.setAttribute('method', 'GET');
-        button.setAttribute('action', `/api/rooms/${item}`)
+        button.addEventListener('click', joinRoom)
 
-        createRoom(button);
+        createRoom(item);
 
         button.innerText = item;
 
         div.appendChild(button);
     });
-
-    const btns = document.getElementsByClassName('room-btn');
-    Array.from(btns).forEach((item) => {
-        
-    })
 }
 
 createSubmit();
