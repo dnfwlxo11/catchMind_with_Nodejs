@@ -27,7 +27,6 @@ socket.on('canvasBtn', (res) => {
         ctx.fillRect(0, 0, 700, 700);
         rangeBtn.value = 2.5;
         color = '#2c2c2c'
-        console.log(typeof(res.color), res.color)
         setOption(false, res.color, 2.5, false);
     } else if (res.btn === 'range') {
         rangeBtn.value = res.range;
@@ -37,7 +36,6 @@ socket.on('canvasBtn', (res) => {
 })
 
 socket.on('userNum', (res) => {
-    console.log(res)
     const usernum = document.getElementById('userNumber');
     usernum.innerText = res;
 })

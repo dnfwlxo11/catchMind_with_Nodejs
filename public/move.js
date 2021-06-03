@@ -17,10 +17,6 @@ function createRoom(name) {
     }
 
     fetch('http://localhost:3000/api/rooms/createRoom', config)
-    .then((res) => {
-        console.log(res)
-        res.json().then((data) => console.log(data))
-    })
 }
 
 function joinRoom(e) {
@@ -31,8 +27,7 @@ function joinRoom(e) {
     const config = {
         method: 'POST',
         headers: {
-            "Content-Type": "application/json; charset=utf-8",
-            'redirect': 'follow'
+            "Content-Type": "application/json; charset=utf-8"
         },
         body: JSON.stringify(data)
     }

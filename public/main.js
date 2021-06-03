@@ -72,7 +72,14 @@ function init() {
     userNum();
 
     leave_btn.addEventListener('click', () => {
-        window.location.href = 'http://localhost:3000/api/rooms/roomList'
+        fetch('http://localhost:3000/api/rooms/leave', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ room: extractURL()})
+        })
+        .then((res) => window.location.href = res.url)
     })
 }
 

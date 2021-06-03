@@ -11,13 +11,11 @@ router.get('/roomList', auth, (req, res) => {
 });
 
 router.get('/join/:roomName', auth, (req, res) => {
-    res.sendFile(path.join(__dirname, '../../public/chatRoom.html'), {room: 'test'})
+    res.sendFile(path.join(__dirname, '../../public/chatRoom.html'), { room: 'test' })
 })
 
 router.post('/join/:roomName', auth, (req, res) => {
-    Room.findOne({ room: req.body.room })
-    .populate('_id')
-    .exec((err, room) => {
+    Room.findOne({ room: req.body.room }, (err, room) => {
         if (err) {
             console.log(err)
             return res.json({
@@ -32,11 +30,46 @@ router.post('/join/:roomName', auth, (req, res) => {
             })
         } else {
             console.log(room.room, '방으로 들어갑니다.')
-            room.users.push(req.user);
-            return res.json({ success: true, room: room.room});
+            Room.updateOne(
+                { _id: room._id },
+                { $addToSet: { users: req.user._id} }, (err) => {
+                    if (err) console.log(err);// return res.json({success: false, err});
+            }).exec();
+
+            return res.json({ success: true, room: room.room });
         }
     })
 });
+
+router.post('/leave', auth, (req, res) => {
+    const roomName = decodeURI(req.body.room)
+    console.log(roomName, '방나가기 요청')
+
+    Room.findOne({ room: roomName }, (err, room) => {
+        if (err) {
+            console.log(err)
+            return res.json({
+                success: false,
+                msg: '에러 발생',
+                err
+            })
+        } else if (!room) {
+            return res.json({
+                success: false,
+                msg: '해당 방은 존재하지 않습니다.'
+            })
+        } else {
+            console.log(room.room, '방에서 나갑니다.')
+            Room.updateOne(
+                { _id: room._id },
+                { $pull: { users: req.user._id} }, (err) => {
+                    if (err) console.log(err);// return res.json({success: false, err});
+            }).exec();
+
+            return res.redirect('/api/rooms/roomList');
+        }
+    });
+})
 
 router.post('/createRoom', auth, (req, res) => {
     const room = new Room({
@@ -45,7 +78,7 @@ router.post('/createRoom', auth, (req, res) => {
         drawer: true
     })
 
-    Room.findOne({ room: req.body.room }, (err, room) => {
+    Room.findOne({ room: decodeURI(req.body.room) }, (err, room) => {
         if (!room) {
             const new_room = new Room({
                 room: req.body.room,

@@ -26,7 +26,6 @@ function initQuestion() {
 
 function submitAnswer(e) {
     if (e.keyCode == 13) {
-        console.log(e.keyCode)
         const answer = localStorage.getItem('answer');
 
         let predict = $ans_input.value;
