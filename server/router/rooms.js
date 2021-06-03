@@ -10,8 +10,13 @@ router.get('/roomList', auth, (req, res) => {
     res.sendFile(path.join(__dirname, '../../public/roomList.html'));
 });
 
-router.post('/join', auth, (req, res) => {
+router.get('/join/:roomName', auth, (req, res) => {
+    res.sendFile(path.join(__dirname, '../../public/chatRoom.html'), {room: 'test'})
+})
+
+router.post('/join/:roomName', auth, (req, res) => {
     Room.findOne({ room: req.body.room })
+    .populate('_id')
     .exec((err, room) => {
         if (err) {
             console.log(err)
@@ -28,14 +33,12 @@ router.post('/join', auth, (req, res) => {
         } else {
             console.log(room.room, '방으로 들어갑니다.')
             room.users.push(req.user);
-            res.sendFile(path.join(__dirname, '../../public/chatRoom.html'));
+            return res.json({ success: true, room: room.room});
         }
     })
 });
 
 router.post('/createRoom', auth, (req, res) => {
-    console.log(req.body)
-
     const room = new Room({
         room: req.body.room,
         admin: true,
@@ -49,6 +52,8 @@ router.post('/createRoom', auth, (req, res) => {
                 admin: true,
                 drawer: true
             })
+
+            console.log(req.body.room);
 
             new_room.save((err, roomInfo) => {
                 if (err) return res.json({

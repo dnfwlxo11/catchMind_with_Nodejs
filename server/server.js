@@ -17,6 +17,7 @@ const roomName = ['고수만', '초보오세요', '창의력 좋은 사람만', 
 
 app.use('/', express.static('public'));
 app.use('/api/rooms', express.static(path.join(__dirname, '../public')));
+app.use('/api/rooms/join', express.static(path.join(__dirname, '../public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
