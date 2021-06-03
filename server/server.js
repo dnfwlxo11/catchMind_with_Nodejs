@@ -59,11 +59,11 @@ chat.on('connection', (socket) => {
             .emit('msg', res);
     })
 
-    socket.on('getUserNum', () => {
+    socket.on('getUserNum', (res) => {
         console.log(io.sockets)
 
         chat.to(myRoom)
-            .emit('userNum', io.engine.clientsCount);
+            .emit('userNum', res);
     })
 
     socket.on('canvasBtn', (res) => {

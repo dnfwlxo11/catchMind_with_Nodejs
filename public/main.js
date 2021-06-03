@@ -46,40 +46,46 @@ function extractURL() {
 }
 
 function enterRoom() {
-    const roomName = decodeURI(extractURL())
+    const roomName = decodeURI(extractURL());
+
     socket.emit('joinRoom_chat', roomName);
     roomTitle.innerText = roomName;
 
-    const data = {
-        roomName
-    }
-
-    // fetch('http://localhost:3000/api/rooms/join', {
-    //     method: 'POST',
-    //     headers: {
-    //         "Content-Type": "application/json"
-    //     },
-    //     body: JSON.stringify(data)
-    // })
+    getUsers(roomName);
 }
 
-function userNum() {
-    socket.emit('getUserNum');
+function getUsers(name) {
+    fetch('http://localhost:3000/api/rooms/getUsers', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ room: name })
+    })
+    .then((res) => { 
+        res.json().then((data) => {
+            socket.emit('getUserNum', data.len)
+        });
+    })
 }
 
 function init() {
-    enterRoom();
-    userNum();
+    enterRoom()
 
     leave_btn.addEventListener('click', () => {
+        const roomName = decodeURI(extractURL());
+
         fetch('http://localhost:3000/api/rooms/leave', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ room: extractURL()})
+            body: JSON.stringify({ room: roomName })
         })
-        .then((res) => window.location.href = res.url)
+        .then((res) => {
+            getUsers(roomName)
+            window.location.href = res.url
+        })
     })
 }
 

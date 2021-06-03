@@ -42,7 +42,7 @@ router.post('/join/:roomName', auth, (req, res) => {
 });
 
 router.post('/leave', auth, (req, res) => {
-    const roomName = decodeURI(req.body.room)
+    const roomName = req.body.room;
     console.log(roomName, '방나가기 요청')
 
     Room.findOne({ room: roomName }, (err, room) => {
@@ -67,6 +67,14 @@ router.post('/leave', auth, (req, res) => {
         }
     });
 })
+
+router.post('/getUsers', auth, (req, res) => {
+    console.log(req.body.room, 123)
+    Room.find({ room: req.body.room}, (err, item) => {
+        if (err) return res.json({success: false, msg: '해당 방은 존재하지 않습니다.'});
+        else return res.json({suces:true, len: item[0].users.length});
+    });
+});
 
 router.post('/createRoom', auth, (req, res) => {
     const room = new Room({
