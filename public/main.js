@@ -51,10 +51,11 @@ function enterRoom() {
     socket.emit('joinRoom_chat', roomName);
     roomTitle.innerText = roomName;
 
-    getUsers(roomName);
+    getUsers(roomName, false);
 }
 
-function getUsers(name) {
+function getUsers(name, url) {
+    console.log('유저 숫자 읽어오는 중')
     fetch('http://localhost:3000/api/rooms/getUsers', {
         method: 'POST',
         headers: {
@@ -64,7 +65,11 @@ function getUsers(name) {
     })
     .then((res) => { 
         res.json().then((data) => {
+            console.log(data.len)
             socket.emit('getUserNum', data.len)
+
+            if (url)
+                window.location.href = url
         });
     })
 }
@@ -83,8 +88,7 @@ function init() {
             body: JSON.stringify({ room: roomName })
         })
         .then((res) => {
-            getUsers(roomName)
-            window.location.href = res.url
+            getUsers(roomName, res.url);
         })
     })
 }

@@ -60,8 +60,7 @@ chat.on('connection', (socket) => {
     })
 
     socket.on('getUserNum', (res) => {
-        console.log(io.sockets)
-
+        console.log(res)
         chat.to(myRoom)
             .emit('userNum', res);
     })
