@@ -105,13 +105,30 @@ router.post('/leave', auth, (req, res) => {
             room.users.pull(req.user);
             room.save();
 
-            return res.redirect('/api/rooms/roomList');
+            if (room.users.length === 0) {
+                room.deleteOne();
+
+                return res.json({
+                    success: false,
+                    move: true,
+                    msg: '방이 사라집니다.'
+                })
+            } else {
+                Room.find({ room: req.body.room }, (err, item) => {
+                    return res.json({
+                        success: true,
+                        move: true,
+                        len: item[0].users.length,
+                        msg: '방을 나갑니다.'
+                    })
+                });
+            }
         }
     });
 })
 
 router.post('/getUsers', auth, (req, res) => {
-    Room.find({ room: req.body.room}, (err, item) => {
+    Room.find({ room: req.body.room }, (err, item) => {
         if (err) return res.json({success: false, msg: '해당 방은 존재하지 않습니다.'});
         else return res.json({suces:true, len: item[0].users.length});
     });

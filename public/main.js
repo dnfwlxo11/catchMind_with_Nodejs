@@ -75,8 +75,6 @@ function getUsers(name, url) {
 }
 
 function init() {
-    enterRoom()
-
     leave_btn.addEventListener('click', () => {
         const roomName = decodeURI(extractURL());
 
@@ -88,9 +86,21 @@ function init() {
             body: JSON.stringify({ room: roomName })
         })
         .then((res) => {
-            getUsers(roomName, res.url);
+            res.json().then((data) => {
+                console.log(data)
+                if (data.success) {
+                    socket.emit('getUserNum', data.len)
+
+                    if (data.move)
+                        location.replace('http://localhost:3000/api/rooms/roomList');
+                } else {
+                    location.replace('http://localhost:3000/api/rooms/roomList');
+                }
+            })
         })
     })
+
+    enterRoom()
 }
 
 init();
