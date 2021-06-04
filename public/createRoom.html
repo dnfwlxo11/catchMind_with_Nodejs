@@ -39,7 +39,37 @@
     }
 
     function createRoom() {
-        location.replace('http://localhost:3000/api/rooms/roomList');
+        const room = document.getElementById('register-id').value;
+
+        fetch('http://localhost:3000/api/rooms/createRoom', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ room: room })
+        })
+        .then((res) => {
+            res.json().then((data) => {
+                console.log(data.roomInfo.room)
+
+                const data2 = {
+                    room: data.roomInfo.room
+                }
+
+                const config = {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data2)
+                }
+
+                fetch(`http://localhost:3000/api/rooms/join/${data.roomInfo.room}`, config)
+                .then((res) => {
+                    window.location.href = res.url;
+                })  
+            }) 
+        });
     }
 </script>
 </html>

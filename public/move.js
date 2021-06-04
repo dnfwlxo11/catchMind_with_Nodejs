@@ -62,18 +62,6 @@ function createSubmit() {
     div.setAttribute('id', 'rooms-id');
     body.appendChild(div);
 
-    // roomName.forEach((item) => {
-    //     const button = document.createElement('button');
-
-    //     button.addEventListener('click', joinRoom)
-
-    //     createRoom(item);
-
-    //     button.innerText = item;
-
-    //     div.appendChild(button);
-    // });
-
     searchRooms();
 }
 

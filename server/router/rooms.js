@@ -21,27 +21,28 @@ router.get('/createRoom', auth, (req, res) => {
 });
 
 router.post('/createRoom', auth, (req, res) => {
-    const room = new Room({
-        room: req.body.room,
-        admin: true,
-        drawer: true
-    })
-
     Room.findOne({ room: decodeURI(req.body.room) }, (err, room) => {
         if (!room) {
             const new_room = new Room({
                 room: req.body.room,
+                users: [],
                 admin: true,
                 drawer: true
             })
 
-            console.log(req.body.room);
-
             new_room.save((err, roomInfo) => {
-                if (err) return res.json({
-                    success: true,
-                    msg: '방 등록 완료'
-                })
+                if (err) {
+                    return res.json({
+                        success: false,
+                        msg: '방 등록 실패'
+                    })
+                } else {
+                    return res.json({
+                        success: true,
+                        msg: '방 등록 완료',
+                        roomInfo
+                    })
+                }
             })
         } else {
             return res.json({
@@ -116,41 +117,7 @@ router.post('/getUsers', auth, (req, res) => {
     });
 });
 
-router.post('/createRoom', auth, (req, res) => {
-    const room = new Room({
-        room: req.body.room,
-        admin: true,
-        drawer: true
-    })
-
-    Room.findOne({ room: decodeURI(req.body.room) }, (err, room) => {
-        if (!room) {
-            const new_room = new Room({
-                room: req.body.room,
-                admin: true,
-                drawer: true
-            })
-
-            console.log(req.body.room);
-
-            new_room.save((err, roomInfo) => {
-                if (err) return res.json({
-                    success: true,
-                    msg: '방 등록 완료'
-                })
-            })
-        } else {
-            return res.json({
-                success: false,
-                msg: '이미 사용 중인 방입니다.'
-            })
-        }
-    })
-});
-
 router.post('/check', (req, res) => {
-    console.log(req.body)
-
     Room.findOne({ room: req.body.room }, (err, user) => {
         if (!user) {
             return res.json({
