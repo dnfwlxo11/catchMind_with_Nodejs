@@ -106,22 +106,10 @@ router.post('/leave', auth, (req, res) => {
             room.save();
 
             if (room.users.length === 0) {
-                room.deleteOne();
-
-                return res.json({
-                    success: false,
-                    move: true,
-                    msg: '방이 사라집니다.'
-                })
+                Room.deleteOne({ _id: room._id}).exec();
+                return res.json({ last: true, move: true });
             } else {
-                Room.find({ room: req.body.room }, (err, item) => {
-                    return res.json({
-                        success: true,
-                        move: true,
-                        len: item[0].users.length,
-                        msg: '방을 나갑니다.'
-                    })
-                });
+                return res.json({ last: false, move: true });
             }
         }
     });

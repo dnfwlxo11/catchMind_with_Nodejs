@@ -54,7 +54,7 @@ function enterRoom() {
     getUsers(roomName, false);
 }
 
-function getUsers(name, url) {
+function getUsers(name, move) {
     console.log('유저 숫자 읽어오는 중')
     fetch('http://localhost:3000/api/rooms/getUsers', {
         method: 'POST',
@@ -65,11 +65,10 @@ function getUsers(name, url) {
     })
     .then((res) => { 
         res.json().then((data) => {
-            console.log(data.len)
             socket.emit('getUserNum', data.len)
 
-            if (url)
-                window.location.href = url
+            if (move)
+                location.replace('http://localhost:3000/api/rooms/roomList');
         });
     })
 }
@@ -87,16 +86,12 @@ function init() {
         })
         .then((res) => {
             res.json().then((data) => {
-                console.log(data)
-                if (data.success) {
-                    socket.emit('getUserNum', data.len)
-
-                    if (data.move)
-                        location.replace('http://localhost:3000/api/rooms/roomList');
-                } else {
+                if (!data.last)
+                    getUsers(roomName, data.move);
+                else
                     location.replace('http://localhost:3000/api/rooms/roomList');
-                }
             })
+            
         })
     })
 
