@@ -38,22 +38,43 @@ function joinRoom(e) {
     })
 }
 
+function searchRooms() {
+    fetch('http://localhost:3000/api/rooms/searchRooms')
+    .then((res) => {
+        res.json().then((data) => { 
+            const div = document.getElementById('rooms-id');
+
+            data.rooms.forEach((item) => {
+                const button = document.createElement('button');
+                button.addEventListener('click', joinRoom)
+                button.innerText = item.room;
+
+                div.appendChild(button);
+            });
+        });
+    });
+}
+
 function createSubmit() {
     const body = document.querySelector('body');
     const div = document.createElement('div');
+
+    div.setAttribute('id', 'rooms-id');
     body.appendChild(div);
 
-    roomName.forEach((item) => {
-        const button = document.createElement('button');
+    // roomName.forEach((item) => {
+    //     const button = document.createElement('button');
 
-        button.addEventListener('click', joinRoom)
+    //     button.addEventListener('click', joinRoom)
 
-        createRoom(item);
+    //     createRoom(item);
 
-        button.innerText = item;
+    //     button.innerText = item;
 
-        div.appendChild(button);
-    });
+    //     div.appendChild(button);
+    // });
+
+    searchRooms();
 }
 
 createSubmit();

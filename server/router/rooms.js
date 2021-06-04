@@ -10,25 +10,43 @@ router.get('/roomList', auth, (req, res) => {
     res.sendFile(path.join(__dirname, '../../public/roomList.html'));
 });
 
+router.get('/searchRooms', auth, (req, res) => {
+    Room.find((err, rooms) => {
+        res.json({ rooms: rooms });
+    })
+})
+
 router.get('/createRoom', auth, (req, res) => {
     res.sendFile(path.join(__dirname, '../../public/createRoom.html'));
 });
 
 router.post('/createRoom', auth, (req, res) => {
-    Room.findOne({ room: req.body.room }, (err, room) => {
-        if (err) {
-            console.log(err)
-            return res.json({
-                success: false,
-                msg: '에러 발생',
-                err
+    const room = new Room({
+        room: req.body.room,
+        admin: true,
+        drawer: true
+    })
+
+    Room.findOne({ room: decodeURI(req.body.room) }, (err, room) => {
+        if (!room) {
+            const new_room = new Room({
+                room: req.body.room,
+                admin: true,
+                drawer: true
             })
-        } else if (!room) {
-            res.json({ success: true })
+
+            console.log(req.body.room);
+
+            new_room.save((err, roomInfo) => {
+                if (err) return res.json({
+                    success: true,
+                    msg: '방 등록 완료'
+                })
+            })
         } else {
             return res.json({
                 success: false,
-                msg: '해당 방은 이미 존재합니다.'
+                msg: '이미 사용 중인 방입니다.'
             })
         }
     })
@@ -67,7 +85,6 @@ router.post('/join/:roomName', auth, (req, res) => {
 
 router.post('/leave', auth, (req, res) => {
     const roomName = req.body.room;
-    console.log(roomName, '방나가기 요청')
 
     Room.findOne({ room: roomName }, (err, room) => {
         if (err) {
@@ -93,7 +110,6 @@ router.post('/leave', auth, (req, res) => {
 })
 
 router.post('/getUsers', auth, (req, res) => {
-    console.log(req.body.room, '방의 정보 요청이 왔습니다.')
     Room.find({ room: req.body.room}, (err, item) => {
         if (err) return res.json({success: false, msg: '해당 방은 존재하지 않습니다.'});
         else return res.json({suces:true, len: item[0].users.length});
