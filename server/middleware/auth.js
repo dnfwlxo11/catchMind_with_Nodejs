@@ -10,16 +10,11 @@ let auth = (req, res, next) => {
         if (err) throw err;
 
         // 유저가 없으면 미인증
-        if (!user) {
-            req.token = false,
-            req.user = false
-        }
+        if (!user) return res.redirect('/')
 
         // 유저가 있으면 인증
-        else {
-            req.token = token;
-            req.user = user;
-        }
+        req.token = token;
+        req.user = user;
 
         // 다음 단계로 진행하라고 next()를 주는 것
         next();

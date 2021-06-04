@@ -37,6 +37,8 @@ router.post('/login', (req, res) => {
 router.get('/logout', auth, (req, res) => {
     console.log(req.user)
     User.findOneAndUpdate({ _id: req.user._id }, { token: "" }, (err, user) => {
+        res.clearCookie('x_auth');
+
         if (err) return res.json({
             success: false, err
         });

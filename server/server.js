@@ -32,8 +32,8 @@ mongoose.connect(config.mongoURI, {
 }).then(() => console.log('MongoDB Connected...'))
     .catch(err => console.log(err))
 
-app.get('/', auth, (req, res) => {
-    if (!req.token)
+app.get('/', (req, res) => {
+    if (!req.cookies.x_auth)
         res.sendFile(path.join(__dirname, '../public/index.html'));
     else
         res.redirect('/api/rooms/roomList');
