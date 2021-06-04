@@ -7,6 +7,20 @@ socket.on('updateRooms', (res) => {
     searchRooms();
 })
 
+function logout() {
+    fetch('http://localhost:3000/api/users/logout')
+    .then((res) => {
+        res.json().then((data) => {
+            if (!data.success) alert('로그아웃중 오류가 발생했습니다.');
+            else location.replace('http://localhost:3000/');
+        })
+    })
+}
+
+function createRoomPage() {
+    location.replace('http://localhost:3000/api/rooms/createRoom');
+}
+
 function createRoom(name) {
     const data = {
         room: name
@@ -45,9 +59,13 @@ function joinRoom(e) {
 function searchRooms() {
     fetch('http://localhost:3000/api/rooms/searchRooms')
     .then((res) => {
+        const div = document.getElementById('rooms-id');
+        while (div.hasChildNodes())
+            div.removeChild(div.firstChild);
+
         res.json().then((data) => { 
             const div = document.getElementById('rooms-id');
-
+            
             data.rooms.forEach((item) => {
                 const button = document.createElement('button');
                 button.addEventListener('click', joinRoom)
@@ -61,12 +79,13 @@ function searchRooms() {
 
 function createSubmit() {
     const body = document.querySelector('body');
+
     const div = document.createElement('div');
 
     div.setAttribute('id', 'rooms-id');
     body.appendChild(div);
 
-    // searchRooms();
+    socket.emit('updateRooms', { msg: '방 목록 업데이트 메인' })
 }
 
 createSubmit();
