@@ -103,14 +103,14 @@ router.post('/leave', auth, (req, res) => {
         } else {
             console.log(room.room, '방에서 나갑니다.')
             room.users.pull(req.user);
-            room.save();
-
-            if (room.users.length === 0) {
-                Room.deleteOne({ _id: room._id}).exec();
-                return res.json({ last: true, move: true });
-            } else {
-                return res.json({ last: false, move: true });
-            }
+            room.save(() => {
+                if (room.users.length === 0) {
+                    Room.deleteOne({ _id: room._id}).exec();
+                    return res.json({ last: true, move: true });
+                } else {
+                    return res.json({ last: false, move: true });
+                }
+            });
         }
     });
 })

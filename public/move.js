@@ -1,7 +1,11 @@
 const rooms = document.getElementsByClassName('roomNum');
 
-// 이걸 DB에서 방들을 불러왔다고 가정, db를 쓴다면 숫자나 해쉬값이 들어갈 것임
-const roomName = ['고수만', '초보오세요', '창의력 좋은 사람만', '들어올까 말까'];
+const socket = io('/chat');
+
+socket.on('updateRooms', (res) => {
+    console.log('서버가 업데이트 하래');
+    searchRooms();
+})
 
 function createRoom(name) {
     const data = {
@@ -62,7 +66,7 @@ function createSubmit() {
     div.setAttribute('id', 'rooms-id');
     body.appendChild(div);
 
-    searchRooms();
+    // searchRooms();
 }
 
 createSubmit();

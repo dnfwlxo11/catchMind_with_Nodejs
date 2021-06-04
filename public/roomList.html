@@ -8,12 +8,12 @@
 </head>
 
 <body>
+    <script src="/socket.io/socket.io.js"></script>
     <script src="move.js"></script>
 
     <button onclick="createRoom()">방만들기</button>
     <button onclick="logout()">로그아웃</button>
 
-    
     <script>
         function logout() {
             fetch('http://localhost:3000/api/users/logout')

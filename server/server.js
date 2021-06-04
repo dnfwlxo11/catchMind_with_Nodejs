@@ -21,8 +21,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-const roomName = ['1234']
-
 const mongoose = require('mongoose')
 mongoose.connect(config.mongoURI, {
     useNewUrlParser: true,
@@ -46,12 +44,12 @@ connectCounter = [];
 const chat = io.of('/chat');
 chat.on('connection', (socket) => {
     let myRoom = 'open';
-
     socket.on('joinRoom_chat', (room) => {
         socket.join(room, (err) => {
             console.log(err)
         });
         myRoom = room;
+
         return socket.emit('success', '방에 들어오는데 성공했습니다.')
     })
 
@@ -83,10 +81,16 @@ chat.on('connection', (socket) => {
     socket.on('error', (res) => {
         console.log(res)
     })
+
     socket.on('mouseMove', (res) => {
         socket.broadcast
             .to(myRoom)
             .emit('mouseMove', res);
+    })
+
+    socket.on('updateRooms', (res) => {
+        console.log('목록 업데이트 요청 받음')
+        chat.emit('updateRooms', {msg: '업데이트 하라 오바'});
     })
 });
 

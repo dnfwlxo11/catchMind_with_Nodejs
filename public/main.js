@@ -32,6 +32,12 @@ socket.on('userNum', (res) => {
     userNumber.innerText = res;
 })
 
+// window.onload = () => {
+//     console.log('업데이트 하거라')
+
+//     socket.emit('updateRooms', { msg: '방 목록 업데이트 메인' })
+// }
+
 submitBtn.addEventListener('click', (e) => {
     e.preventDefault();
 
@@ -63,17 +69,19 @@ function getUsers(name, move) {
         },
         body: JSON.stringify({ room: name })
     })
-    .then((res) => { 
-        res.json().then((data) => {
-            socket.emit('getUserNum', data.len)
+        .then((res) => {
+            res.json().then((data) => {
+                socket.emit('getUserNum', data.len)
 
-            if (move)
-                location.replace('http://localhost:3000/api/rooms/roomList');
-        });
-    })
+                if (move)
+                    location.replace('http://localhost:3000/api/rooms/roomList');
+            });
+        })
 }
 
 function init() {
+    socket.emit('updateRooms', { msg: '방 목록 업데이트 메인' })
+
     leave_btn.addEventListener('click', () => {
         const roomName = decodeURI(extractURL());
 
@@ -84,15 +92,15 @@ function init() {
             },
             body: JSON.stringify({ room: roomName })
         })
-        .then((res) => {
-            res.json().then((data) => {
-                if (!data.last)
-                    getUsers(roomName, data.move);
-                else
-                    location.replace('http://localhost:3000/api/rooms/roomList');
+            .then((res) => {
+                res.json().then((data) => {
+                    if (!data.last)
+                        getUsers(roomName, data.move);
+                    else
+                        location.replace('http://localhost:3000/api/rooms/roomList');
+                })
+
             })
-            
-        })
     })
 
     enterRoom()
