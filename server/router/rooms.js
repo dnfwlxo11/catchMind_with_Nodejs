@@ -7,7 +7,7 @@ const { Room } = require('../models/Room');
 const { auth } = require('../middleware/auth')
 
 router.get('/roomList', auth, (req, res) => {
-    res.sendFile(path.join(__dirname, '../../public/roomList.html'));
+    res.sendFile(path.join(__dirname, '../../public/html/roomList.html'));
 });
 
 router.get('/searchRooms', auth, (req, res) => {
@@ -17,7 +17,7 @@ router.get('/searchRooms', auth, (req, res) => {
 })
 
 router.get('/createRoom', auth, (req, res) => {
-    res.sendFile(path.join(__dirname, '../../public/createRoom.html'));
+    res.sendFile(path.join(__dirname, '../../public/html/createRoom.html'));
 });
 
 router.post('/createRoom', auth, (req, res) => {
@@ -54,7 +54,7 @@ router.post('/createRoom', auth, (req, res) => {
 });
 
 router.get('/join/:roomName', auth, (req, res) => {
-    res.sendFile(path.join(__dirname, '../../public/chatRoom.html'), { room: 'test' })
+    res.sendFile(path.join(__dirname, '../../public/html/chatRoom.html'), { room: 'test' })
 })
 
 router.post('/join/:roomName', auth, (req, res) => {

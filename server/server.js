@@ -8,15 +8,16 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const users = require('./router/users');
 const rooms = require('./router/rooms')
-const config = require('./config/key');
+const config = require('./config/dev');
 const { auth } = require('./middleware/auth');
 const { Room } = require('./models/Room');
 
 const PORT = 3000;
 
-app.use('/', express.static('public'));
-app.use('/api/rooms', express.static(path.join(__dirname, '../public')));
-app.use('/api/rooms/join', express.static(path.join(__dirname, '../public')));
+app.use('/', express.static('public/html'));
+app.use('/api/js', express.static(path.join(__dirname, '../public/js')));
+app.use('/api/rooms/js', express.static(path.join(__dirname, '../public/js')));
+app.use('/api/rooms/join', express.static(path.join(__dirname, '../public/')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -32,7 +33,7 @@ mongoose.connect(config.mongoURI, {
 
 app.get('/', (req, res) => {
     if (!req.cookies.x_auth)
-        res.sendFile(path.join(__dirname, '../public/index.html'));
+        res.sendFile(path.join(__dirname, '../public/html/index.html'));
     else
         res.redirect('/api/rooms/roomList');
 })
