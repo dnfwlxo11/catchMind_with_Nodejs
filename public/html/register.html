@@ -10,6 +10,8 @@
         <div>
             아이디(ID) <input type="text" id='register-id'>
             <button onclick='checkName()'>중복체크</button>
+            <img src="/assets/idCheck.png">
+            <button>수정</button>
             <br>
             비밀번호(PASSWORD) <input type="password" id='register-pass'><br>
             메모(MEMO) <input type="memo"><br>
@@ -22,7 +24,7 @@
     function checkName() {
         const name = document.getElementById('register-id').value;
 
-        fetch('http://localhost:3000/api/users/check', {
+        fetch('/api/users/check', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json"
@@ -48,7 +50,7 @@
             password: pass
         }
 
-        fetch('http://localhost:3000/api/users/submitRegister', {
+        fetch('/api/users/submitRegister', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json"
@@ -60,7 +62,7 @@
                 console.log(data)
                 if (data.success) {
                     alert(data.msg)
-                    location.replace("http://localhost:3000/")
+                    location.replace("/")
                 } else { 
                     alert(data.msg);
                 }

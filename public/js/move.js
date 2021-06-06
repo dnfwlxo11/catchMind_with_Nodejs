@@ -8,17 +8,17 @@ socket.on('updateRooms', (res) => {
 })
 
 function logout() {
-    fetch('http://localhost:3000/api/users/logout')
+    fetch('/api/users/logout')
     .then((res) => {
         res.json().then((data) => {
             if (!data.success) alert('로그아웃중 오류가 발생했습니다.');
-            else location.replace('http://localhost:3000/');
+            else location.replace('/');
         })
     })
 }
 
 function createRoomPage() {
-    location.replace('http://localhost:3000/api/rooms/createRoom');
+    location.replace('/api/rooms/createRoom');
 }
 
 function createRoom(name) {
@@ -34,7 +34,7 @@ function createRoom(name) {
         body: JSON.stringify(data)
     }
 
-    fetch('http://localhost:3000/api/rooms/createRoom', config)
+    fetch('/api/rooms/createRoom', config)
 }
 
 function joinRoom(e) {

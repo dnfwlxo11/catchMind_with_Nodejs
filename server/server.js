@@ -14,10 +14,7 @@ const { Room } = require('./models/Room');
 
 const PORT = 3000;
 
-app.use('/', express.static('public/html'));
-app.use('/api/js', express.static(path.join(__dirname, '../public/js')));
-app.use('/api/rooms/js', express.static(path.join(__dirname, '../public/js')));
-app.use('/api/rooms/join', express.static(path.join(__dirname, '../public/')));
+app.use('/', express.static(path.join(__dirname, '../public/')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
