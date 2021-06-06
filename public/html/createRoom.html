@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/check.css">
     <title>환영합니다.</title>
 </head>
 <body>
@@ -10,6 +11,8 @@
         <div>
             방이름 <input type="text" id='register-id'>
             <button onclick='check()'>중복체크</button>
+            <button id='idEdit-btn' class='idEdit-btn' onclick="enableInput()">수정</button>
+            <img ic='idCheck-img' class='idCheck-img' src="/assets/idCheck.png">
             <br>
             메모(MEMO) <input type="memo"><br>
             <button onclick='createRoom()'>방만들기</button>
@@ -19,57 +22,77 @@
 </body>
 <script>
     function check() {
-        const room = document.getElementById('register-id').value;
+        const room = document.getElementById('register-id');
+        const checkImg = document.getElementsByClassName('idCheck-img');
+        const editBtn = document.getElementsByClassName('idEdit-btn');
 
         fetch('http://localhost:3000/api/rooms/check', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ room: room })
+            body: JSON.stringify({ room: room.value })
         })
         .then((res) => {
             res.json().then((data) => {
-                if (data.success)
+                if (data.success) {
                     alert(data.msg);
-                else 
+                    room.disabled = true;
+                    checkImg[0].classList.add('visible');
+                    editBtn[0].classList.add('visible');
+                } else {
                     alert(data.msg);
+                }
             });
         })
     }
 
+    function enableInput() {
+        const room = document.getElementById('register-id');
+        const checkImg = document.getElementsByClassName('idCheck-img');
+        const editBtn = document.getElementsByClassName('idEdit-btn');
+
+        room.disabled = false;
+        checkImg[0].classList.remove('visible');
+        editBtn[0].classList.remove('visible');
+    }
+
     function createRoom() {
-        const room = document.getElementById('register-id').value;
+        const room = document.getElementById('register-id');
 
-        fetch('http://localhost:3000/api/rooms/createRoom', {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ room: room })
-        })
-        .then((res) => {
-            res.json().then((data) => {
-                console.log(data.roomInfo.room)
+        if (room.disabled) {
+            fetch('/api/rooms/createRoom', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ room: room.value })
+            })
+            .then((res) => {
+                res.json().then((data) => {
+                    console.log(data.roomInfo.room)
 
-                const data2 = {
-                    room: data.roomInfo.room
-                }
+                    const data2 = {
+                        room: data.roomInfo.room
+                    }
 
-                const config = {
-                    method: 'POST',
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(data2)
-                }
+                    const config = {
+                        method: 'POST',
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(data2)
+                    }
 
-                fetch(`http://localhost:3000/api/rooms/join/${data.roomInfo.room}`, config)
-                .then((res) => {
-                    window.location.href = res.url;
-                })  
-            }) 
-        });
+                    fetch(`/api/rooms/join/${data.roomInfo.room}`, config)
+                    .then((res) => {
+                        window.location.href = res.url;
+                    })  
+                }) 
+            });
+        } else {
+            alert('방이름 중복체크를 해야합니다.')
+        }
     }
 </script>
 </html>

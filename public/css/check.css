@@ -1,0 +1,12 @@
+.idCheck-img {
+    width: 20px;
+    visibility: hidden;
+}
+
+.idEdit-btn {
+    visibility: hidden;
+}
+
+.visible {
+    visibility: visible;
+}
