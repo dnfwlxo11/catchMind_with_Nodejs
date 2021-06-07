@@ -33,7 +33,7 @@ h2, h4 {
 }
 
 .jsCanvas {
-    width: 400px;
+    width: 700px;
     height: 400px;
     background-color: white;
     border-radius: 2rem;
@@ -161,7 +161,7 @@ h2, h4 {
     width: 15vw;
 }
 
-#users-ul, #messages {
+#users-ul, .bottom-section {
     text-align: center;
     padding-top: 10px;
     background-color: bisque;
@@ -172,7 +172,6 @@ h2, h4 {
 
 #messages {
     height: 55vh;
-    margin-bottom: 10px;
 }
 
 #users-ul {
@@ -185,8 +184,11 @@ h2, h4 {
     display: inline-block;
     border-bottom: 1px solid black;
     padding-bottom: 5px;
+    margin-bottom: 5px;
 }
 
 #msg_input {
-    width: 95%;
+    width: 85%;
+    height: 20px;
+    margin-bottom: 10px;
 }

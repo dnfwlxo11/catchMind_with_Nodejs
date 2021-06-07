@@ -55,7 +55,6 @@ function enterRoom() {
 }
 
 function getUsers(name, move) {
-    console.log('유저 숫자 읽어오는 중')
     fetch('/api/rooms/getUsers', {
         method: 'POST',
         headers: {
@@ -74,7 +73,7 @@ function getUsers(name, move) {
 }
 
 function init() {
-    socket.emit('updateRooms', { msg: '방 목록 업데이트 메인' })
+    socket.emit('updateRooms')
 
     leave_btn.addEventListener('click', () => {
         const roomName = decodeURI(extractURL());
@@ -88,12 +87,13 @@ function init() {
         })
             .then((res) => {
                 res.json().then((data) => {
+                    socket.emit('updateUsers')
+
                     if (!data.last)
                         getUsers(roomName, data.move);
                     else
                         location.replace('http://localhost:3000/api/rooms/roomList');
                 })
-
             })
     })
 

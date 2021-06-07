@@ -6,11 +6,11 @@ const ctx = canvas.getContext('2d'),
 canvas.setAttribute('id', 'jsCanvas');
 canvas.setAttribute('class', 'jsCanvas');
 
-canvas.width = 400;
+canvas.width = 700;
 canvas.height = 400;
 
 ctx.fillStyle = 'white';
-ctx.fillRect(0, 0, 400, 400);
+ctx.fillRect(0, 0, 700, 400);
 
 let painting = false;
 let mode = false;
@@ -24,7 +24,7 @@ socket.on('canvasBtn', (res) => {
 
     if (res.btn === 'init') {
         ctx.fillStyle = 'white';
-        ctx.fillRect(0, 0, 400, 400);
+        ctx.fillRect(0, 0, 700, 400);
         rangeBtn.value = 2.5;
         color = '#2c2c2c'
         setOption(false, res.color, 2.5, false);
@@ -115,7 +115,7 @@ function onMouseMove(e) {
 
 function fillMode() {
     if (mode) {
-        ctx.fillRect(0, 0, 400, 400);
+        ctx.fillRect(0, 0, 700, 400);
     }
 }
 

@@ -18,16 +18,18 @@
                 <button id='leave_room'>방나가기</button>
                 <ul id='users-ul'>
                     <li class='first-line'>접속 유저</li>
-                    <li id="users-li"></li>
+                    <li class="users-li"></li>
                 </ul>
-                <ul id="messages">
-                    <li class='first-line'>채팅창</li>
-                    <li id="userNum"></li>
-                </ul>
-                <form id="msgForm">
-                    <input id="msg_input" autocomplete="off" type="text">
-                    <button id="submit" style="display: none;">전송</button>
-                </form>
+                <div class='bottom-section'>
+                    <ul id="messages">
+                        <li class='first-line'>채팅창</li>
+                        <li id="userNum"></li>
+                    </ul>
+                    <form id="msgForm">
+                        <input id="msg_input" autocomplete="off" type="text">
+                        <button id="submit" style="display: none;">전송</button>
+                    </form>
+                </div>
             </div>
             <div id='canvas-div' class='canvas-div'></div>
         </div>
@@ -40,5 +42,6 @@
 <script src="/js/canvas/canvas.js" type="module"></script>
 <script src="/js/canvas/palette.js" type="module"></script>
 <script src="/js/canvas/answer.js" type="module"></script>
+<script src="/js/canvas/roomUsers.js" type="module"></script>
 
 </html>

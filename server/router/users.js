@@ -3,6 +3,7 @@ const path = require('path');
 const router = express.Router();
 
 const { User } = require('../models/User');
+const { Room } = require('../models/Room');
 const { auth } = require('../middleware/auth')
 
 router.post('/login', (req, res) => {
@@ -84,12 +85,25 @@ router.post('/check', (req, res) => {
     });
 });
 
-router.post('/register/:id/:pass/:memo', (req, res) => {
+router.post('/getUsers', auth, (req, res) => {
+    console.log(req.body)    
+    Room.findOne({ room: req.body.name }, (err, item) => {
+        if (err) {
+            return res.json({success: false, msg: '해당 방은 존재하지 않습니다.'});
+        } else {
+            const userArr = [];
 
-});
-
-router.post('/login/:id/:pass', (req, res) => {
-
+            User.find({ _id: { $in: item.users}})
+            .exec().then((data) => {
+                data.forEach((item) => {
+                    userArr.push(item.name);
+                })
+            })
+            .then(() => {
+                return res.json({success:true, users: userArr});
+            });  
+        }
+    });
 });
 
 module.exports = router
