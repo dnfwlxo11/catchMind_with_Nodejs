@@ -33,7 +33,8 @@ function submitAnswer(e) {
         if (answer === predict) {
             show_wordDiv()
             alert('정답입니다!!')
-            setTimeout(initQuestion, 3000)
+            ans_input.value = '';
+            setTimeout(question.endQuiz, 3000)
         } else {
             alert('틀렸습니다.')
             ans_input.value = '';

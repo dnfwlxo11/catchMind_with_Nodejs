@@ -11,6 +11,7 @@ const socket = io('/chat');
 socket.on('msg', (res) => {
     const new_li = document.createElement('li');
 
+    new_li.setAttribute('class', 'msg-li')
     new_li.innerText = res;
 
     chat_ul.appendChild(new_li);

@@ -179,6 +179,11 @@ h2, h4 {
     margin-bottom: 10px;
 }
 
+.msg-li {
+    text-align: left;
+    margin-left: 20px;
+}
+
 .first-line {
     width: 90%;
     display: inline-block;
