@@ -24,6 +24,7 @@ router.post('/login', (req, res) => {
             user.generateToken((err, user) => {
                 if (err) return res.status(400).send(err)
 
+                res.cookie('userName', user.name);
                 res.cookie('x_auth', user.token)
                     .status(200)
                     .json({
@@ -38,6 +39,7 @@ router.post('/login', (req, res) => {
 router.get('/logout', auth, (req, res) => {
     User.findOneAndUpdate({ _id: req.user._id }, { token: "" }, (err, user) => {
         res.clearCookie('x_auth');
+        res.clearCookie('userName');
 
         if (err) return res.json({
             success: false, err

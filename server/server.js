@@ -69,7 +69,6 @@ chat.on('connection', (socket) => {
     });
 
     socket.on('updateUsers', () => {
-        console.log('업뎃 요청')
         chat.emit('updateUsers');
     });
 
