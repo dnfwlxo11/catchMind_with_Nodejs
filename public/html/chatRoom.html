@@ -8,24 +8,29 @@
 </head>
 
 <body>
-    <div id='title-div' class='title-div'>
-        <h2 id='title'></h2>
-        <h4 id='userNumber'></h4>
-    </div>
-    <div id='chat-room-div' class='chat-room-div'>
-        <div class='chat-div'>
-            <button id='leave_room'>방나가기</button>
-    
-            <form id="msgForm">
-                <input id="msg_input" autocomplete="off" type="text">
-                <button id="submit" style="display: none;">전송</button>
-            </form>
-    
-            <ul id="messages" type="none">
-                <li id="userNum"></li>
-            </ul>
+    <div id='wrapper'>
+        <div id='title-div' class='title-div'>
+            <h2>방 이름 : </h2><h2 id='title'></h2>
+            <h4>접속자 수 : </h4><h4 id='userNumber'></h4>
         </div>
-        <div id='canvas-div' class='canvas-div'></div>
+        <div id='chat-room-div' class='chat-room-div'>
+            <div class='chat-div'>
+                <button id='leave_room'>방나가기</button>
+                <ul id='users-ul'>
+                    <li class='first-line'>접속 유저</li>
+                    <li id="users-li"></li>
+                </ul>
+                <ul id="messages">
+                    <li class='first-line'>채팅창</li>
+                    <li id="userNum"></li>
+                </ul>
+                <form id="msgForm">
+                    <input id="msg_input" autocomplete="off" type="text">
+                    <button id="submit" style="display: none;">전송</button>
+                </form>
+            </div>
+            <div id='canvas-div' class='canvas-div'></div>
+        </div>
     </div>
 </body>
 <script src="/socket.io/socket.io.js"></script>

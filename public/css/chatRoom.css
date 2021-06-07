@@ -8,15 +8,28 @@ body {
     padding: 30px;
 }
 
+h2, h4 {
+    display: inline;
+}
+
+#wrapper {
+    height: 100%;
+    padding: 15px;
+    border: 1px solid black;
+}
+
 .title-div {
     display: flex;
-    padding-bottom: 30px;
+    padding: 5px;
+    margin-bottom: 30px;
     flex-direction: row;
+    width: 100%;
+    background-color: bisque;
 }
 
 .jsCanvas {
-    width: 700px;
-    height: 700px;
+    width: 400px;
+    height: 400px;
     background-color: white;
     border-radius: 2rem;
     box-shadow: 0 4px 6px rgba(50,50,93,0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -70,25 +83,24 @@ body {
 }
 
 .controls .controls-range-input {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .words {
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 10px;
     display: inline-block;
 }
 
 .words .word {
     float: left;
-    width: 130px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     font-size: 60px;
     font-weight: 600;
     border: 10px solid;
     margin: 20px;
     border-radius: 5rem;
-    padding-top: 30px;
 }
 
 .ans_div {
@@ -117,8 +129,12 @@ body {
     flex-direction: row-reverse;
 }
 
-.title-div {
-    width: 100%;
+.canvas-div {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    padding-right: 100px;
 }
 
 #title {
@@ -128,5 +144,38 @@ body {
 
 #userNumber {
     text-align: right;
-    width: 30%;
+    width: 15%;
+}
+
+#leave_room {
+    margin-bottom: 30px;
+}
+
+.chat-div {
+    height: 100%;
+}
+
+#users-ul, #messages {
+    padding-top: 10px;
+    background-color: bisque;
+    overflow: auto;
+    border-radius: .5rem;
+    box-shadow: 0 4px 6px rgba(50,50,93,0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+#messages {
+    height: 60vh;
+    margin-bottom: 10px;
+}
+
+#users-ul {
+    height: 10vh;
+    margin-bottom: 10px;
+}
+
+.first-line {
+    width: 80%;
+    display: inline;
+    text-align: center;
+    border-bottom: 1px solid black;
 }
