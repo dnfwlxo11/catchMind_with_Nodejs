@@ -8,6 +8,12 @@ body {
     padding: 30px;
 }
 
+.title-div {
+    display: flex;
+    padding-bottom: 30px;
+    flex-direction: row;
+}
+
 .jsCanvas {
     width: 700px;
     height: 700px;
@@ -70,6 +76,7 @@ body {
 .words {
     text-align: center;
     margin-bottom: 50px;
+    display: inline-block;
 }
 
 .words .word {
@@ -99,4 +106,27 @@ body {
 
 .hide {
     display: none;
+}
+
+.chat-div, .canvas-div, .words {
+    text-align: center;
+}
+
+.chat-room-div {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.title-div {
+    width: 100%;
+}
+
+#title {
+    text-align: left;
+    width: 70%;
+}
+
+#userNumber {
+    text-align: right;
+    width: 30%;
 }

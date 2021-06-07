@@ -49,9 +49,9 @@ function createFalette() {
 }
 
 function init() {
-    const body = document.querySelector('body');
+    const div = document.getElementById('canvas-div');
 
-    body.appendChild(control_div);
+    div.appendChild(control_div);
 
     control_div.appendChild(control_range);
     control_range.appendChild(control_range_input);

@@ -32,12 +32,6 @@ socket.on('userNum', (res) => {
     userNumber.innerText = res;
 })
 
-// window.onload = () => {
-//     console.log('업데이트 하거라')
-
-//     socket.emit('updateRooms', { msg: '방 목록 업데이트 메인' })
-// }
-
 submitBtn.addEventListener('click', (e) => {
     e.preventDefault();
 
@@ -55,14 +49,14 @@ function enterRoom() {
     const roomName = decodeURI(extractURL());
 
     socket.emit('joinRoom_chat', roomName);
-    roomTitle.innerText = roomName;
+    roomTitle.innerText = `방제 : ${roomName}`;
 
     getUsers(roomName, false);
 }
 
 function getUsers(name, move) {
     console.log('유저 숫자 읽어오는 중')
-    fetch('http://localhost:3000/api/rooms/getUsers', {
+    fetch('/api/rooms/getUsers', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -85,7 +79,7 @@ function init() {
     leave_btn.addEventListener('click', () => {
         const roomName = decodeURI(extractURL());
 
-        fetch('http://localhost:3000/api/rooms/leave', {
+        fetch('/api/rooms/leave', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

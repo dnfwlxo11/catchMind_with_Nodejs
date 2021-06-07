@@ -8,18 +8,25 @@
 </head>
 
 <body>
-    <h2 id='title'></h2>
-    <h4 id='userNumber'></h4>
-    <button id='leave_room'>방나가기</button>
-
-    <form id="msgForm">
-        <input id="msg_input" autocomplete="off" type="text">
-        <button id="submit">전송</button>
-    </form>
-
-    <ul id="messages" type="none">
-        <li id="userNum"></li>
-    </ul>
+    <div id='title-div' class='title-div'>
+        <h2 id='title'></h2>
+        <h4 id='userNumber'></h4>
+    </div>
+    <div id='chat-room-div' class='chat-room-div'>
+        <div class='chat-div'>
+            <button id='leave_room'>방나가기</button>
+    
+            <form id="msgForm">
+                <input id="msg_input" autocomplete="off" type="text">
+                <button id="submit" style="display: none;">전송</button>
+            </form>
+    
+            <ul id="messages" type="none">
+                <li id="userNum"></li>
+            </ul>
+        </div>
+        <div id='canvas-div' class='canvas-div'></div>
+    </div>
 </body>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/canvas/main.js"></script>

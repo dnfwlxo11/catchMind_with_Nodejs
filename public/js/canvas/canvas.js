@@ -171,9 +171,11 @@ function initCanvas() {
 }
 
 function init() {
-    const body = document.querySelector('body');
+    const room_div = document.getElementById('chat-room-div');
+    const div = document.getElementById('canvas-div');
 
-    body.appendChild(canvas);
+    room_div.appendChild(div);
+    div.appendChild(canvas);
 
     setOption(mode, '#2c2c2c', 2.5, painting);
     enterRoom();

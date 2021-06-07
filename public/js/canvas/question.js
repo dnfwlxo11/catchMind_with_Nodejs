@@ -1,6 +1,6 @@
-const $q_div = document.createElement('div');
+const q_div = document.createElement('div');
 
-$q_div.setAttribute('class', 'words');
+q_div.setAttribute('class', 'words');
 
 const WORD_NUM = 5;
 const MAX_WORD = 7;
@@ -19,12 +19,12 @@ function create_wordDiv() {
     if (next) {
         const word = createWord();
         for (let i=0;i<MAX_WORD;i++) {
-            const $label = document.createElement('div');
+            const label = document.createElement('div');
 
-            $label.setAttribute('class', 'word');
-            $label.classList.add('hide');
-            $label.innerText = '?';
-            $q_div.appendChild($label);
+            label.setAttribute('class', 'word');
+            label.classList.add('hide');
+            label.innerText = '?';
+            q_div.appendChild(label);
         }
 
         localStorage.setItem('answer', word);
@@ -37,8 +37,6 @@ function create_wordDiv() {
 function showTowordlength() {
     const word = localStorage.getItem('answer');
     const word_div = Array.from(document.getElementsByClassName('word'));
-    console.log(word_div, word)
-
     
     word_div.forEach((item, index) => {
         word_div[index].classList.add('hide');
@@ -50,9 +48,9 @@ function showTowordlength() {
 }
 
 function init() {
-    const body = document.querySelector('body');
+    const div = document.getElementById('canvas-div');
 
-    body.appendChild($q_div);
+    div.appendChild(q_div);
     create_wordDiv();
 }
 

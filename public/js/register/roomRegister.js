@@ -1,7 +1,9 @@
+const room = document.getElementById('register-id'),
+    checkImg = document.getElementsByClassName('idCheck-img'),
+    editBtn = document.getElementsByClassName('idEdit-btn');
+
 function check() {
-    const room = document.getElementById('register-id');
-    const checkImg = document.getElementsByClassName('idCheck-img');
-    const editBtn = document.getElementsByClassName('idEdit-btn');
+    
 
     fetch('http://localhost:3000/api/rooms/check', {
         method: 'POST',
@@ -13,7 +15,6 @@ function check() {
     .then((res) => {
         res.json().then((data) => {
             if (data.success) {
-                alert(data.msg);
                 room.disabled = true;
                 checkImg[0].classList.add('visible');
                 editBtn[0].classList.add('visible');
@@ -25,18 +26,12 @@ function check() {
 }
 
 function enableInput() {
-    const room = document.getElementById('register-id');
-    const checkImg = document.getElementsByClassName('idCheck-img');
-    const editBtn = document.getElementsByClassName('idEdit-btn');
-
     room.disabled = false;
     checkImg[0].classList.remove('visible');
     editBtn[0].classList.remove('visible');
 }
 
 function createRoom() {
-    const room = document.getElementById('register-id');
-
     if (room.disabled) {
         fetch('/api/rooms/createRoom', {
             method: 'POST',

@@ -10,6 +10,8 @@ function createWord() {
     word_arr.forEach((item, index) => {
         localStorage.setItem(`word_${index}`, item);
     })
+
+    localStorage.setItem('next', false);
 }
 
 createWord();
