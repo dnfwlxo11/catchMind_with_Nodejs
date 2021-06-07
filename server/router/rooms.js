@@ -27,7 +27,7 @@ router.post('/createRoom', auth, (req, res) => {
                 room: req.body.room,
                 users: [],
                 admin: true,
-                drawer: true
+                drawer: req.user
             })
 
             new_room.save((err, roomInfo) => {
@@ -76,7 +76,11 @@ router.post('/join/:roomName', auth, (req, res) => {
             Room.updateOne(
                 { _id: room._id },
                 { $addToSet: { users: req.user}}, (err) => {
-                    if (err) console.log(err);// return res.json({success: false, err});
+                    if (err) console.log(err);
+            }).exec();
+
+            User.findOneAndUpdate({ _id: req.user._id}, { roomAdmin: true}, (err, item) => {
+                if (err) console.log(err);
             }).exec();
 
             return res.json({ success: true, room: room.room });
@@ -102,6 +106,9 @@ router.post('/leave', auth, (req, res) => {
             })
         } else {
             console.log(req.user.name, '가 ', room.room, '방에서 나갑니다.')
+            User.findOneAndUpdate({ _id: req.user._id}, { roomAdmin: false}, (err, item) => {
+                if (err) console.log(err);
+            }).exec();
             room.users.pull(req.user);
             room.save(() => {
                 if (room.users.length === 0) {

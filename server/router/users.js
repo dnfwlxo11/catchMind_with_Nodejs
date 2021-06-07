@@ -56,9 +56,7 @@ router.get('/register', (req, res) => {
 })
 
 router.post('/submitRegister', (req, res) => {
-    console.log(req.body)
     const user = new User(req.body);
-    console.log(user);
 
     user.save((err, userInfo) => {
         if (err) return res.json({ success: false, err })
@@ -70,8 +68,6 @@ router.post('/submitRegister', (req, res) => {
 })
 
 router.post('/check', (req, res) => {
-    console.log(req.body)
-
     User.findOne({ name: req.body.name }, (err, user) => {
         if (!user) {
             return res.json({
@@ -88,7 +84,6 @@ router.post('/check', (req, res) => {
 });
 
 router.post('/getUsers', auth, (req, res) => {
-    console.log(req.body)    
     Room.findOne({ room: req.body.name }, (err, item) => {
         if (err) {
             return res.json({success: false, msg: '해당 방은 존재하지 않습니다.'});

@@ -13,9 +13,15 @@ const userSchema = mongoose.Schema({
         type: String,
         minlength: 4
     },
-
+    
     role: {
         type: Boolean,
+        default: false
+    },
+
+    roomAdmin: {
+        type: Boolean,
+        default: false
     },
 
     room: {

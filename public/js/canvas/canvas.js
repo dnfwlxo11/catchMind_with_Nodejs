@@ -15,6 +15,7 @@ ctx.fillRect(0, 0, 600, 400);
 let painting = false;
 let mode = false;
 let color = '#2c2c2c';
+let drawer;
 
 const socket = io('/chat');
 
@@ -33,6 +34,10 @@ socket.on('canvasBtn', (res) => {
     } else if (res.btn === 'mode') {
         modeBtn.innerText = res.mode;
     }
+})
+
+socket.on('success', (res) => {
+    drawer = res;
 })
 
 socket.on('userNum', (res) => {
@@ -99,17 +104,12 @@ function stopPainting() {
 function onMouseMove(e) {
     const x_pos = e.offsetX;
     const y_pos = e.offsetY;
-
     if (!painting) {
-        socket.emit('mouseMove', { x_pos, y_pos, painting, stat: 'start', options: getOption(color, getRange()) })
-        
-        ctx.beginPath();
-        ctx.moveTo(x_pos, y_pos);
+        if (drawer === getCookie('x_auth'))
+            socket.emit('mouseMove', { x_pos, y_pos, painting, stat: 'start', options: getOption(color, getRange()) })
     } else {
-        socket.emit('mouseMove', { x_pos, y_pos, painting, stat: 'draw', options: getOption(color, getRange()) })
-        
-        ctx.lineTo(x_pos, y_pos);
-        ctx.stroke();
+        if (drawer === getCookie('x_auth'))
+            socket.emit('mouseMove', { x_pos, y_pos, painting, stat: 'draw', options: getOption(color, getRange()) })
     }
 }
 

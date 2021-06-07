@@ -22,7 +22,7 @@ socket.on('roomEnter', (res) => {
 })
 
 socket.on('success', (res) => {
-    console.log(res)
+    // console.log(res)
 })
 
 socket.on('error', (res) => {

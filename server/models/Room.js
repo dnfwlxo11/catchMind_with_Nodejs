@@ -20,7 +20,8 @@ const roomSchema = Schema({
     },
 
     drawer: {
-        type: Boolean
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     }
 }, { timestamps: true })
 

@@ -10,6 +10,7 @@ const users = require('./router/users');
 const rooms = require('./router/rooms')
 const config = require('./config/dev');
 const { auth } = require('./middleware/auth');
+const { User } = require('./models/User');
 const { Room } = require('./models/Room');
 
 const PORT = 3000;
@@ -48,7 +49,23 @@ chat.on('connection', (socket) => {
         });
         myRoom = room;
 
-        return socket.emit('success', '방에 들어오는데 성공했습니다.')
+        Room.findOne({ room: room}, (err, room) => {
+            if (err) console.log('에러 발생')
+            User.findOne({ _id: room.drawer }, (err, user) => {
+                if (!user) {
+                    return res.json({
+                        success: false,
+                        msg: '해당 유저는 없습니다.'
+                    })
+                }
+                
+                user.generateToken((err, user) => {
+                    if (err) return res.status(400).send(err)
+        
+                    return socket.emit('success', user.token)
+                })
+            })
+        })
     });
 
     socket.on('msg', (res) => {
@@ -81,8 +98,7 @@ chat.on('connection', (socket) => {
     });
 
     socket.on('mouseMove', (res) => {
-        socket.broadcast
-            .to(myRoom)
+        chat.to(myRoom)
             .emit('mouseMove', res);
     });
 
