@@ -6,40 +6,28 @@ q_div.setAttribute('class', 'words');
 
 const WORD_NUM = 5;
 const MAX_WORD = 7;
+let word;
 
-function createNum() {
-    return Math.floor(Math.random() * WORD_NUM);
-}
+socket.on('startQuiz', (res) => {
+    create_wordDiv(res);
+})
 
-function createWord() {
-    return localStorage.getItem(`word_${createNum()}`);
-}
+function create_wordDiv(word) {
+    for (let i = 0; i < MAX_WORD; i++) {
+        const label = document.createElement('div');
 
-function create_wordDiv() {
-    const next = localStorage.getItem('next');
-
-    if (next) {
-        const word = createWord();
-        for (let i=0;i<MAX_WORD;i++) {
-            const label = document.createElement('div');
-
-            label.setAttribute('class', 'word');
-            label.classList.add('hide');
-            label.innerText = '?';
-            q_div.appendChild(label);
-        }
-
-        localStorage.setItem('answer', word);
-        localStorage.setItem('next', false);
-
-        showTowordlength()
+        label.setAttribute('class', 'word');
+        label.classList.add('hide');
+        label.innerText = '?';
+        q_div.appendChild(label);
     }
+
+    showTowordlength(word)
 }
 
-function showTowordlength() {
-    const word = localStorage.getItem('answer');
+function showTowordlength(word) {
     const word_div = Array.from(document.getElementsByClassName('word'));
-    
+
     word_div.forEach((item) => {
         item.classList.add('hide');
     })
@@ -50,9 +38,11 @@ function showTowordlength() {
 }
 
 function startQuiz() {
+    socket.emit('startQuiz');
+
     quizTitle[0].classList.add('hide');
     startBtn.classList.add('hide');
-    create_wordDiv();
+
 }
 
 function endQuiz() {
@@ -65,6 +55,8 @@ function endQuiz() {
 
     quizTitle[0].classList.remove('hide');
     startBtn.classList.remove('hide');
+
+    socket.emit('endQuiz');
 }
 
 function init() {
@@ -83,9 +75,8 @@ function init() {
 
 init();
 
-export default { 
-    createWord, 
-    showTowordlength, 
+export default {
+    showTowordlength,
     startQuiz,
-    endQuiz 
+    endQuiz
 };

@@ -203,6 +203,10 @@ h2, h4 {
         width: 500px;
         height: 400px;
     }
+
+    .controls {
+        width: 70%;
+    }
 }
 
 @media (max-width: 1050px) {
@@ -210,11 +214,19 @@ h2, h4 {
         width: 400px;
         height: 400px;
     }
+
+    .controls {
+        width: 50%;
+    }
 }
 
 @media (max-width: 850px) {
     .jsCanvas {
         width: 250px;
         height: 400px;
+    }
+
+    .controls {
+        width: 30%;
     }
 }

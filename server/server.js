@@ -29,6 +29,14 @@ mongoose.connect(config.mongoURI, {
 }).then(() => console.log('MongoDB Connected...'))
     .catch(err => console.log(err))
 
+const quiz = [
+    '나비',
+    '호랑이',
+    '핸드폰',
+    '노트북',
+    '마스크'
+]
+
 app.get('/', (req, res) => {
     if (!req.cookies.x_auth)
         res.sendFile(path.join(__dirname, '../public/html/index.html'));
@@ -43,6 +51,8 @@ connectCounter = [];
 const chat = io.of('/chat');
 chat.on('connection', (socket) => {
     let myRoom = 'open';
+    let word = '호랑이'
+
     socket.on('joinRoom_chat', (room) => {
         socket.join(room, (err) => {
             console.log(err);
@@ -87,6 +97,24 @@ chat.on('connection', (socket) => {
     socket.on('updateRooms', (res) => {
         chat.emit('updateRooms', {msg: '업데이트 하라 오바'});
     });
+
+    socket.on('startQuiz', (res) => {
+        console.log('퀴즈 시작')
+        chat.to(myRoom)
+            .emit('startQuiz', word);
+    })
+
+    socket.on('endQuiz', (res) => {
+        console.log('퀴즈 끝')
+        chat.to(myRoom)
+            .emit('endQuiz', word);
+    })
+
+    socket.on('quizAnswer', (res) => {
+        console.log(res);
+        chat.to(myRoom)
+            .emit('quizAnswer', word===res);
+    })
 });
 
 server.listen(PORT, () => {

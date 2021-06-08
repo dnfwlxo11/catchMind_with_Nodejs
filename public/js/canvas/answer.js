@@ -10,41 +10,37 @@ ans_input.setAttribute('id', 'ans_input');
 ans_input.setAttribute('class', 'ans_input');
 ans_input.setAttribute('type', 'text');
 
-function initQuestion() {
-    const word = document.getElementsByClassName('word');
+socket.on('quizAnswer', (res) => {
+    checkAnswer(res);
+})
 
-    ans_input.value = '';
-    localStorage.setItem('next', false);
-    localStorage.setItem('answer', question.createWord());
-    
-    question.showTowordlength();
+socket.on('endQuiz', (res) => {
+    show_wordDiv(res);
+})
 
-    Array.from(word).forEach((item) => {
-        item.innerText = '?';
-    })
+function checkAnswer(answer) {
+    if (answer) {
+        // show_wordDiv(answer)
+        question.endQuiz()
+        alert('정답입니다!!')
+        ans_input.value = '';
+        setTimeout(question.endQuiz, 3000)
+    } else {
+        alert('틀렸습니다.')
+        ans_input.value = '';
+    }
 }
 
 function submitAnswer(e) {
     if (e.keyCode == 13) {
-        const answer = localStorage.getItem('answer');
+        const answer = ans_input.value;
 
-        let predict = ans_input.value;
-
-        if (answer === predict) {
-            show_wordDiv()
-            alert('정답입니다!!')
-            ans_input.value = '';
-            setTimeout(question.endQuiz, 3000)
-        } else {
-            alert('틀렸습니다.')
-            ans_input.value = '';
-        }
+        socket.emit('quizAnswer', answer)
     }
 }
 
-function show_wordDiv() {
+function show_wordDiv(answer) {
     const word = document.getElementsByClassName('word');
-    const answer = localStorage.getItem('answer');
 
     Array.from(word).forEach((item, index) => {
         item.innerText = answer[index];
@@ -66,3 +62,7 @@ function init() {
 }
 
 init();
+
+export default {
+    show_wordDiv
+}
