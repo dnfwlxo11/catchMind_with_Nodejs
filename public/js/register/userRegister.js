@@ -1,8 +1,11 @@
-function checkName() {
-    const name = document.getElementById('register-id');
-    const checkImg = document.getElementsByClassName('idCheck-img');
-    const editBtn = document.getElementsByClassName('idEdit-btn');
+const name = document.getElementById('register-id'),
+    checkImg = document.getElementsByClassName('idCheck-img'),
+    editBtn = document.getElementsByClassName('idEdit-btn'),
+    dupleBtn = document.getElementById('duple-btn'),
+    pass = document.getElementById('register-pass');
+    
 
+function checkName() {
     fetch('/api/users/check', {
         method: 'POST',
         headers: {
@@ -13,10 +16,10 @@ function checkName() {
     .then((res) => {
         res.json().then((data) => {
             if (data.success) {
-                alert(data.msg);
                 name.disabled = true;
                 checkImg[0].classList.add('visible');
                 editBtn[0].classList.add('visible');
+                dupleBtn.classList.add('hide');
             } else {
                 alert(data.msg);
             }
@@ -25,20 +28,13 @@ function checkName() {
 }
 
 function enableInput() {
-    const name = document.getElementById('register-id');
-    const checkImg = document.getElementsByClassName('idCheck-img');
-    const editBtn = document.getElementsByClassName('idEdit-btn');
-
     name.disabled = false;
     checkImg[0].classList.remove('visible');
     editBtn[0].classList.remove('visible');
+    dupleBtn.classList.remove('hide');
 }
 
-function register() {
-    const name = document.getElementById('register-id');
-    const pass = document.getElementById('register-pass');
-
-    const data = {
+function register() {const data = {
         name: name.value,
         password: pass.value
     }

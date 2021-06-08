@@ -1,6 +1,7 @@
 const room = document.getElementById('register-id'),
     checkImg = document.getElementsByClassName('idCheck-img'),
-    editBtn = document.getElementsByClassName('idEdit-btn');
+    editBtn = document.getElementsByClassName('idEdit-btn'),
+    dupleBtn = document.getElementById('duple-btn');
 
 function check() {
     
@@ -18,6 +19,7 @@ function check() {
                 room.disabled = true;
                 checkImg[0].classList.add('visible');
                 editBtn[0].classList.add('visible');
+                dupleBtn.classList.add('hide');
             } else {
                 alert(data.msg);
             }
@@ -29,6 +31,7 @@ function enableInput() {
     room.disabled = false;
     checkImg[0].classList.remove('visible');
     editBtn[0].classList.remove('visible');
+    dupleBtn.classList.remove('hide');
 }
 
 function createRoom() {

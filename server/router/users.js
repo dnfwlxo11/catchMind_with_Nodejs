@@ -24,13 +24,19 @@ router.post('/login', (req, res) => {
             user.generateToken((err, user) => {
                 if (err) return res.status(400).send(err)
 
-                res.cookie('userName', user.name);
-                res.cookie('x_auth', user.token)
-                    .status(200)
-                    .json({
-                        success: true,
-                        userId: user._id
-                    })
+                res.cookie('userName', user.name, {
+                    maxAge: 60*60*10,
+                    httpOnly: true
+                });
+                res.cookie('x_auth', user.token, {
+                    maxAge: 60*60*10,
+                    httpOnly: true
+                })
+                .status(200)
+                .json({
+                    success: true,
+                    userId: user._id
+                })
             })
         })
     })

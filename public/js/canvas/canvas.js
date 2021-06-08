@@ -17,8 +17,6 @@ let mode = false;
 let color = '#2c2c2c';
 let drawer;
 
-const socket = io('/chat');
-
 socket.on('canvasBtn', (res) => {
     const modeBtn = document.getElementById('jsMode');
     const rangeBtn = document.getElementById('jsRange');
