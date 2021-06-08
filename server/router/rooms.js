@@ -6,6 +6,8 @@ const { User } = require('../models/User');
 const { Room } = require('../models/Room');
 const { auth } = require('../middleware/auth')
 
+let drawer;
+
 router.get('/roomList', auth, (req, res) => {
     res.sendFile(path.join(__dirname, '../../public/html/roomList.html'));
 });
@@ -30,6 +32,10 @@ router.post('/createRoom', auth, (req, res) => {
                 drawer: req.user
             })
 
+            req.user.generateToken((err, user) => { 
+                res.cookie('drawer', user.token);
+            })
+
             new_room.save((err, roomInfo) => {
                 if (err) {
                     return res.json({
@@ -52,6 +58,11 @@ router.post('/createRoom', auth, (req, res) => {
         }
     })
 });
+
+router.get('/checkDrawer', (req, res) => {
+    if (req.cookies.x_auth === req.cookies.drawer) return res.json({result: true})
+    else return res.json({result: false})
+})
 
 router.get('/join/:roomName', auth, (req, res) => {
     res.sendFile(path.join(__dirname, '../../public/html/chatRoom.html'), { room: 'test' })

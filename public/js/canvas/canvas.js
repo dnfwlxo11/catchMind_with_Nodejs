@@ -35,7 +35,8 @@ socket.on('canvasBtn', (res) => {
 })
 
 socket.on('success', (res) => {
-    drawer = res;
+    console.log(res)
+    drawer = res.result;
 })
 
 socket.on('userNum', (res) => {
@@ -57,7 +58,16 @@ socket.on('mouseMove', (res) => {
     } else if (mode && painting) {
         fillMode(color);
     }
-}) 
+})
+
+function checkDrawer() {
+    fetch('/api/rooms/checkDrawer')
+    .then((res) => {
+        res.json().then((data) => {
+            drawer = data.result;
+        })
+    })
+}
 
 function getOption(color, width) {
     const data = {
@@ -102,11 +112,12 @@ function stopPainting() {
 function onMouseMove(e) {
     const x_pos = e.offsetX;
     const y_pos = e.offsetY;
+
     if (!painting) {
-        if (drawer === getCookie('x_auth'))
+        if (drawer)
             socket.emit('mouseMove', { x_pos, y_pos, painting, stat: 'start', options: getOption(color, getRange()) })
     } else {
-        if (drawer === getCookie('x_auth'))
+        if (drawer)
             socket.emit('mouseMove', { x_pos, y_pos, painting, stat: 'draw', options: getOption(color, getRange()) })
     }
 }
@@ -134,18 +145,21 @@ function canvasEvent() {
 
 function handleColorClick(e) {
     color = e.target.style.backgroundColor;
-    setOption(mode, color, getRange(), painting);
+    if (drawer)
+        setOption(mode, color, getRange(), painting);
 }
 
 function handleMode() {
     const modeBtn = document.querySelector('.fill-btn');
 
     modeBtn.addEventListener('click', () => {
-        mode ? mode = false : mode = true;
-        mode ? modeBtn.innerText = '채우기모드' : modeBtn.innerText = '연필모드'
-        canvasEvent();
+        if (drawer) {
+            mode ? mode = false : mode = true;
+            mode ? modeBtn.innerText = '채우기모드' : modeBtn.innerText = '연필모드'
+            canvasEvent();
 
-        socket.emit('canvasBtn', { btn: 'mode', mode: modeBtn.innerText});
+            socket.emit('canvasBtn', { btn: 'mode', mode: modeBtn.innerText});
+        }
     })
 }
 
@@ -165,7 +179,8 @@ function enterRoom() {
 }
 
 function initCanvas() {
-    socket.emit('canvasBtn', { btn: 'init', color: '#2c2c2c'});
+    if (drawer)
+        socket.emit('canvasBtn', { btn: 'init', color: '#2c2c2c'});
 }
 
 function init() {
@@ -178,6 +193,7 @@ function init() {
     setOption(mode, '#2c2c2c', 2.5, painting);
     enterRoom();
     canvasEvent();
+    checkDrawer();
 
     setTimeout(() => {
         const range = document.getElementById('jsRange');

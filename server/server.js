@@ -48,24 +48,6 @@ chat.on('connection', (socket) => {
             console.log(err);
         });
         myRoom = room;
-
-        Room.findOne({ room: room}, (err, room) => {
-            if (err) console.log('에러 발생')
-            User.findOne({ _id: room.drawer }, (err, user) => {
-                if (!user) {
-                    return res.json({
-                        success: false,
-                        msg: '해당 유저는 없습니다.'
-                    })
-                }
-                
-                user.generateToken((err, user) => {
-                    if (err) return res.status(400).send(err)
-        
-                    return socket.emit('success', user.token)
-                })
-            })
-        })
     });
 
     socket.on('msg', (res) => {
