@@ -19,10 +19,14 @@ socket.on('endQuiz', (res) => {
 })
 
 function checkAnswer(answer) {
-    if (answer) {
-        // show_wordDiv(answer)
-        question.endQuiz()
-        alert('정답입니다!!')
+    const canvas = document.getElementById('jsCanvas');
+    const ctx = canvas.getContext('2d')
+
+    if (answer.result) {
+        show_wordDiv(answer.word);
+        ctx.font = "40px Georgia";
+        ctx.textAlign = 'center';
+        ctx.fillText('test', 200, 200);
         ans_input.value = '';
         setTimeout(question.endQuiz, 3000)
     } else {

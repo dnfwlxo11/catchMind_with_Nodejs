@@ -113,7 +113,7 @@ chat.on('connection', (socket) => {
     socket.on('quizAnswer', (res) => {
         console.log(res);
         chat.to(myRoom)
-            .emit('quizAnswer', word===res);
+            .emit('quizAnswer', { result: word===res, word});
     })
 });
 
