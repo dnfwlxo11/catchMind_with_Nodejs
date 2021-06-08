@@ -6,16 +6,14 @@ const ctx = canvas.getContext('2d'),
 canvas.setAttribute('id', 'jsCanvas');
 canvas.setAttribute('class', 'jsCanvas');
 
-canvas.width = 600;
-canvas.height = 400;
-
+checkCanvase();
 ctx.fillStyle = 'white';
-ctx.fillRect(0, 0, 600, 400);
+ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 let painting = false;
 let mode = false;
 let color = '#2c2c2c';
-let drawer;
+let drawer = 'none';
 
 socket.on('canvasBtn', (res) => {
     const modeBtn = document.getElementById('jsMode');
@@ -23,7 +21,7 @@ socket.on('canvasBtn', (res) => {
 
     if (res.btn === 'init') {
         ctx.fillStyle = 'white';
-        ctx.fillRect(0, 0, 600, 400);
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
         rangeBtn.value = 2.5;
         color = '#2c2c2c'
         setOption(false, res.color, 2.5, false);
@@ -46,7 +44,7 @@ socket.on('userNum', (res) => {
 
 socket.on('mouseMove', (res) => {
     setOption(res.options.mode, res.options.color, res.options.width, res.options.painting);
-
+   
     if (!mode) {
         if(res.stat === 'start') {
             ctx.beginPath();
@@ -59,6 +57,22 @@ socket.on('mouseMove', (res) => {
         fillMode(color);
     }
 })
+
+window.onresize = (checkCanvase);
+
+function checkCanvase() {
+    if (matchMedia('screen and (max-width: 850px)').matches) {
+        canvas.width = 250;
+    } else if (matchMedia('screen and (max-width: 1050px)').matches) {
+        canvas.width = 400;
+    } else if (matchMedia('screen and (max-width: 1250px)').matches) {
+        canvas.width = 500;
+    } else {
+        canvas.width = 600;
+    }
+
+    canvas.height = 400;
+}
 
 function checkDrawer() {
     fetch('/api/rooms/checkDrawer')
@@ -124,7 +138,7 @@ function onMouseMove(e) {
 
 function fillMode() {
     if (mode) {
-        ctx.fillRect(0, 0, 600, 400);
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 }
 

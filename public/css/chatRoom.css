@@ -197,3 +197,24 @@ h2, h4 {
     height: 20px;
     margin-bottom: 10px;
 }
+
+@media (max-width: 1250px) {
+    .jsCanvas {
+        width: 500px;
+        height: 400px;
+    }
+}
+
+@media (max-width: 1050px) {
+    .jsCanvas {
+        width: 400px;
+        height: 400px;
+    }
+}
+
+@media (max-width: 850px) {
+    .jsCanvas {
+        width: 250px;
+        height: 400px;
+    }
+}
