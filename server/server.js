@@ -101,7 +101,7 @@ chat.on('connection', (socket) => {
     socket.on('startQuiz', (res) => {
         console.log('퀴즈 시작')
         chat.to(myRoom)
-            .emit('startQuiz', word);
+            .emit('startQuiz', { word, res });
     })
 
     socket.on('endQuiz', (res) => {

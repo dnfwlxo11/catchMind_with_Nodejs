@@ -25,8 +25,7 @@ router.post('/login', (req, res) => {
                 if (err) return res.status(400).send(err)
 
                 res.cookie('userName', user.name, {
-                    maxAge: 60*60*1000,
-                    httpOnly: true
+                    maxAge: 60*60*1000
                 });
                 res.cookie('x_auth', user.token, {
                     maxAge: 60*60*1000,

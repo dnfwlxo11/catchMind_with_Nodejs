@@ -200,10 +200,6 @@ function enterRoom() {
     roomTitle.innerText = roomName;
 }
 
-function getDrawer() {
-    return drawer;
-}
-
 function initCanvas() {
     if (drawer)
         socket.emit('canvasBtn', { btn: 'init', color: '#2c2c2c'});
@@ -246,7 +242,3 @@ function init() {
 }
 
 init();
-
-export default {
-    getDrawer
-}

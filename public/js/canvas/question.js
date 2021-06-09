@@ -1,6 +1,3 @@
-import canvas from './canvas.js';
-import answer from './answer.js';
-
 const q_div = document.createElement('div'),
     quizTitle = document.getElementsByClassName('quizTitle'),
     startBtn = document.getElementById('start-quiz');
@@ -13,16 +10,22 @@ let word;
 
 socket.on('startQuiz', (res) => {
     const ans_input = document.getElementById('ans_input');
-    create_wordDiv(res);
+    console.log(res)
+    create_wordDiv(res.word, res.res);
 
     quizTitle[0].classList.add('hide');
     startBtn.classList.add('hide');
 
-    if (!canvas.getDrawer())
+    if (getCookie('userName') !== res.res)
         ans_input.disabled = false;
 })
 
-function create_wordDiv(word) {
+function getCookie(name) {
+    var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+    return value? unescape(value[2]) : null;
+}
+
+function create_wordDiv(word, userName) {
     for (let i = 0; i < MAX_WORD; i++) {
         const label = document.createElement('div');
 
@@ -32,10 +35,10 @@ function create_wordDiv(word) {
         q_div.appendChild(label);
     }
 
-    showTowordlength(word)
+    showTowordlength(word, userName)
 }
 
-function showTowordlength(word) {
+function showTowordlength(word, userName) {
     const word_div = Array.from(document.getElementsByClassName('word'));
 
     word_div.forEach((item) => {
@@ -46,12 +49,22 @@ function showTowordlength(word) {
         word_div[index].classList.remove('hide');
     })
 
-    if (canvas.getDrawer())
-        answer.show_wordDiv(word);
+    if (getCookie('userName') === userName)
+        show_wordDiv(word);
+}
+
+function show_wordDiv(answer) {
+    const word = document.getElementsByClassName('word');
+
+    Array.from(word).forEach((item, index) => {
+        item.innerText = answer[index];
+    })
+
+    return true;
 }
 
 function startQuiz() {
-    socket.emit('startQuiz');
+    socket.emit('startQuiz', getCookie('userName'));
 }
 
 function init() {
@@ -64,8 +77,8 @@ function init() {
     title.setAttribute('class', 'quizTitle');
     title.innerText = '시작하려면 시작하기를 눌러주세요!'
 
-    q_div.appendChild(title);
     div.appendChild(q_div);
+    q_div.appendChild(title);
 }
 
 init();
