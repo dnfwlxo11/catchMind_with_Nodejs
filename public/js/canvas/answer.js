@@ -1,5 +1,3 @@
-import question from './question.js'
-
 const ans_div = document.createElement('div'),
     ans_title = document.createElement('h2'),
     ans_input = document.createElement('input'),
@@ -12,6 +10,7 @@ ans_title.setAttribute('class', 'ans_title');
 ans_input.setAttribute('id', 'ans_input');
 ans_input.setAttribute('class', 'ans_input');
 ans_input.setAttribute('type', 'text');
+ans_input.disabled = true;
 
 socket.on('quizAnswer', (res) => {
     checkAnswer(res);
@@ -25,9 +24,9 @@ function checkAnswer(answer) {
     const ctx = canvas.getContext('2d');
     if (answer.result) {
         show_wordDiv(answer.word);
-        ctx.font = "40px Georgia";
+        ctx.font = '200px serif';
         ctx.textAlign = 'center';
-        ctx.fillText(answer.word, 200, 200);
+        ctx.fillText('👌', canvas.width/2, canvas.height/2);
         ans_input.value = '';
         show_wordDiv(answer.word);
         setTimeout(endQuiz, 3000)
@@ -48,6 +47,8 @@ function initCanvas() {
 
     quizTitle[0].classList.remove('hide');
     startBtn.classList.remove('hide');
+
+    ans_input.disabled = true;
 }
 
 function endQuiz() {

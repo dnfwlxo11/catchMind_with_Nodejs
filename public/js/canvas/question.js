@@ -1,7 +1,9 @@
+import canvas from './canvas.js';
+import answer from './answer.js';
+
 const q_div = document.createElement('div'),
     quizTitle = document.getElementsByClassName('quizTitle'),
-    startBtn = document.getElementById('start-quiz'),
-    canvas = document.getElementById('jsCanvas');
+    startBtn = document.getElementById('start-quiz');
     
 q_div.setAttribute('class', 'words');
 
@@ -10,7 +12,14 @@ const MAX_WORD = 7;
 let word;
 
 socket.on('startQuiz', (res) => {
+    const ans_input = document.getElementById('ans_input');
     create_wordDiv(res);
+
+    quizTitle[0].classList.add('hide');
+    startBtn.classList.add('hide');
+
+    if (!canvas.getDrawer())
+        ans_input.disabled = false;
 })
 
 function create_wordDiv(word) {
@@ -36,14 +45,13 @@ function showTowordlength(word) {
     Array.from(word).forEach((item, index) => {
         word_div[index].classList.remove('hide');
     })
+
+    if (canvas.getDrawer())
+        answer.show_wordDiv(word);
 }
 
 function startQuiz() {
     socket.emit('startQuiz');
-
-    quizTitle[0].classList.add('hide');
-    startBtn.classList.add('hide');
-
 }
 
 function init() {

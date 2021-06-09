@@ -64,6 +64,10 @@ socket.on('endQuiz', (res) => {
 
 window.onresize = (checkCanvase);
 
+// window.onbeforeunload = () => {
+//     socket.emit()
+// }
+
 function checkCanvase() {
     if (matchMedia('screen and (max-width: 850px)').matches) {
         canvas.width = 250;
@@ -196,6 +200,10 @@ function enterRoom() {
     roomTitle.innerText = roomName;
 }
 
+function getDrawer() {
+    return drawer;
+}
+
 function initCanvas() {
     if (drawer)
         socket.emit('canvasBtn', { btn: 'init', color: '#2c2c2c'});
@@ -238,3 +246,7 @@ function init() {
 }
 
 init();
+
+export default {
+    getDrawer
+}
