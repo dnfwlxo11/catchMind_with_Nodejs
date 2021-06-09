@@ -1,7 +1,8 @@
 const q_div = document.createElement('div'),
     quizTitle = document.getElementsByClassName('quizTitle'),
-    startBtn = document.getElementById('start-quiz');
-
+    startBtn = document.getElementById('start-quiz'),
+    canvas = document.getElementById('jsCanvas');
+    
 q_div.setAttribute('class', 'words');
 
 const WORD_NUM = 5;
@@ -45,20 +46,6 @@ function startQuiz() {
 
 }
 
-function endQuiz() {
-    const word_div = Array.from(document.getElementsByClassName('word'));
-
-    word_div.forEach((item) => {
-        item.classList.add('hide');
-        item.innerText = '?';
-    })
-
-    quizTitle[0].classList.remove('hide');
-    startBtn.classList.remove('hide');
-
-    socket.emit('endQuiz');
-}
-
 function init() {
     const div = document.getElementById('canvas-div');
     const title = document.createElement('h1');
@@ -77,6 +64,5 @@ init();
 
 export default {
     showTowordlength,
-    startQuiz,
-    endQuiz
+    startQuiz
 };

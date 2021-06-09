@@ -2,7 +2,10 @@ import question from './question.js'
 
 const ans_div = document.createElement('div'),
     ans_title = document.createElement('h2'),
-    ans_input = document.createElement('input');
+    ans_input = document.createElement('input'),
+    canvas = document.getElementById('jsCanvas'),
+    quizTitle = document.getElementsByClassName('quizTitle'),
+    startBtn = document.getElementById('start-quiz');
 
 ans_div.setAttribute('class', 'ans_div');
 ans_title.setAttribute('class', 'ans_title');
@@ -15,24 +18,40 @@ socket.on('quizAnswer', (res) => {
 })
 
 socket.on('endQuiz', (res) => {
-    show_wordDiv(res);
+    initCanvas();
 })
 
 function checkAnswer(answer) {
-    const canvas = document.getElementById('jsCanvas');
-    const ctx = canvas.getContext('2d')
-
+    const ctx = canvas.getContext('2d');
     if (answer.result) {
         show_wordDiv(answer.word);
         ctx.font = "40px Georgia";
         ctx.textAlign = 'center';
-        ctx.fillText('test', 200, 200);
+        ctx.fillText(answer.word, 200, 200);
         ans_input.value = '';
-        setTimeout(question.endQuiz, 3000)
+        show_wordDiv(answer.word);
+        setTimeout(endQuiz, 3000)
     } else {
         alert('틀렸습니다.')
         ans_input.value = '';
     }
+}
+
+function initCanvas() {
+    const word_div = Array.from(document.getElementsByClassName('word'));
+    const ctx = canvas.getContext('2d');
+
+    word_div.forEach((item) => {
+        item.classList.add('hide');
+        item.innerText = '?';
+    })
+
+    quizTitle[0].classList.remove('hide');
+    startBtn.classList.remove('hide');
+}
+
+function endQuiz() {
+    socket.emit('endQuiz');
 }
 
 function submitAnswer(e) {

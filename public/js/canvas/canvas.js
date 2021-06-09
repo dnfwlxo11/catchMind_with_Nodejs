@@ -58,6 +58,10 @@ socket.on('mouseMove', (res) => {
     }
 })
 
+socket.on('endQuiz', (res) => {
+    initCanvas();
+})
+
 window.onresize = (checkCanvase);
 
 function checkCanvase() {
