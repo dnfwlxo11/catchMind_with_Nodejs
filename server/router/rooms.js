@@ -64,6 +64,27 @@ router.get('/checkDrawer', (req, res) => {
     else return res.json({result: false})
 })
 
+router.post('/getDrawer', (req, res) => {
+    Room.findOne({ room: req.body.room }, (err, room) => {
+        if (err) {
+            console.log(err)
+            return res.json({
+                success: false,
+                msg: '에러 발생',
+                err
+            })
+        } else {
+            User.findOne({ _id: room.drawer }, (err, result) => {
+                return res.json({
+                    success: true,
+                    msg: '그리는 사람 전송',
+                    result: result.name
+                })
+            })
+        }
+    })
+})
+
 router.get('/join/:roomName', auth, (req, res) => {
     res.sendFile(path.join(__dirname, '../../public/html/chatRoom.html'), { room: 'test' })
 })

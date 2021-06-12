@@ -42,6 +42,10 @@ socket.on('userNum', (res) => {
     usernum.innerText = res;
 })
 
+socket.on('getDrawer', (res) => {
+    const drawer = res;
+})
+
 socket.on('mouseMove', (res) => {
     setOption(res.options.mode, res.options.color, res.options.width, res.options.painting);
    
@@ -80,6 +84,29 @@ function checkCanvase() {
     }
 
     canvas.height = 400;
+}
+
+function getDrawer() {
+    const data = {
+        room: decodeURI(extractURL())
+    }
+
+    console.log(decodeURI(extractURL()))
+
+    const config = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    }
+
+    fetch('/api/rooms/getDrawer', config)
+    .then((res) => {
+        res.json().then((data) => {
+            ctx.fillText(`그리는 사람 : ${data.result}`, 20, 30, 100)
+        })
+    })
 }
 
 function checkDrawer() {
@@ -216,6 +243,7 @@ function init() {
     enterRoom();
     canvasEvent();
     checkDrawer();
+    getDrawer();
 
     setTimeout(() => {
         const range = document.getElementById('jsRange');
