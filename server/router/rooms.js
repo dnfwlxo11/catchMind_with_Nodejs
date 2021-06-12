@@ -85,6 +85,41 @@ router.post('/getDrawer', (req, res) => {
     })
 })
 
+router.post('/switchDrawer', (req, res) => {
+    Room.findOne({ room: req.body.room }, (err, room) => {
+        if (err) {
+            console.log(err)
+            return res.json({
+                success: false,
+                msg: '에러 발생',
+                err
+            })
+        } else {
+            const drawer = room.drawer;
+
+            while (true) {
+                const idx = Math.floor(Math.random() * room.users.length);
+                const newDrawer = room.users[idx]
+
+                if (newDrawer.toString() !== drawer.toString()) {
+                    console.log(drawer.toString())
+                    console.log(newDrawer.toString())
+                    room.updateOne(
+                        { drawer: room.users[idx] }
+                    ).exec();
+
+                    break;
+                }
+            }
+        }
+
+        return res.json({
+            success: true,
+            msg: 'Drawer 업데이트 성공'
+        })
+    })
+})
+
 router.get('/join/:roomName', auth, (req, res) => {
     res.sendFile(path.join(__dirname, '../../public/html/chatRoom.html'), { room: 'test' })
 })

@@ -86,29 +86,6 @@ function checkCanvase() {
     canvas.height = 400;
 }
 
-function getDrawer() {
-    const data = {
-        room: decodeURI(extractURL())
-    }
-
-    console.log(decodeURI(extractURL()))
-
-    const config = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
-    }
-
-    fetch('/api/rooms/getDrawer', config)
-    .then((res) => {
-        res.json().then((data) => {
-            ctx.fillText(`그리는 사람 : ${data.result}`, 20, 30, 100)
-        })
-    })
-}
-
 function checkDrawer() {
     fetch('/api/rooms/checkDrawer')
     .then((res) => {
@@ -243,7 +220,6 @@ function init() {
     enterRoom();
     canvasEvent();
     checkDrawer();
-    getDrawer();
 
     setTimeout(() => {
         const range = document.getElementById('jsRange');

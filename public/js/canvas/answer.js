@@ -5,6 +5,8 @@ const ans_div = document.createElement('div'),
     quizTitle = document.getElementsByClassName('quizTitle'),
     startBtn = document.getElementById('start-quiz');
 
+const ctx = canvas.getContext('2d');
+
 ans_div.setAttribute('class', 'ans_div');
 ans_title.setAttribute('class', 'ans_title');
 ans_input.setAttribute('id', 'ans_input');
@@ -19,6 +21,51 @@ socket.on('quizAnswer', (res) => {
 socket.on('endQuiz', (res) => {
     initCanvas();
 })
+
+function switchDrawer() {
+    const data = {
+        room: decodeURI(extractURL())
+    }
+
+    const config = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    }
+    
+    fetch('/api/rooms/switchDrawer', config)
+    .then((res) => {
+        res.json().then(data => {
+            setTimeout(getDrawer, 0);
+        })
+        
+    });
+}
+
+function getDrawer() {
+    const data = {
+        room: decodeURI(extractURL())
+    }
+
+    const config = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    }
+
+    fetch('/api/rooms/getDrawer', config)
+    .then((res) => {
+        res.json().then((data) => {
+            ctx.font = '15px Gulim';
+            ctx.textAlign = 'left';
+            ctx.fillText(`그리는 사람 : ${data.result}`, 20, 30)
+        })
+    })
+}
 
 function checkAnswer(answer) {
     const ctx = canvas.getContext('2d');
@@ -38,7 +85,6 @@ function checkAnswer(answer) {
 
 function initCanvas() {
     const word_div = Array.from(document.getElementsByClassName('word'));
-    const ctx = canvas.getContext('2d');
 
     word_div.forEach((item) => {
         item.classList.add('hide');
@@ -53,6 +99,7 @@ function initCanvas() {
 
 function endQuiz() {
     socket.emit('endQuiz');
+    switchDrawer();
 }
 
 function submitAnswer(e) {
@@ -83,6 +130,8 @@ function init() {
     ans_div.appendChild(ans_input);
 
     ans_input.addEventListener('keydown', submitAnswer);
+
+    getDrawer();
 }
 
 init();
