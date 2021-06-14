@@ -122,7 +122,6 @@ router.post('/join/:roomName', auth, (req, res) => {
                         if (err) console.log(err);
                     }).exec();
 
-                // return res.json({ success: true, room: room.room });
             }
 
             return res.cookie('drawer', room.drawer.token).json({ success: true });
@@ -165,6 +164,8 @@ router.post('/leave', auth, (req, res) => {
                         });
                     }
                 });
+
+                
             }
         });
 })
@@ -194,9 +195,8 @@ router.post('/getUsers', auth, (req, res) => {
     Room.findOne({ room: req.body.room })
         .populate('drawer')
         .exec((err, room) => {
-            console.log(room.drawer.token)
             if (err) return res.json({ success: false, msg: '해당 방은 존재하지 않습니다.' });
-            else return res.cookie('drawer', room.drawer.token).json({ suces: true, len: room.users.length });
+            else return res.json({ success: true, len: room.users.length, cookie: room.drawer.token, msg: '쿠키 업데이트' });
         });
 });
 

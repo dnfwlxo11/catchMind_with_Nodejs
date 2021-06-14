@@ -28,7 +28,8 @@ socket.on('error', (res) => {
 })
 
 socket.on('userNum', (res) => {
-    userNumber.innerText = res;
+    userNumber.innerText = res.len;
+    document.cookie = `drawer=${res.cookie}; path=/`
 })
 
 submitBtn.addEventListener('click', (e) => {
@@ -68,7 +69,7 @@ function getUsers(name, move) {
     })
         .then((res) => {
             res.json().then((data) => {
-                socket.emit('getUserNum', data.len)
+                socket.emit('getUserNum', { len:data.len, cookie: data.cookie })
 
                 if (move)
                     location.replace('http://localhost:3000/api/rooms/roomList');
@@ -92,7 +93,6 @@ function init() {
             .then((res) => {
                 res.json().then((data) => {
                     socket.emit('updateUsers')
-                    console.log(data)
                     if (!data.last)
                         getUsers(roomName, data.move);
                     else

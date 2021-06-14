@@ -41,7 +41,7 @@ socket.on('success', (res) => {
 
 socket.on('userNum', (res) => {
     const usernum = document.getElementById('userNumber');
-    usernum.innerText = res;
+    usernum.innerText = res.len;
 })
 
 socket.on('getDrawer', (res) => {
