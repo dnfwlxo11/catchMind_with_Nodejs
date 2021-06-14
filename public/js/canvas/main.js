@@ -92,7 +92,7 @@ function init() {
             .then((res) => {
                 res.json().then((data) => {
                     socket.emit('updateUsers')
-
+                    console.log(data)
                     if (!data.last)
                         getUsers(roomName, data.move);
                     else

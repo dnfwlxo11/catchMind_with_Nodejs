@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { User } = require('./User');
+const jwt = require('jsonwebtoken');
 const Schema = mongoose.Schema;
 
 const roomSchema = Schema({
