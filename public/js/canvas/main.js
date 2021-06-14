@@ -1,5 +1,3 @@
-
-
 const rooms = document.getElementsByClassName('roomNum'),
     submitBtn = document.getElementById('submit'),
     chat_ul = document.getElementById('messages'),
@@ -7,8 +5,6 @@ const rooms = document.getElementsByClassName('roomNum'),
     roomTitle = document.getElementById('title'),
     userNumber = document.getElementById('userNumber'),
     leave_btn = document.getElementById('leave_room');
-
-const socket = io('/chat');
 
 socket.on('msg', (res) => {
     const new_li = document.createElement('li');
@@ -57,7 +53,7 @@ function enterRoom() {
     const roomName = decodeURI(extractURL());
 
     socket.emit('joinRoom_chat', roomName);
-    roomTitle.innerText = `방제 : ${roomName}`;
+    roomTitle.innerText = roomName;
 
     getUsers(roomName, false);
 }
@@ -109,3 +105,7 @@ function init() {
 }
 
 init();
+
+export default {
+    extractURL
+}

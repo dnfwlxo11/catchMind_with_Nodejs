@@ -183,16 +183,18 @@ router.post('/leave', auth, (req, res) => {
                 } else {
                     const drawer = room.drawer;
 
-                    while (true) {
-                        const idx = Math.floor(Math.random() * room.users.length);
-                        const newDrawer = room.users[idx]
+                    if (drawer.toString() === req.user._id.toString()) {
+                        while (true) {
+                            const idx = Math.floor(Math.random() * room.users.length);
+                            const newDrawer = room.users[idx]
 
-                        if (newDrawer.toString() !== drawer.toString()) {
-                            room.updateOne(
-                                { drawer: room.users[idx] }
-                            ).exec();
+                            if (newDrawer.toString() !== drawer.toString()) {
+                                room.updateOne(
+                                    { drawer: room.users[idx] }
+                                ).exec();
 
-                            break;
+                                break;
+                            }
                         }
                     }
 

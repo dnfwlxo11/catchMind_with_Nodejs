@@ -1,3 +1,5 @@
+import main from './main.js'
+
 const ans_div = document.createElement('div'),
     ans_title = document.createElement('h2'),
     ans_input = document.createElement('input'),
@@ -26,7 +28,7 @@ socket.on('endQuiz', (res) => {
 
 function switchDrawer() {
     const data = {
-        room: decodeURI(extractURL())
+        room: decodeURI(main.extractURL())
     }
 
     const config = {
@@ -48,7 +50,7 @@ function switchDrawer() {
 
 function getDrawer() {
     const data = {
-        room: decodeURI(extractURL())
+        room: decodeURI(main.extractURL())
     }
 
     const config = {

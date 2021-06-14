@@ -1,3 +1,5 @@
+import main from './main.js'
+
 const canvas = document.createElement('canvas');
 
 const ctx = canvas.getContext('2d'),
@@ -199,7 +201,7 @@ function handleSave() {
 }
 
 function enterRoom() {
-    const roomName = decodeURI(extractURL())
+    const roomName = decodeURI(main.extractURL())
     socket.emit('joinRoom_chat', roomName);
     roomTitle.innerText = roomName;
 }
@@ -217,7 +219,7 @@ function init() {
     div.appendChild(canvas);
 
     setOption(mode, '#2c2c2c', 2.5, painting);
-    enterRoom();
+    // enterRoom();
     canvasEvent();
     checkDrawer();
 
