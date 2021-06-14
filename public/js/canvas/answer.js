@@ -1,6 +1,7 @@
 const ans_div = document.createElement('div'),
     ans_title = document.createElement('h2'),
     ans_input = document.createElement('input'),
+    current_drawer = document.createElement('h2'),
     canvas = document.getElementById('jsCanvas'),
     quizTitle = document.getElementsByClassName('quizTitle'),
     startBtn = document.getElementById('start-quiz');
@@ -11,6 +12,7 @@ ans_div.setAttribute('class', 'ans_div');
 ans_title.setAttribute('class', 'ans_title');
 ans_input.setAttribute('id', 'ans_input');
 ans_input.setAttribute('class', 'ans_input');
+current_drawer.setAttribute('id', 'current-drawer');
 ans_input.setAttribute('type', 'text');
 ans_input.disabled = true;
 
@@ -60,9 +62,12 @@ function getDrawer() {
     fetch('/api/rooms/getDrawer', config)
     .then((res) => {
         res.json().then((data) => {
-            ctx.font = '15px Gulim';
-            ctx.textAlign = 'left';
-            ctx.fillText(`그리는 사람 : ${data.result}`, 20, 30)
+            current_drawer.innerText = `그리는 사람 : ${data.result}`;
+            // ctx.fillStyle = 'white'
+            // ctx.fillRect(0,0,canvas.width, canvas.height);
+            // ctx.font = '15px Gulim';
+            // ctx.textAlign = 'left';
+            // ctx.fillText(`그리는 사람 : ${data.result}`, 20, 30)
         })
     })
 }
@@ -125,9 +130,11 @@ function init() {
 
     ans_title.innerText = '정답은?';
 
+    div.appendChild(current_drawer);
     div.appendChild(ans_div);
     ans_div.appendChild(ans_title);
     ans_div.appendChild(ans_input);
+    
 
     ans_input.addEventListener('keydown', submitAnswer);
 
@@ -137,5 +144,7 @@ function init() {
 init();
 
 export default {
-    show_wordDiv
+    show_wordDiv,
+    getDrawer,
+    switchDrawer
 }

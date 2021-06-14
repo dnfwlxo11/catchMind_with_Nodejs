@@ -32,7 +32,7 @@ router.post('/createRoom', auth, (req, res) => {
                 drawer: req.user
             })
 
-            req.user.generateToken((err, user) => { 
+            req.user.generateToken((err, user) => {
                 res.cookie('drawer', user.token);
             })
 
@@ -60,8 +60,8 @@ router.post('/createRoom', auth, (req, res) => {
 });
 
 router.get('/checkDrawer', (req, res) => {
-    if (req.cookies.x_auth === req.cookies.drawer) return res.json({result: true})
-    else return res.json({result: false})
+    if (req.cookies.x_auth === req.cookies.drawer) return res.json({ result: true })
+    else return res.json({ result: false })
 })
 
 router.post('/getDrawer', (req, res) => {
@@ -102,8 +102,6 @@ router.post('/switchDrawer', (req, res) => {
                 const newDrawer = room.users[idx]
 
                 if (newDrawer.toString() !== drawer.toString()) {
-                    console.log(drawer.toString())
-                    console.log(newDrawer.toString())
                     room.updateOne(
                         { drawer: room.users[idx] }
                     ).exec();
@@ -142,11 +140,11 @@ router.post('/join/:roomName', auth, (req, res) => {
             console.log(req.user.name, '가 ', room.room, '방으로 들어갑니다.')
             Room.updateOne(
                 { _id: room._id },
-                { $addToSet: { users: req.user}}, (err) => {
+                { $addToSet: { users: req.user } }, (err) => {
                     if (err) console.log(err);
-            }).exec();
+                }).exec();
 
-            User.findOneAndUpdate({ _id: req.user._id}, { roomAdmin: true}, (err, item) => {
+            User.findOneAndUpdate({ _id: req.user._id }, { roomAdmin: true }, (err, item) => {
                 if (err) console.log(err);
             }).exec();
 
@@ -173,15 +171,31 @@ router.post('/leave', auth, (req, res) => {
             })
         } else {
             console.log(req.user.name, '가 ', room.room, '방에서 나갑니다.')
-            User.findOneAndUpdate({ _id: req.user._id}, { roomAdmin: false}, (err, item) => {
+
+            User.findOneAndUpdate({ _id: req.user._id }, { roomAdmin: false }, (err, item) => {
                 if (err) console.log(err);
             }).exec();
             room.users.pull(req.user);
             room.save(() => {
                 if (room.users.length === 0) {
-                    Room.deleteOne({ _id: room._id}).exec();
+                    Room.deleteOne({ _id: room._id }).exec();
                     return res.json({ last: true, move: true });
                 } else {
+                    const drawer = room.drawer;
+
+                    while (true) {
+                        const idx = Math.floor(Math.random() * room.users.length);
+                        const newDrawer = room.users[idx]
+
+                        if (newDrawer.toString() !== drawer.toString()) {
+                            room.updateOne(
+                                { drawer: room.users[idx] }
+                            ).exec();
+
+                            break;
+                        }
+                    }
+
                     return res.json({ last: false, move: true });
                 }
             });
@@ -191,8 +205,8 @@ router.post('/leave', auth, (req, res) => {
 
 router.post('/getUsers', auth, (req, res) => {
     Room.find({ room: req.body.room }, (err, item) => {
-        if (err) return res.json({success: false, msg: '해당 방은 존재하지 않습니다.'});
-        else return res.json({suces:true, len: item[0].users.length});
+        if (err) return res.json({ success: false, msg: '해당 방은 존재하지 않습니다.' });
+        else return res.json({ suces: true, len: item[0].users.length });
     });
 });
 

@@ -4,7 +4,7 @@ const room = document.getElementById('register-id'),
     dupleBtn = document.getElementById('duple-btn');
 
 function check() {
-    fetch('http://localhost:3000/api/rooms/check', {
+    fetch('/api/rooms/check', {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"

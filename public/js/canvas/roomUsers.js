@@ -1,3 +1,5 @@
+import answer from './answer.js'
+
 const roomName = document.getElementById('title'),
     usersUl = document.getElementById('users-ul');
 
@@ -5,6 +7,7 @@ const socket = io('/chat');
 
 socket.on('updateUsers', () => {
     getUsers();
+    answer.getDrawer();
 })
 
 function deleteUsers() {
