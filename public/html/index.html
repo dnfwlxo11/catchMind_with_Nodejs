@@ -4,19 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/createRoom.css">
     <title>환영합니다.</title>
 </head>
 
 <body>
     <div class='content_wrap'>
-        <div>
-            ID : <input type="text" id='id'>
-            PASS : <input type="password" id='pass'>
-            <button onclick="submitLogin()">로그인</button>
+        <div class='wrapper'>
+            <div class='login-div'>
+                <div class='id-div'>ID : <input type="text" id='id'></div>
+                <div class='pass-div'>PASS : <input type="password" id='pass'></div>
+            </div>
+            <button class='login' onclick="submitLogin()">로그인</button>
+            <form action="/api/users/register" method="GET">
+                <button class='register' type="submit">회원가입</button>
+            </form>
         </div>
-        <form action="/api/users/register" method="GET">
-            <button type="submit">회원가입</button>
-        </form>
     </div>
 </body>
 <script src="/js/diverseFunc/login.js"></script>

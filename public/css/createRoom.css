@@ -1,0 +1,12 @@
+body {
+    background-color: #f6f9f1;
+}
+
+.wrapper {
+    text-align: center;
+}
+
+.login-div, .login, .register {
+    float: left;
+    height: 50px;
+}

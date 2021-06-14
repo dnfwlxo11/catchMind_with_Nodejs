@@ -59,7 +59,10 @@ router.post('/createRoom', auth, (req, res) => {
 });
 
 router.get('/checkDrawer', (req, res) => {
-    if (req.cookies.x_auth === req.cookies.drawer) return res.json({ result: true })
+    if (req.cookies.x_auth === req.cookies.drawer) {
+        console.log(req.cookies.x_auth, req.cookies.drawer, req.cookies.x_auth === req.cookies.drawer)
+        return res.json({ result: true })
+    } 
     else return res.json({ result: false })
 })
 

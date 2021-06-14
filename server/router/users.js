@@ -57,6 +57,7 @@ router.get('/logout', auth, (req, res) => {
 });
 
 router.get('/register', (req, res) => {
+    console.log('res')
     res.sendFile(path.join(__dirname, '../../public/html/register.html'));
 })
 
