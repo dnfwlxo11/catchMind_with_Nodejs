@@ -198,6 +198,10 @@ h2, h4 {
     margin-bottom: 10px;
 }
 
+#current-drawer {
+    margin-top: 10px;
+}
+
 @media (max-width: 1250px) {
     .jsCanvas {
         width: 500px;

@@ -45,7 +45,7 @@ socket.on('userNum', (res) => {
 })
 
 socket.on('getDrawer', (res) => {
-    const drawer = res;
+    drawer = res;
 })
 
 socket.on('mouseMove', (res) => {
@@ -69,10 +69,6 @@ socket.on('endQuiz', (res) => {
 })
 
 window.onresize = (checkCanvase);
-
-// window.onbeforeunload = () => {
-//     socket.emit()
-// }
 
 function checkCanvase() {
     if (matchMedia('screen and (max-width: 850px)').matches) {
@@ -141,7 +137,9 @@ function onMouseMove(e) {
     const x_pos = e.offsetX;
     const y_pos = e.offsetY;
 
-    if (!painting) {
+    if (!drawer && painting) {
+        alert('아직 그리는 순서가 아닙니다.\n기다려주세요')
+    } else if (!painting) {
         if (drawer)
             socket.emit('mouseMove', { x_pos, y_pos, painting, stat: 'start', options: getOption(color, getRange()) })
     } else {

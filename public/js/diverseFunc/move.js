@@ -39,9 +39,9 @@ function createRoom(name) {
     fetch('/api/rooms/createRoom', config)
 }
 
-function joinRoom(e) {
+function joinRoom(name) {
     const data = {
-        room: e.target.innerText
+        room: name
     }
 
     const config = {
@@ -52,7 +52,7 @@ function joinRoom(e) {
         body: JSON.stringify(data)
     }
 
-    fetch(`http://localhost:3000/api/rooms/join/${e.target.innerText}`, config)
+    fetch(`http://localhost:3000/api/rooms/join/${name}`, config)
     .then((res) => {
         window.location.href = res.url;
     })
@@ -72,7 +72,9 @@ function searchRooms() {
 
                     li.setAttribute('class', 'room');
 
-                    button.addEventListener('click', joinRoom)
+                    button.addEventListener('click', () => {
+                        joinRoom(item.room)
+                    })
                     button.innerText = `방제 : ${item.room}\n접속 수 : ${item.users.length}/6`;
 
                     li.appendChild(button);
