@@ -7,12 +7,15 @@
     <link rel="stylesheet" href="/css/listRoom.css">
     <title>방을 고르세요!</title>
 </head>
-
 <body>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/js/diverseFunc/move.js"></script>
-
-    <button onclick="createRoomPage()">방만들기</button>
-    <button onclick="logout()">로그아웃</button>    
+    <div class="nav-btn">
+        <button onclick="createRoomPage()">방만들기</button>
+        <button onclick="logout()">로그아웃</button>    
+    </div>
+    <div id="list-room" class="list-room">
+        <ul id="ul-room" class="ul-room"></ul>
+    </div>
 </body>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/diverseFunc/move.js"></script>
 </html>

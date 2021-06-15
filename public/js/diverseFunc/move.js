@@ -1,4 +1,6 @@
-const rooms = document.getElementsByClassName('roomNum');
+const rooms = document.getElementsByClassName('roomNum'),
+    div = document.getElementById('list-room'),
+    ul = document.getElementById('ul-room');
 
 const socket = io('/chat');
 
@@ -59,19 +61,23 @@ function joinRoom(e) {
 function searchRooms() {
     fetch('http://localhost:3000/api/rooms/searchRooms')
     .then((res) => {
-        const div = document.getElementById('rooms-id');
-        while (div.hasChildNodes())
-            div.removeChild(div.firstChild);
 
-        res.json().then((data) => { 
-            const div = document.getElementById('rooms-id');
-            
+        
+        while (ul.hasChildNodes())
+            ul.removeChild(ul.firstChild);
+
+        res.json().then((data) => {             
             data.rooms.forEach((item) => {
                 const button = document.createElement('button');
+                const li = document.createElement('li');
+
+                li.setAttribute('class', 'room');
+
                 button.addEventListener('click', joinRoom)
                 button.innerText = item.room;
 
-                div.appendChild(button);
+                li.appendChild(button);
+                ul.appendChild(li);
             });
         });
     });
@@ -80,9 +86,6 @@ function searchRooms() {
 function createSubmit() {
     const body = document.querySelector('body');
 
-    const div = document.createElement('div');
-
-    div.setAttribute('id', 'rooms-id');
     body.appendChild(div);
 
     socket.emit('updateRooms', { msg: '방 목록 업데이트 메인' })
