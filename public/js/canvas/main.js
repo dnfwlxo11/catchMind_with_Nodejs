@@ -35,8 +35,10 @@ socket.on('userNum', (res) => {
 submitBtn.addEventListener('click', (e) => {
     e.preventDefault();
 
-    socket.emit('msg', `${getCookie('userName')} : ${chat_input.value}`)
-    chat_input.value = '';
+    if (chat_input.value) {
+        socket.emit('msg', `${getCookie('userName')} : ${chat_input.value}`)
+        chat_input.value = '';
+    }
 });
 
 function getCookie(name) {

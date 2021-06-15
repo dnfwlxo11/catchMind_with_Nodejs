@@ -115,6 +115,11 @@ chat.on('connection', (socket) => {
         chat.to(myRoom)
             .emit('quizAnswer', { result: word===res, word});
     })
+
+    socket.on('getDrawer', () => {
+        chat.to(myRoom)
+            .emit('getDrawer');
+    })
 });
 
 server.listen(PORT, () => {

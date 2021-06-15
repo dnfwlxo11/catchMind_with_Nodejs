@@ -33,8 +33,8 @@ h2, h4 {
 }
 
 .jsCanvas {
-    width: 600px;
-    height: 400px;
+    width: 70%;
+    height: 60%;
     background-color: white;
     border-radius: 2rem;
     box-shadow: 0 4px 6px rgba(50,50,93,0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -200,37 +200,4 @@ h2, h4 {
 
 #current-drawer {
     margin-top: 10px;
-}
-
-@media (max-width: 1250px) {
-    .jsCanvas {
-        width: 500px;
-        height: 400px;
-    }
-
-    .controls {
-        width: 70%;
-    }
-}
-
-@media (max-width: 1050px) {
-    .jsCanvas {
-        width: 400px;
-        height: 400px;
-    }
-
-    .controls {
-        width: 50%;
-    }
-}
-
-@media (max-width: 850px) {
-    .jsCanvas {
-        width: 250px;
-        height: 400px;
-    }
-
-    .controls {
-        width: 30%;
-    }
 }

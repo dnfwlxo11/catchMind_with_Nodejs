@@ -8,7 +8,6 @@ const ctx = canvas.getContext('2d'),
 canvas.setAttribute('id', 'jsCanvas');
 canvas.setAttribute('class', 'jsCanvas');
 
-checkCanvase();
 ctx.fillStyle = 'white';
 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -71,17 +70,11 @@ socket.on('endQuiz', (res) => {
 window.onresize = (checkCanvase);
 
 function checkCanvase() {
-    if (matchMedia('screen and (max-width: 850px)').matches) {
-        canvas.width = 250;
-    } else if (matchMedia('screen and (max-width: 1050px)').matches) {
-        canvas.width = 400;
-    } else if (matchMedia('screen and (max-width: 1250px)').matches) {
-        canvas.width = 500;
-    } else {
-        canvas.width = 600;
+    if (drawer) {
+        canvas.width = ctx.canvas.clientWidth;
+        canvas.height = ctx.canvas.clientHeight;
+        socket.emit('canvasBtn', { btn: 'init', color: '#2c2c2c'});
     }
-
-    canvas.height = 400;
 }
 
 function checkDrawer() {
@@ -220,6 +213,7 @@ function init() {
     // enterRoom();
     canvasEvent();
     checkDrawer();
+    checkCanvase();
 
     setTimeout(() => {
         const range = document.getElementById('jsRange');

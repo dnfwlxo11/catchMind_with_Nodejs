@@ -77,6 +77,7 @@ function getDrawer() {
 function checkAnswer(answer) {
     const ctx = canvas.getContext('2d');
     if (answer.result) {
+        socket.emit('getDrawer');
         show_wordDiv(answer.word);
         ctx.font = '200px serif';
         ctx.textAlign = 'center';
