@@ -9,16 +9,24 @@
 </head>
 
 <body>
-    <div class='content_wrap'>
-        <div class='wrapper'>
-            <div class='login-div'>
-                <div class='id-div'>ID : <input type="text" id='id'></div>
-                <div class='pass-div'>PASS : <input type="password" id='pass'></div>
+    <div class='wrapper'>
+        <div class='login-div item'>
+            <div class='id-div'>
+                <div class="label">ID : </div>
+                <div class="input"><input type="text" id='id'></div>
             </div>
-            <button class='login' onclick="submitLogin()">로그인</button>
-            <form action="/api/users/register" method="GET">
-                <button class='register' type="submit">회원가입</button>
-            </form>
+            <div class='pass-div'>
+                <div class="label">PASS : </div>
+                <div class="input"><input type="password" id='pass'></div>
+            </div>
+        </div>
+        <div class="btn-div item">
+            <div class="btn"><button class='login' onclick="submitLogin()">로그인</button></div>
+            <div class="btn">
+                <form action="/api/users/register" method="GET">
+                    <button class='register' type="submit">회원가입</button>
+                </form>
+            </div>
         </div>
     </div>
 </body>
