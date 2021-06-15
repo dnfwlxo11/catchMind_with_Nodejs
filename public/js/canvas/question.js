@@ -1,7 +1,7 @@
 const q_div = document.createElement('div'),
     quizTitle = document.getElementsByClassName('quizTitle'),
     startBtn = document.getElementById('start-quiz');
-    
+
 q_div.setAttribute('class', 'words');
 
 const WORD_NUM = 5;
@@ -10,7 +10,6 @@ let word;
 
 socket.on('startQuiz', (res) => {
     const ans_input = document.getElementById('ans_input');
-    console.log(res)
     create_wordDiv(res.word, res.res);
 
     quizTitle[0].classList.add('hide');
@@ -22,7 +21,7 @@ socket.on('startQuiz', (res) => {
 
 function getCookie(name) {
     var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
-    return value? unescape(value[2]) : null;
+    return value ? unescape(value[2]) : null;
 }
 
 function create_wordDiv(word, userName) {
@@ -64,7 +63,13 @@ function show_wordDiv(answer) {
 }
 
 function startQuiz() {
-    socket.emit('startQuiz', getCookie('userName'));
+    fetch('/api/rooms/checkDrawer')
+        .then((res) => {
+            res.json().then((data) => {
+                if (data.result)
+                    socket.emit('startQuiz', getCookie('userName'));
+            })
+        })
 }
 
 function init() {

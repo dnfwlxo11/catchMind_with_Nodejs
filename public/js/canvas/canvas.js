@@ -80,7 +80,6 @@ function checkDrawer() {
     fetch('/api/rooms/checkDrawer')
     .then((res) => {
         res.json().then((data) => {
-            console.log(data)
             drawer = data.result;
         })
     })
