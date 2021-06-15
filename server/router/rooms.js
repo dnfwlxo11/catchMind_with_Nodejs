@@ -14,7 +14,8 @@ router.get('/roomList', auth, (req, res) => {
 
 router.get('/searchRooms', auth, (req, res) => {
     Room.find((err, rooms) => {
-        res.json({ rooms: rooms });
+        if (!rooms) return res.json({ success: false, msg: '현재 만들어진 방 없음' })
+        res.json({ success: true, rooms: rooms });
     })
 })
 

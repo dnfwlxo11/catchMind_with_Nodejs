@@ -61,24 +61,24 @@ function joinRoom(e) {
 function searchRooms() {
     fetch('http://localhost:3000/api/rooms/searchRooms')
     .then((res) => {
-
-        
         while (ul.hasChildNodes())
             ul.removeChild(ul.firstChild);
 
-        res.json().then((data) => {             
-            data.rooms.forEach((item) => {
-                const button = document.createElement('button');
-                const li = document.createElement('li');
+        res.json().then((data) => {   
+            if (data.success) {          
+                data.rooms.forEach((item) => {
+                    const button = document.createElement('button');
+                    const li = document.createElement('li');
 
-                li.setAttribute('class', 'room');
+                    li.setAttribute('class', 'room');
 
-                button.addEventListener('click', joinRoom)
-                button.innerText = item.room;
+                    button.addEventListener('click', joinRoom)
+                    button.innerText = `방제 : ${item.room}\n접속 수 : ${item.users.length}/6`;
 
-                li.appendChild(button);
-                ul.appendChild(li);
-            });
+                    li.appendChild(button);
+                    ul.appendChild(li);
+                });
+            }
         });
     });
 }
