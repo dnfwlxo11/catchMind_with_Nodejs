@@ -17,6 +17,10 @@ form {
     justify-content: center;
 }
 
+.wrapper.register {
+    flex-direction: column;
+}
+
 .item {
     max-width: 50%;
 }
@@ -31,11 +35,23 @@ input {
     height: 30px;
 }
 
-.login-div {
+.input-div {
     width: 280px;
 }
 
-.login-div > div > .label  {
+.input-div.register {
+    width: 400px;
+}
+
+.duple-div {
+    float: left;
+}
+
+.duple-btn, .idEdit-btn {
+    margin-top: -2px;
+}
+
+.input-div > div > .label  {
     float: left;
     width: 60px;
     margin-top: 5px;

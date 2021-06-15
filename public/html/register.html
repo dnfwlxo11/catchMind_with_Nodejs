@@ -4,18 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/check.css">
+    <link rel="stylesheet" href="/css/create.css">
     <title>환영합니다.</title>
 </head>
 <body>
-    <div id='content_wrap'>
-        <div>
-            아이디(ID) <input type="text" id='register-id'>
-            <button id='duple-btn' onclick='checkName()'>중복체크</button>
-            <button id='idEdit-btn' class='idEdit-btn' onclick="enableInput()">수정</button>
-            <img ic='idCheck-img' class='idCheck-img' src="/assets/idCheck.png">
-            <br>
-            비밀번호(PASSWORD) <input type="password" id='register-pass'><br>
-            메모(MEMO) <input type="memo"><br>
+    <div class="wrapper register">
+        <div class="input-div register">
+            <div class="id-div">
+                <div class="label">ID : </div><div class="input duple-div"><input type="text" id='register-id'></div>
+                <button id='duple-btn' class="duple-btn" onclick='checkName()'>중복체크</button>
+                <button id='idEdit-btn' class='idEdit-btn' onclick="enableInput()">수정</button>
+                <img id='idCheck-img' class='idCheck-img' src="/assets/idCheck.png">
+            </div>
+            <div class="pass-div">
+                <div class="label">PASS : </div><div class="input"><input type="password" id='register-pass'></div>
+            </div>
+        </div>
+        <div class="btn-div">
             <button onclick='register()'>회원가입</button>
             <button onclick='location.href="http://localhost:3000/"'>나가기</button>
         </div>
