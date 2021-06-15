@@ -8,8 +8,6 @@ const ans_div = document.createElement('div'),
     quizTitle = document.getElementsByClassName('quizTitle'),
     startBtn = document.getElementById('start-quiz');
 
-const ctx = canvas.getContext('2d');
-
 ans_div.setAttribute('class', 'ans_div');
 ans_title.setAttribute('class', 'ans_title');
 ans_input.setAttribute('id', 'ans_input');
@@ -23,7 +21,7 @@ socket.on('quizAnswer', (res) => {
 })
 
 socket.on('endQuiz', (res) => {
-    initCanvas();
+    initWord();
 })
 
 function switchDrawer() {
@@ -65,11 +63,7 @@ function getDrawer() {
     .then((res) => {
         res.json().then((data) => {
             current_drawer.innerText = `그리는 사람 : ${data.result}`;
-            // ctx.fillStyle = 'white'
-            // ctx.fillRect(0,0,canvas.width, canvas.height);
-            // ctx.font = '15px Gulim';
-            // ctx.textAlign = 'left';
-            // ctx.fillText(`그리는 사람 : ${data.result}`, 20, 30)
+            socket.emit('getDrawer');
         })
     })
 }
@@ -77,7 +71,6 @@ function getDrawer() {
 function checkAnswer(answer) {
     const ctx = canvas.getContext('2d');
     if (answer.result) {
-        socket.emit('getDrawer');
         show_wordDiv(answer.word);
         ctx.font = '200px serif';
         ctx.textAlign = 'center';
@@ -91,7 +84,7 @@ function checkAnswer(answer) {
     }
 }
 
-function initCanvas() {
+function initWord() {
     const word_div = Array.from(document.getElementsByClassName('word'));
 
     word_div.forEach((item) => {

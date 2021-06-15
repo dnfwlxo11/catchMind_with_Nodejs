@@ -34,17 +34,12 @@ socket.on('canvasBtn', (res) => {
 })
 
 socket.on('success', (res) => {
-    console.log(res)
     drawer = res.result;
 })
 
 socket.on('userNum', (res) => {
     const usernum = document.getElementById('userNumber');
     usernum.innerText = res.len;
-})
-
-socket.on('getDrawer', (res) => {
-    drawer = res;
 })
 
 socket.on('mouseMove', (res) => {
@@ -67,6 +62,10 @@ socket.on('endQuiz', (res) => {
     initCanvas();
 })
 
+socket.on('getDrawer', (res) => {
+    checkDrawer();
+})
+
 window.onresize = (checkCanvase);
 
 function checkCanvase() {
@@ -81,6 +80,7 @@ function checkDrawer() {
     fetch('/api/rooms/checkDrawer')
     .then((res) => {
         res.json().then((data) => {
+            console.log(data)
             drawer = data.result;
         })
     })

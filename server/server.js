@@ -102,24 +102,24 @@ chat.on('connection', (socket) => {
         console.log('퀴즈 시작')
         chat.to(myRoom)
             .emit('startQuiz', { word, res });
-    })
+    });
 
     socket.on('endQuiz', (res) => {
         console.log('퀴즈 끝')
         chat.to(myRoom)
             .emit('endQuiz', word);
-    })
+    });
 
     socket.on('quizAnswer', (res) => {
         console.log(res);
         chat.to(myRoom)
             .emit('quizAnswer', { result: word===res, word});
-    })
+    });
 
-    socket.on('getDrawer', () => {
+    socket.on('getDrawer', (res) => {
         chat.to(myRoom)
             .emit('getDrawer');
-    })
+    });
 });
 
 server.listen(PORT, () => {

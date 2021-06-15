@@ -30,6 +30,7 @@ socket.on('error', (res) => {
 socket.on('userNum', (res) => {
     userNumber.innerText = res.len;
     document.cookie = `drawer=${res.cookie}; path=/`
+    socket.emit('endQuiz');
 })
 
 submitBtn.addEventListener('click', (e) => {
