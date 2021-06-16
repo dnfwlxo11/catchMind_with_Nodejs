@@ -80,29 +80,31 @@ function getUsers(name, move) {
         })
 }
 
+function leaveRoom() {
+    const roomName = decodeURI(extractURL());
+
+    fetch('/api/rooms/leave', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ room: roomName })
+    })
+        .then((res) => {
+            res.json().then((data) => {
+                socket.emit('updateUsers')
+                if (!data.last)
+                    getUsers(roomName, data.move);
+                else
+                    location.replace('http://localhost:3000/api/rooms/roomList');
+            })
+        })
+}
+
 function init() {
     socket.emit('updateRooms')
 
-    leave_btn.addEventListener('click', () => {
-        const roomName = decodeURI(extractURL());
-
-        fetch('/api/rooms/leave', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ room: roomName })
-        })
-            .then((res) => {
-                res.json().then((data) => {
-                    socket.emit('updateUsers')
-                    if (!data.last)
-                        getUsers(roomName, data.move);
-                    else
-                        location.replace('http://localhost:3000/api/rooms/roomList');
-                })
-            })
-    })
+    leave_btn.addEventListener('click', leaveRoom)
 
     enterRoom()
 }
@@ -110,5 +112,6 @@ function init() {
 init();
 
 export default {
-    extractURL
+    extractURL,
+    leaveRoom
 }
