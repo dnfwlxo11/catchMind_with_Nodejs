@@ -14,9 +14,27 @@ import main from './main.js'
 //     history.pushState(null, null, '/')
 // }
 
+window.onkeydown = function(e) {
+    if (e.keyCode == 505) {
+        alert('진짜 나가실 건가요?');
+        window.onBeforeUnload
+    }
+
+    if (e.keyCode == 115) {
+        alert('진짜 나가실 건가요?');
+        window.onBeforeUnload
+    }
+}
+
+window.onhashchange = function() {
+    console.log('asd')
+    // main.leaveRoom();
+}
+
 window.onbeforeunload = function (e) {
-    console.log(e)
+    e.preventDefault();
     main.leaveRoom();
-    socket.emit('updateUsers')
-    location.reload();
+    socket.emit('updateUsers');
+    window.location.reload();
+    window.onbeforeunload = false;
 }
