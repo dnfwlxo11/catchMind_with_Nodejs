@@ -1,4 +1,4 @@
-import main from './main.js'
+import main from './chat.js'
 
 // window.onpageshow = function(e) {
 //     console.log(e.persisted, window.performance, window.performance.getEntriesByType("navigation")[0].type == 2)
@@ -14,12 +14,9 @@ import main from './main.js'
 //     history.pushState(null, null, '/')
 // }
 
-// window.onbeforeunload = function (e) {
-//     e.preventDefault();
-//     main.leaveRoom();
-//     socket.emit('updateUsers');
+window.onbeforeunload = function (e) {
+    e.preventDefault();
 
-//     setTimeout(() => {
-//         window.location.href('/');
-//     }, 0)
-// }
+    console.log('나간다')
+    main.leaveRoom();
+}

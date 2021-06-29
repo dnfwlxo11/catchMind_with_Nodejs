@@ -59,7 +59,7 @@ router.post('/createRoom', auth, (req, res) => {
     })
 });
 
-router.get('/checkDrawer', (req, res) => {
+router.get('/canPaint', (req, res) => {
     if (req.cookies.x_auth === req.cookies.drawer) {
         return res.json({ result: true })
     } 

@@ -61,7 +61,7 @@ function show_wordDiv(answer) {
 }
 
 function startQuiz() {
-    fetch('/api/rooms/checkDrawer')
+    fetch('/api/rooms/canPaint')
         .then((res) => {
             res.json().then((data) => {
                 if (data.result)
@@ -71,8 +71,6 @@ function startQuiz() {
 }
 
 function init() {
-    
-
     startBtn.addEventListener('click', startQuiz);
 }
 

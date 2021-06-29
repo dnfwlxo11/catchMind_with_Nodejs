@@ -17,8 +17,7 @@ h2, h4 {
 .wrapper {
     height: 100%;
     width: 80%;
-    padding: 10px;
-    border: 1px solid black;
+    padding: 20px;
 }
 
 .title-div {
@@ -45,7 +44,7 @@ h2, h4 {
 }
 
 .chat-room-div {
-    height: 80%;
+    height: 80vh;
     width: 20%;
     display: flex;
 }
@@ -53,7 +52,7 @@ h2, h4 {
 .words {
     text-align: center;
     margin-bottom: 10px;
-    height: 10%;
+    height: 30%;
     display: inline-block;
 }
 
@@ -69,8 +68,8 @@ h2, h4 {
 }
 
 .jsCanvas {
-    width: 80%;
-    height: 70%;
+    width: 60%;
+    height: 65%;
     margin-bottom: 20px;
     background-color: white;
     border-radius: 2rem;
@@ -80,7 +79,7 @@ h2, h4 {
 .ans-div {
     margin-bottom: 20px;
     text-align: center;
-    height: 10%;
+    height: 5%;
 }
 
 .ans-input {
@@ -92,7 +91,7 @@ h2, h4 {
 }
 
 .controls-div {
-    height: 20%;
+    height: 10%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -160,26 +159,25 @@ h2, h4 {
 }
 
 .chat-div {
-    height: 100%;
     width: 100%;
 }
 
-#users-ul, .bottom-section {
+.users-ul {
+    height: 15%;
+    margin-bottom: 10px;
+}
+
+.messages {
+    height: 55vh;
+}
+
+.users-ul, .bottom-section {
     text-align: center;
     padding-top: 10px;
     background-color: bisque;
     overflow: auto;
     border-radius: .5rem;
     box-shadow: 0 4px 6px rgba(50,50,93,0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
-#messages {
-    height: 55vh;
-}
-
-#users-ul {
-    height: 15vh;
-    margin-bottom: 10px;
 }
 
 .msg-li {
@@ -195,12 +193,12 @@ h2, h4 {
     margin-bottom: 5px;
 }
 
-#msg_input {
+.msg_input {
     width: 85%;
     height: 20px;
     margin-bottom: 10px;
 }
 
-#current-drawer {
+.current-drawer {
     margin-top: 10px;
 }

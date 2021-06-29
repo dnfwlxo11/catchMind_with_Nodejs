@@ -85,7 +85,7 @@ function searchRooms() {
     });
 }
 
-function createSubmit() {
+function init() {
     const body = document.querySelector('body');
 
     body.appendChild(div);
@@ -93,4 +93,4 @@ function createSubmit() {
     socket.emit('updateRooms', { msg: '방 목록 업데이트 메인' })
 }
 
-createSubmit();
+init();

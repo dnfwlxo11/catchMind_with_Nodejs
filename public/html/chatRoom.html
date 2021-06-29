@@ -19,7 +19,7 @@
             </div>
             <canvas id="jsCanvas" class="jsCanvas"></canvas>
             <div id="ans-div" class="ans-div">
-                <h2 id="current-drawer"></h2>
+                <h2 id="current-drawer" class="current-drawer"></h2>
                 <h2 id="ans-title" class="ans-title">정답은?</h2>
                 <input id="ans-input" class="ans-input" type="text">
             </div>
@@ -39,17 +39,17 @@
             <div class='chat-div'>
                 <button id='start-quiz'>시작하기</button>
                 <button id='leave_room'>방나가기</button>
-                <ul id='users-ul'>
+                <ul id='users-ul' class="users-ul">
                     <li class='first-line'>접속 유저</li>
                     <li class="users-li"></li>
                 </ul>
                 <div class='bottom-section'>
-                    <ul id="messages">
+                    <ul id="messages" class="messages">
                         <li class='first-line'>채팅창</li>
                         <li id="userNum"></li>
                     </ul>
                     <form id="msgForm">
-                        <input id="msg_input" autocomplete="off" type="text">
+                        <input id="msg_input" class="msg_input" autocomplete="off" type="text">
                         <button id="submit" style="display: none;">전송</button>
                     </form>
                 </div>
@@ -59,12 +59,12 @@
     </div>
 </body>
 <script src="/socket.io/socket.io.js"></script>
-<script src="/js/canvas/enterRoom.js"></script>
-<script src="/js/canvas/main.js" type="module"></script>
+<script src="/js/canvas/initSocket.js"></script>
+<script src="/js/canvas/chat.js" type="module"></script>
 <script src="/js/canvas/canvas.js" type="module"></script>
-<script src="/js/canvas/question.js" type="module"></script>
-<script src="/js/canvas/answer.js" type="module"></script>
-<script src="/js/canvas/roomUsers.js" type="module"></script>
-<script src="/js/canvas/backEvent.js" type="module"></script>
+<script src="/js/canvas/quizSetting.js" type="module"></script>
+<script src="/js/canvas/quizEvent.js" type="module"></script>
+<script src="/js/canvas/userEvent.js" type="module"></script>
+<script src="/js/canvas/browser.js" type="module"></script>
 
 </html>

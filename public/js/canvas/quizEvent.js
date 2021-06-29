@@ -1,4 +1,4 @@
-import main from './main.js'
+import main from './chat.js'
 
 const current_drawer = document.getElementById('current-drawer'),
     canvas = document.getElementById('jsCanvas'),

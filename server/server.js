@@ -61,15 +61,14 @@ chat.on('connection', (socket) => {
     });
 
     socket.on('msg', (res) => {
-        console.log('msg:', res);
+        console.log('msg)', res);
         chat.to(myRoom)
             .emit('msg', res);
     });
 
     socket.on('getUserNum', (res) => {
-        // console.log(res)
         chat.to(myRoom)
-            .emit('userNum', res);
+            .emit('getUserNum', res);
     });
 
     socket.on('canvasBtn', (res) => {
@@ -81,21 +80,13 @@ chat.on('connection', (socket) => {
         chat.emit('updateUsers');
     });
 
-    socket.on('success', (res) => {
-        console.log(res);
-    });
-
-    socket.on('error', (res) => {
-        console.log(res);
-    });
-
     socket.on('mouseMove', (res) => {
         chat.to(myRoom)
             .emit('mouseMove', res);
     });
 
     socket.on('updateRooms', (res) => {
-        chat.emit('updateRooms', {msg: '업데이트 하라 오바'});
+        chat.emit('updateRooms', {msg: '방 정보 업데이트'});
     });
 
     socket.on('startQuiz', (res) => {

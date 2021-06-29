@@ -1,4 +1,4 @@
-import main from './main.js'
+import main from './chat.js'
 
 const canvas = document.getElementById('jsCanvas');
 
@@ -11,7 +11,7 @@ ctx.fillRect(0, 0, canvas.width, canvas.height);
 let painting = false;
 let mode = false;
 let color = '#2c2c2c';
-let drawer = 'none';
+let drawer = false;
 
 socket.on('canvasBtn', (res) => {
     const modeBtn = document.getElementById('jsMode');
@@ -28,15 +28,6 @@ socket.on('canvasBtn', (res) => {
     } else if (res.btn === 'mode') {
         modeBtn.innerText = res.mode;
     }
-})
-
-socket.on('success', (res) => {
-    drawer = res.result;
-})
-
-socket.on('userNum', (res) => {
-    const usernum = document.getElementById('userNumber');
-    usernum.innerText = res.len;
 })
 
 socket.on('mouseMove', (res) => {
@@ -59,22 +50,23 @@ socket.on('endQuiz', (res) => {
     initCanvas();
 })
 
-socket.on('getDrawer', (res) => {
-    checkDrawer();
+socket.on('getUserNum', (res) => {
+    canPaint();
 })
 
-window.onresize = (checkCanvase);
+window.onresize = (resizeCanvase);
 
-function checkCanvase() {
+function resizeCanvase() {
+    canvas.width = ctx.canvas.clientWidth;
+    canvas.height = ctx.canvas.clientHeight;
+
     if (drawer) {
-        canvas.width = ctx.canvas.clientWidth;
-        canvas.height = ctx.canvas.clientHeight;
         socket.emit('canvasBtn', { btn: 'init', color: '#2c2c2c'});
     }
 }
 
-function checkDrawer() {
-    fetch('/api/rooms/checkDrawer')
+function canPaint() {
+    fetch('/api/rooms/canPaint')
     .then((res) => {
         res.json().then((data) => {
             drawer = data.result;
@@ -187,12 +179,6 @@ function handleSave() {
     link.click();
 }
 
-function enterRoom() {
-    const roomName = decodeURI(main.extractURL())
-    socket.emit('joinRoom_chat', roomName);
-    roomTitle.innerText = roomName;
-}
-
 function initCanvas() {
     if (drawer)
         socket.emit('canvasBtn', { btn: 'init', color: '#2c2c2c'});
@@ -203,10 +189,9 @@ function init() {
     const div = document.getElementById('canvas-div');
 
     setOption(mode, '#2c2c2c', 2.5, painting);
-    // enterRoom();
     canvasEvent();
-    checkDrawer();
-    checkCanvase();
+    canPaint();
+    resizeCanvase();
 
     setTimeout(() => {
         const range = document.getElementById('jsRange');

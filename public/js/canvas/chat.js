@@ -15,22 +15,9 @@ socket.on('msg', (res) => {
     chat_ul.appendChild(new_li);
 })
 
-socket.on('roomEnter', (res) => {
-    // console.log(res);
-})
-
-socket.on('success', (res) => {
-    // console.log(res)
-})
-
-socket.on('error', (res) => {
-    console.log(res)
-})
-
-socket.on('userNum', (res) => {
+socket.on('getUserNum', (res) => {
     userNumber.innerText = res.len;
-    document.cookie = `drawer=${res.cookie}; path=/`
-    socket.emit('endQuiz');
+    document.cookie = `drawer=${res.cookie}; path=/`;
 })
 
 submitBtn.addEventListener('click', (e) => {
@@ -93,8 +80,9 @@ function leaveRoom() {
         .then((res) => {
             res.json().then((data) => {
                 socket.emit('updateUsers')
-                if (!data.last)
+                if (!data.last) {
                     getUsers(roomName, data.move);
+                }
                 else
                     location.replace('http://localhost:3000/api/rooms/roomList');
             })
@@ -102,11 +90,11 @@ function leaveRoom() {
 }
 
 function init() {
-    socket.emit('updateRooms')
+    leave_btn.addEventListener('click', leaveRoom);
 
-    leave_btn.addEventListener('click', leaveRoom)
+    enterRoom();
 
-    enterRoom()
+    socket.emit('updateRooms');
 }
 
 init();

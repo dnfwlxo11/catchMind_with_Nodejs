@@ -1,4 +1,4 @@
-import answer from './answer.js'
+import answer from './quizEvent.js'
 
 const roomName = document.getElementById('title'),
     usersUl = document.getElementById('users-ul');
