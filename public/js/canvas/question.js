@@ -1,4 +1,4 @@
-const q_div = document.createElement('div'),
+const q_div = document.getElementById('words'),
     quizTitle = document.getElementById('quizTitle'),
     startBtn = document.getElementById('start-quiz');
 
@@ -7,10 +7,10 @@ const MAX_WORD = 7;
 let word;
 
 socket.on('startQuiz', (res) => {
-    const ans_input = document.getElementById('ans_input');
+    const ans_input = document.getElementById('ans-input');
     create_wordDiv(res.word, res.res);
 
-    quizTitle[0].classList.add('hide');
+    quizTitle.classList.add('hide');
     startBtn.classList.add('hide');
 
     if (getCookie('userName') !== res.res)

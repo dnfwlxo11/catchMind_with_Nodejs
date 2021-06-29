@@ -14,12 +14,12 @@ import main from './main.js'
 //     history.pushState(null, null, '/')
 // }
 
-window.onbeforeunload = function (e) {
-    e.preventDefault();
-    main.leaveRoom();
-    socket.emit('updateUsers');
+// window.onbeforeunload = function (e) {
+//     e.preventDefault();
+//     main.leaveRoom();
+//     socket.emit('updateUsers');
 
-    setTimeout(() => {
-        window.location.href('/');
-    }, 0)
-}
+//     setTimeout(() => {
+//         window.location.href('/');
+//     }, 0)
+// }

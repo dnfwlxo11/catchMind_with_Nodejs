@@ -14,8 +14,9 @@ h2, h4 {
     padding-right: 10px;
 }
 
-#wrapper {
+.wrapper {
     height: 100%;
+    width: 80%;
     padding: 10px;
     border: 1px solid black;
 }
@@ -27,73 +28,32 @@ h2, h4 {
     margin-bottom: 30px;
     flex-direction: row;
     width: 100%;
+    height: 20%;
     background-color: bisque;
     border-radius: .5rem;
     box-shadow: 0 4px 6px rgba(50,50,93,0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
-.jsCanvas {
-    width: 70%;
-    height: 60%;
-    background-color: white;
-    border-radius: 2rem;
-    box-shadow: 0 4px 6px rgba(50,50,93,0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
-.controls-div {
-    margin-top: 20px;
+.canvas-div {
     display: flex;
+    float: left;
     flex-direction: column;
-    align-items: center;
-}
-
-.controls-div .controls-colors {
-    display: flex;
-}
-
-.controls-colors .controls-color {
-    margin-left: 10px;
-    margin-right: 10px;
-    width: 50px;
-    height: 50px;
-    border-radius: 25px;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(50,50,93,0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
-.controls-div .controls-btns {
-    margin-bottom: 20px;
-}
-
-.controls-btns button {
-    all: unset;
-    cursor: pointer;
-    background-color: white;
-    padding: 5px 10px;
-    width: 120px;
     text-align: center;
-    border-radius: .5rem;
-    box-shadow: 0 4px 6px rgba(50,50,93,0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-    border: 2px solid rgb(0, 0, 0, 0.2);
-    margin-left: 10px;
-    margin-right: 10px;
-    color: rgb(0, 0, 0, 0.8);
-    text-transform: uppercase;
-    font-weight: 800;
-    font-size: 20px;
+    align-items: center;
+    width: 80%;
+    height: 80vh;
 }
 
-.controls-btns button:active {
-    transform: scale(0.98);
-}
-
-.controls-div .controls-range-input {
-    margin-bottom: 10px;
+.chat-room-div {
+    height: 80%;
+    width: 20%;
+    display: flex;
 }
 
 .words {
     text-align: center;
     margin-bottom: 10px;
+    height: 10%;
     display: inline-block;
 }
 
@@ -108,9 +68,19 @@ h2, h4 {
     border-radius: 5rem;
 }
 
+.jsCanvas {
+    width: 80%;
+    height: 70%;
+    margin-bottom: 20px;
+    background-color: white;
+    border-radius: 2rem;
+    box-shadow: 0 4px 6px rgba(50,50,93,0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
 .ans-div {
+    margin-bottom: 20px;
     text-align: center;
-    padding-top: 20px;
+    height: 10%;
 }
 
 .ans-input {
@@ -121,25 +91,58 @@ h2, h4 {
     padding: 10px;
 }
 
+.controls-div {
+    height: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.controls-colors .controls-color {
+    margin: 10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    cursor: pointer;
+    float: left;
+    box-shadow: 0 4px 6px rgba(50,50,93,0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.controls-div .controls-btns {
+    margin-bottom: 20px;
+}
+
+.controls-btns button {
+    all: unset;
+    cursor: pointer;
+    background-color: white;
+    padding: 5px 10px;
+    text-align: center;
+    border-radius: .5rem;
+    box-shadow: 0 4px 6px rgba(50,50,93,0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    border: 2px solid rgb(0, 0, 0, 0.2);
+    margin-left: 10px;
+    margin-right: 10px;
+    color: rgb(0, 0, 0, 0.8);
+    text-transform: uppercase;
+    font-weight: 800;
+    font-size: 20px;
+}
+
+.controls-range {
+    margin-bottom: 10px;
+}
+
+.controls-btns {
+    margin-bottom: 20px;
+}
+
 .hide {
     display: none;
 }
 
 .chat-div, .canvas-div, .words {
     text-align: center;
-}
-
-.chat-room-div {
-    display: flex;
-    flex-direction: row-reverse;
-}
-
-.canvas-div {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    align-items: center;
-    width: 50vw;
 }
 
 #title {
@@ -158,7 +161,7 @@ h2, h4 {
 
 .chat-div {
     height: 100%;
-    width: 15vw;
+    width: 100%;
 }
 
 #users-ul, .bottom-section {

@@ -5,9 +5,6 @@ const canvas = document.getElementById('jsCanvas');
 const ctx = canvas.getContext('2d'),
     colors = document.getElementsByClassName('jsColor');
 
-canvas.setAttribute('id', 'jsCanvas');
-canvas.setAttribute('class', 'jsCanvas');
-
 ctx.fillStyle = 'white';
 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -204,9 +201,6 @@ function initCanvas() {
 function init() {
     const room_div = document.getElementById('chat-room-div');
     const div = document.getElementById('canvas-div');
-
-    room_div.appendChild(div);
-    div.appendChild(canvas);
 
     setOption(mode, '#2c2c2c', 2.5, painting);
     // enterRoom();

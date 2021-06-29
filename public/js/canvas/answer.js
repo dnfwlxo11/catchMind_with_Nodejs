@@ -1,11 +1,9 @@
 import main from './main.js'
 
-const ans_div = document.getElementById('ans-div'),
-    current_drawer = document.getElementById('current-drawer'),
+const current_drawer = document.getElementById('current-drawer'),
     canvas = document.getElementById('jsCanvas'),
     quizTitle = document.getElementsByClassName('quizTitle'),
     startBtn = document.getElementById('start-quiz'),
-    ans_title = document.getElementById('ans-title'),
     ans_input = document.getElementById('ans-input'),
     control_div = document.getElementById('controls-div'),
     control_colors = document.getElementById('jsColors'),

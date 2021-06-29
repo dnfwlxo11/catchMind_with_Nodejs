@@ -8,10 +8,32 @@
 </head>
 
 <body>
-    <div id='wrapper'>
+    <div id='wrapper' class="wrapper">
         <div id='title-div' class='title-div'>
             <h2>방 이름 : </h2><h2 id='title'></h2>
             <h4>접속자 수 : </h4><h4 id='userNumber'></h4>
+        </div>
+        <div id='canvas-div' class='canvas-div'>
+            <div id="words" class="words">
+                <h1 id="quizTitle" class="quizTitle">시작하려면 시작하기를 눌러주세요!</h1>
+            </div>
+            <canvas id="jsCanvas" class="jsCanvas"></canvas>
+            <div id="ans-div" class="ans-div">
+                <h2 id="current-drawer"></h2>
+                <h2 id="ans-title" class="ans-title">정답은?</h2>
+                <input id="ans-input" class="ans-input" type="text">
+            </div>
+            <div id="controls-div">
+                <div id="controls-range" class="controls-range">
+                    <input id="jsRange" type="range" id="controls-range-input" class="controls-range-input" min="0.2" max="10" value="2.5" step="0.2">
+                </div>
+                <div id="controls-btns" class="controls-btns">
+                    <button id="jsMode" class="fill-btn">연필모드</button>
+                    <button id="jsSave" class="save-btn">저장하기</button>
+                    <button id="jsInit" class="init-btn">초기화</button>
+                </div>
+                <div id="jsColors" class="controls-colors"></div>
+            </div>
         </div>
         <div id='chat-room-div' class='chat-room-div'>
             <div class='chat-div'>
@@ -32,29 +54,8 @@
                     </form>
                 </div>
             </div>
-            <div id='canvas-div' class='canvas-div'>
-                <div class="words">
-                    <h1 id="quizTitle" class="quizTitle">시작하려면 시작하기를 눌러주세요!</h1>
-                </div>
-                <canvas id="jsCanvas" class="jsCanvas"></canvas>
-                <h2 id="current-drawer"></h2>
-                <div id="ans-div" class="ans_div">
-                    <h2 id="ans-title" class="ans-title">정답은?</h2>
-                    <input id="ans-input" class="ans-input" type="text">
-                </div>
-                <div id="controls-div">
-                    <div id="controls-range">
-                        <input id="jsRange" type="range" id="controls-range-input" class="controls-range-input" min="0.2" max="10" value="2.5" step="0.2">
-                    </div>
-                    <div id="controls-btns" class="controls-btns">
-                        <button id="jsMode" class="fill-btn">연필모드</button>
-                        <button id="jsSave" class="save-btn">저장하기</button>
-                        <button id="jsInit" class="init-btn">초기화</button>
-                    </div>
-                    <div id="jsColors" class="controls-colors"></div>
-                </div>
-            </div>
         </div>
+        
     </div>
 </body>
 <script src="/socket.io/socket.io.js"></script>
