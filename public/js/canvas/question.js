@@ -1,8 +1,6 @@
 const q_div = document.createElement('div'),
-    quizTitle = document.getElementsByClassName('quizTitle'),
+    quizTitle = document.getElementById('quizTitle'),
     startBtn = document.getElementById('start-quiz');
-
-q_div.setAttribute('class', 'words');
 
 const WORD_NUM = 5;
 const MAX_WORD = 7;
@@ -73,17 +71,9 @@ function startQuiz() {
 }
 
 function init() {
-    const div = document.getElementById('canvas-div');
-    const title = document.createElement('h1');
-    const startBtn = document.getElementById('start-quiz');
+    
 
     startBtn.addEventListener('click', startQuiz);
-
-    title.setAttribute('class', 'quizTitle');
-    title.innerText = '시작하려면 시작하기를 눌러주세요!'
-
-    div.appendChild(q_div);
-    q_div.appendChild(title);
 }
 
 init();

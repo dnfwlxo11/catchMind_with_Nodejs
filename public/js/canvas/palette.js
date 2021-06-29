@@ -1,30 +1,12 @@
-const control_div = document.createElement('div'),
-    control_colors = document.createElement('div'),
-    control_btns = document.createElement('div'),
-    control_btn_mode = document.createElement('button'),
-    control_btn_save = document.createElement('button'),
-    control_btn_init = document.createElement('button'),
-    control_range = document.createElement('div'),
-    control_range_input = document.createElement('input');
+const control_div = document.getElementById('controls-div'),
+    control_btns = document.getElementById('controls-btns'),
+    control_btn_mode = document.getElementById('jsMode'),
+    control_btn_save = document.getElementById('jsSave'),
+    control_btn_init = document.getElementById('jsInit'),
+    control_range = document.getElementById('controls-div'),
+    control_range_input = document.getElementById('controls-range-input'),
+    control_colors = document.getElementById('jsColors');
 
-control_div.setAttribute('class', 'controls');
-control_colors.setAttribute('id', 'jsColors');
-control_colors.setAttribute('class', 'controls-colors');
-control_btns.setAttribute('class', 'controls-btns');
-control_btn_mode.setAttribute('id', 'jsMode');
-control_btn_save.setAttribute('id', 'jsSave');
-control_btn_init.setAttribute('id', 'jsInit');
-control_btn_mode.setAttribute('class', 'fill-btn');
-control_btn_save.setAttribute('class', 'save-btn');
-control_btn_init.setAttribute('class', 'init-btn');
-control_range.setAttribute('class', 'controls-range');
-control_range_input.setAttribute('id', 'jsRange');
-control_range_input.setAttribute('class', 'controls-range-input');
-control_range_input.setAttribute('type', 'range');
-control_range_input.setAttribute('min', '0.2');
-control_range_input.setAttribute('max', '10');
-control_range_input.setAttribute('value', 2.5);
-control_range_input.setAttribute('step', '0.2');
 
 const COLORS = [
     '#2c2c2c',
@@ -53,13 +35,6 @@ function init() {
 
     div.appendChild(control_div);
 
-    control_div.appendChild(control_range);
-    control_range.appendChild(control_range_input);
-    control_div.appendChild(control_btns);
-
-    control_btns.appendChild(control_btn_mode);
-    control_btns.appendChild(control_btn_save);
-    control_btns.appendChild(control_btn_init);
     control_btn_mode.innerText = '연필모드'
     control_btn_save.innerText = '저장하기'
     control_btn_init.innerText = '초기화'

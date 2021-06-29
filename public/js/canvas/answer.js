@@ -1,19 +1,16 @@
 import main from './main.js'
 
-const ans_div = document.createElement('div'),
-    ans_title = document.createElement('h2'),
-    ans_input = document.createElement('input'),
-    current_drawer = document.createElement('h2'),
+const ans_div = document.getElementById('ans-div'),
+    current_drawer = document.getElementById('current-drawer'),
     canvas = document.getElementById('jsCanvas'),
     quizTitle = document.getElementsByClassName('quizTitle'),
-    startBtn = document.getElementById('start-quiz');
+    startBtn = document.getElementById('start-quiz'),
+    ans_title = document.getElementById('ans-title'),
+    ans_input = document.getElementById('ans-input'),
+    control_div = document.getElementById('controls-div'),
+    control_colors = document.getElementById('jsColors'),
+    canvas_div = document.getElementById('canvas-div');
 
-ans_div.setAttribute('class', 'ans_div');
-ans_title.setAttribute('class', 'ans_title');
-ans_input.setAttribute('id', 'ans_input');
-ans_input.setAttribute('class', 'ans_input');
-current_drawer.setAttribute('id', 'current-drawer');
-ans_input.setAttribute('type', 'text');
 ans_input.disabled = true;
 
 socket.on('quizAnswer', (res) => {
@@ -23,6 +20,28 @@ socket.on('quizAnswer', (res) => {
 socket.on('endQuiz', (res) => {
     initWord();
 })
+
+const COLORS = [
+    '#2c2c2c',
+    'white',
+    '#FF3B30',
+    '#FF9500',
+    '#FFCC00',
+    '#4CD963',
+    '#5AC8FA',
+    '#0579FF',
+    '#5856D6'
+];
+
+function createFalette() {
+    COLORS.forEach(color => {
+        const control_color = document.createElement('div');
+
+        control_color.setAttribute('class', 'controls-color jsColor');
+        control_color.style.backgroundColor = color;
+        control_colors.appendChild(control_color);
+    })
+}
 
 function switchDrawer() {
     const data = {
@@ -122,18 +141,12 @@ function show_wordDiv(answer) {
 }
 
 function init() {
-    const div = document.getElementById('canvas-div');
-
-    ans_title.innerText = '정답은?';
-
-    div.appendChild(current_drawer);
-    div.appendChild(ans_div);
-    ans_div.appendChild(ans_title);
-    ans_div.appendChild(ans_input);
+    canvas_div.appendChild(control_div);
+    control_div.appendChild(control_colors);
     
-
     ans_input.addEventListener('keydown', submitAnswer);
 
+    createFalette();
     getDrawer();
 }
 

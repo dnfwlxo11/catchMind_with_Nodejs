@@ -32,17 +32,37 @@
                     </form>
                 </div>
             </div>
-            <div id='canvas-div' class='canvas-div'></div>
+            <div id='canvas-div' class='canvas-div'>
+                <div class="words">
+                    <h1 id="quizTitle" class="quizTitle">시작하려면 시작하기를 눌러주세요!</h1>
+                </div>
+                <canvas id="jsCanvas" class="jsCanvas"></canvas>
+                <h2 id="current-drawer"></h2>
+                <div id="ans-div" class="ans_div">
+                    <h2 id="ans-title" class="ans-title">정답은?</h2>
+                    <input id="ans-input" class="ans-input" type="text">
+                </div>
+                <div id="controls-div">
+                    <div id="controls-range">
+                        <input id="jsRange" type="range" id="controls-range-input" class="controls-range-input" min="0.2" max="10" value="2.5" step="0.2">
+                    </div>
+                    <div id="controls-btns" class="controls-btns">
+                        <button id="jsMode" class="fill-btn">연필모드</button>
+                        <button id="jsSave" class="save-btn">저장하기</button>
+                        <button id="jsInit" class="init-btn">초기화</button>
+                    </div>
+                    <div id="jsColors" class="controls-colors"></div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/canvas/enterRoom.js"></script>
 <script src="/js/canvas/main.js" type="module"></script>
-<script src="/js/canvas/question.js" type="module"></script>
 <script src="/js/canvas/canvas.js" type="module"></script>
+<script src="/js/canvas/question.js" type="module"></script>
 <script src="/js/canvas/answer.js" type="module"></script>
-<script src="/js/canvas/palette.js" type="module"></script>
 <script src="/js/canvas/roomUsers.js" type="module"></script>
 <script src="/js/canvas/backEvent.js" type="module"></script>
 

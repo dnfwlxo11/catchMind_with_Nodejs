@@ -40,14 +40,14 @@ h2, h4 {
     box-shadow: 0 4px 6px rgba(50,50,93,0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
-.controls {
+.controls-div {
     margin-top: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.controls .controls-colors {
+.controls-div .controls-colors {
     display: flex;
 }
 
@@ -61,7 +61,7 @@ h2, h4 {
     box-shadow: 0 4px 6px rgba(50,50,93,0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
-.controls .controls-btns {
+.controls-div .controls-btns {
     margin-bottom: 20px;
 }
 
@@ -87,7 +87,7 @@ h2, h4 {
     transform: scale(0.98);
 }
 
-.controls .controls-range-input {
+.controls-div .controls-range-input {
     margin-bottom: 10px;
 }
 
@@ -108,16 +108,16 @@ h2, h4 {
     border-radius: 5rem;
 }
 
-.ans_div {
+.ans-div {
     text-align: center;
     padding-top: 20px;
 }
 
-.ans_input {
+.ans-input {
     text-align: center;
 }
 
-.ans_title, .ans_input {
+.ans-title, .ans-input {
     padding: 10px;
 }
 

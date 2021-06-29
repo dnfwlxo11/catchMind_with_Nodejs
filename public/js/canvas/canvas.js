@@ -1,6 +1,6 @@
 import main from './main.js'
 
-const canvas = document.createElement('canvas');
+const canvas = document.getElementById('jsCanvas');
 
 const ctx = canvas.getContext('2d'),
     colors = document.getElementsByClassName('jsColor');
