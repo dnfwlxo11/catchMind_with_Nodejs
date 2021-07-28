@@ -9,6 +9,7 @@ const cookieParser = require('cookie-parser');
 const users = require('./router/users');
 const rooms = require('./router/rooms')
 const config = require('./config/dev');
+const cors = require('cors')
 const { auth } = require('./middleware/auth');
 const { User } = require('./models/User');
 const { Room } = require('./models/Room');
@@ -36,6 +37,8 @@ const quiz = [
     '노트북',
     '마스크'
 ]
+
+app.use(cors())
 
 app.get('/', (req, res) => {
     if (!req.cookies.x_auth)
