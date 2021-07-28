@@ -12,6 +12,14 @@ router.get('/roomList', auth, (req, res) => {
     res.sendFile(path.join(__dirname, '../../public/html/roomList.html'));
 });
 
+router.post('/checkName', auth, (req, res) => {
+    console.log(req.body)
+    Room.findOne({ room:  req.body.roomName}, (room) => {
+        if (!room) return res.send({ success: false, msg: '이미 존재하는 방입니다.'})
+        return res.send({ success: true })
+    })
+})
+
 router.get('/searchRooms', auth, (req, res) => {
     Room.find((err, rooms) => {
         if (!rooms) return res.json({ success: false, msg: '현재 만들어진 방 없음' })

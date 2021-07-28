@@ -40,11 +40,14 @@ const quiz = [
 
 app.use(cors())
 
-app.get('/', (req, res) => {
+app.get('/', auth, (req, res) => {
+    console.log(req)
     if (!req.cookies.x_auth)
-        res.sendFile(path.join(__dirname, '../public/html/index.html'));
+        res.send({ success: true })
+        // res.sendFile(path.join(__dirname, '../public/html/index.html'));
     else
-        res.redirect('/api/rooms/roomList');
+        res.send({ success: false })
+        // res.redirect('/api/rooms/roomList');
 })
 app.use('/api/users', users);
 app.use('/api/rooms', rooms);

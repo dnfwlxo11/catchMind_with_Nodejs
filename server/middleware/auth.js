@@ -7,10 +7,11 @@ let auth = (req, res, next) => {
 
     // 토큰을 복호화하여 유저를 조회
     User.findByToken(token, (err, user) => {
+        console.log(user)
         if (err) throw err;
 
         // 유저가 없으면 미인증
-        if (!user) return res.redirect('/')
+        if (!user) return res.send({ auth: false, msg: '인증 실패' })
 
         // 유저가 있으면 인증
         req.token = token;
