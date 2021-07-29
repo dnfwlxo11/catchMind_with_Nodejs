@@ -56,7 +56,14 @@ export default {
             
             alert(res.data.msg)
             if (res.data.success) {
-                this.$router.go(-1)
+                let res = await axios.post(`/api/rooms/join/${this.roomName}`, { room: this.roomName })
+
+                if (res.data.success) {
+                    this.$router.push(`/rooms/${this.roomName}`)
+                } else {
+                    alert('방이 사라졌거나 꽉 찼습니다.\n새로고침 해주세요.')
+                    return false
+                }
             } else {
                 return false
             }

@@ -12,7 +12,7 @@
             </ul>
         </div>
         <div v-else>
-            <h1>방이 존재하지 않습니다.</h1>
+            <h1>{{ none }}</h1>
         </div>
     </div>
 </template>
@@ -30,7 +30,8 @@ export default {
     data() {
         return {
             roomList: null,
-            isRoom: false
+            isRoom: false,
+            none: ''
         }
     },
 
@@ -41,7 +42,6 @@ export default {
     methods: {
         async init() {
             await this.getRoomList()
-            console.log(this.roomList)
         },
 
         async getRoomList() {
@@ -55,8 +55,10 @@ export default {
                     }
                 })
 
+                this.none = ''
                 this.isRoom = true
             } else {
+                this.none = '방이 존재하지 않습니다.'
                 this.isRoom = false
             }
         },
