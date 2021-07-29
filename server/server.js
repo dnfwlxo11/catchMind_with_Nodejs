@@ -17,9 +17,9 @@ const { Room } = require('./models/Room');
 const PORT = 3000;
 
 app.use('/', express.static(path.join(__dirname, '../public/')));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser('#$@#AQasd2!@'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 const mongoose = require('mongoose')
 mongoose.connect(config.mongoURI, {
@@ -41,7 +41,6 @@ const quiz = [
 app.use(cors())
 
 app.get('/', auth, (req, res) => {
-    console.log(req)
     if (!req.cookies.x_auth)
         res.send({ success: true })
         // res.sendFile(path.join(__dirname, '../public/html/index.html'));

@@ -9,8 +9,11 @@
             </div>
         </div>
         <div class="row justify-content-center">    
-            <button type="button" class="btn btn-primary mr-3">방만들기</button>
+            <button type="button" class="btn btn-primary mr-3" @click="createRoom">방만들기</button>
             <button type="button" class="btn btn-danger" @click="$router.go(-1)">나가기</button>
+        </div>
+        <div class="row" style="overflow: auto; max-height: 800px">
+
         </div>
     </div>
 </template>
@@ -29,16 +32,40 @@ export default {
 
     methods: {
         async dupliCheck() {
-            let res = await axios.post('http://localhost:3000/api/rooms/checkName', { roomName: this.roomName })
-            console.log(res)
-            if (res.success) this.duplicate = !this.duplicate
-            else alert(res.msg)
+            if (!this.roomName) {
+                alert('방이름을 입력해주세요.')
+                return false
+            }
+
+            let res = await axios.post('/api/rooms/checkName', { roomName: this.roomName })
+
+            if (res.data.success) this.duplicate = true
+            else {
+                alert(res.data.msg)
+                return false
+            }
+        },
+
+        async createRoom() {
+            if (!this.duplicate) {
+                alert('방이름 중복체크를 해주세요')
+                return false
+            }
+
+            let res = await axios.post('/api/rooms/createRoom', { room: this.roomName })
+            
+            alert(res.data.msg)
+            if (res.data.success) {
+                this.$router.go(-1)
+            } else {
+                return false
+            }
         },
 
         editName() {
             this.roomName = ''
-            this.duplicate = !this.duplicate
-        }
+            this.duplicate = false
+        },
     }
 }
 </script>

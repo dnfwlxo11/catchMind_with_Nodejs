@@ -58,7 +58,7 @@
                     pass: this.pass
                 }
 
-                let res = await axios.post('http://localhost:3000/api/users/login', sendData)
+                let res = await axios.post('/api/users/login', sendData)
 
                 VueCookies.set('x_auth', res.data.token)
 

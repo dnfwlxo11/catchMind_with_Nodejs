@@ -13,14 +13,14 @@ router.get('/roomList', auth, (req, res) => {
 });
 
 router.post('/checkName', auth, (req, res) => {
-    console.log(req.body)
-    Room.findOne({ room:  req.body.roomName}, (room) => {
-        if (!room) return res.send({ success: false, msg: '이미 존재하는 방입니다.'})
+    console.log(req.body.roomName, typeof(req.body.roomName))
+    Room.findOne({ room:  req.body.roomName}, (err, room) => {
+        if (room) return res.send({ success: false, msg: '이미 존재하는 방입니다.'})
         return res.send({ success: true })
     })
 })
 
-router.get('/searchRooms', auth, (req, res) => {
+router.get('/getRooms', auth, (req, res) => {
     Room.find((err, rooms) => {
         if (!rooms) return res.json({ success: false, msg: '현재 만들어진 방 없음' })
         res.json({ success: true, rooms: rooms });
@@ -209,22 +209,6 @@ router.post('/getUsers', auth, (req, res) => {
             if (err) return res.json({ success: false, msg: '해당 방은 존재하지 않습니다.' });
             else return res.json({ success: true, len: room.users.length, cookie: room.drawer.token, msg: '쿠키 업데이트' });
         });
-});
-
-router.post('/check', (req, res) => {
-    Room.findOne({ room: req.body.room }, (err, user) => {
-        if (!user) {
-            return res.json({
-                success: true,
-                msg: '사용 가능한 방입니다.'
-            })
-        } else {
-            return res.json({
-                success: false,
-                msg: '이미 사용 중인 방입니다.'
-            })
-        }
-    });
 });
 
 module.exports = router
