@@ -4,6 +4,7 @@ import Main from '../views/Main.vue'
 import Rooms from '../views/vues/RoomList.vue'
 import Room from '../views/vues/RoomDetail.vue'
 import createRoom from '../views/vues/RoomCreate.vue'
+import Register from '../views/vues/UserRegister.vue'
 
 Vue.use(VueRouter)
 
@@ -16,7 +17,6 @@ const routes = [
   {
     path: '/rooms',
     name: 'Rooms',
-    // component: () => import('../views/waitingRoom.vue')
     component: Rooms
   },
   {
@@ -28,6 +28,11 @@ const routes = [
     path: '/createRoom',
     name: 'createRoom',
     component: createRoom
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: Register
   }
 ]
 

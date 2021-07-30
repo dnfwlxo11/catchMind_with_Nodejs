@@ -4,7 +4,6 @@
             <div class="col-3 mb-3">
                 <input class="input-group" type="text" id='id' v-model="id" placeholder="아이디">
             </div>
-
         </div>
         <div class="row justify-content-center">
             <div class="col-3 mb-3">
@@ -13,7 +12,7 @@
         </div>
         <div class="row justify-content-center">
             <button class='btn btn-secondary mr-3' @click="login">로그인</button>
-            <button class='btn btn-primary' type="submit">회원가입</button>
+            <button class='btn btn-primary' @click="$router.push('/register')">회원가입</button>
         </div>
     </div>
 </template>
@@ -60,12 +59,12 @@
 
                 let res = await axios.post('/api/users/login', sendData)
 
-                VueCookies.set('x_auth', res.data.token)
-
                 if (res.data.success) {
+                    VueCookies.set('x_auth', res.data.token)
                     this.$router.push('/rooms')
                 } else {
                     alert(res.data.msg)
+                    return false
                 }
             }
         }

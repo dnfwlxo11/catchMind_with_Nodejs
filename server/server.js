@@ -2,12 +2,7 @@ const express = require('express')
 const app = express()
 const http = require('http')
 const server = http.createServer(app)
-const io = require('socket.io')(server, {
-    cors: {
-        origin: ["http://localhost:8080"],
-        methods:["GET","POST"],
-    }
-});
+const io = require('socket.io')(server, {cors: {origin: ["http://localhost:8081"]}});
 const path = require('path')
 const cookieParser = require('cookie-parser')
 const users = require('./router/users')
@@ -17,13 +12,6 @@ const cors = require('cors')
 const { auth } = require('./middleware/auth')
 
 const PORT = 3000
-
-
-app.all('/', function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    next();
-});
 
 app.use(cors())
 
@@ -60,26 +48,30 @@ app.get('/', auth, (req, res) => {
 app.use('/api/users', users)
 app.use('/api/rooms', rooms)
 
-connectCounter = []
 
 const chat = io.of('/chat')
 chat.on('connection', (socket) => {
-    console.log('zxc')
-    let myRoom = 'open'
+    let myRoom = ''
     let word = '호랑이'
 
     socket.on('joinRoom_chat', (room) => {
-        console.log('asd')
-        socket.join(room, (err) => {
+        myRoom = room
+        socket.join(myRoom, (err) => {
             console.log(err)
         })
-        myRoom = room
+    })
+
+    socket.on('disconnecting', () => {
+        socket.leave(myRoom)
+    })
+
+    socket.on('disconnect', () => {
+        console.log('나감', socket.id);
     })
 
     socket.on('msg', (res) => {
-        console.log('msg)', res)
-        chat.to(myRoom)
-            .emit('msg', res)
+        console.log(`${res.name}(${myRoom}):`, res.msg)
+        chat.to(myRoom).emit('msg', res)
     })
 
     socket.on('getUserNum', (res) => {
@@ -127,6 +119,8 @@ chat.on('connection', (socket) => {
         chat.to(myRoom)
             .emit('getDrawer')
     })
+
+    
 })
 
 server.listen(PORT, () => {

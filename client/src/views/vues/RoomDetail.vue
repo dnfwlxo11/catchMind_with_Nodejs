@@ -31,8 +31,8 @@
             </div>
             <div class="col-2">
                 <ul ref="chatUl" class="chat list-group mb-3" :style="`overflow: auto;height: ${canvasHeight}px;max-height: ${canvasHeight}px;`">
-                    <li class="list-group-item" v-for="(item, idx) of chatArr" :key="idx">
-                        <p class="my-auto">{{ item }}</p>
+                    <li class="list-group-item text-left" v-for="(item, idx) of chatArr" :key="idx" :class="{'text-right': item[0] == userName}">
+                        <p class="my-auto w-100">{{ item[0] }}: {{ item[1] }}</p>
                     </li>
                 </ul>
                 <input class="w-100" type="text" @keyup.enter="sendChat" v-model="chat">
@@ -42,8 +42,12 @@
 </template>
 
 <script>
+    import Vue from 'vue'
     import axios from 'axios'
     import io from 'socket.io-client'
+    import VueCookies from "vue-cookies"
+    
+    Vue.use(VueCookies);
 
     export default {
         name: 'Room',
@@ -51,8 +55,10 @@
         data() {
             return {
                 COLORS: ['#2c2c2c', '#FFFFFF', '#FF3B30', '#FF9500', '#FFCC00', '#4CD963', '#5AC8FA', '#0579FF', '#5856D6'],
-                chatArr: ['안녕하세요', '감사합니다.'],
+                chatArr: [],
                 userArr: ['대인', '중인', '소인', '목캔디', '핫초코'],
+                roomName: this.$route.params.id,
+                userName: VueCookies.get('userName'),
                 userNum: 0,
                 canvasWidth: 0,
                 canvasHeight: 0,
@@ -69,10 +75,10 @@
         
         created() {
             this.socket = io('http://localhost:3000/chat')
-            this.socket.emit('joinRoom_chat')
+            this.socket.emit('joinRoom_chat', this.roomName)
 
-            this.socket.on('msg', (data) => {
-                console.log(data)
+            this.socket.on('msg', (res) => {
+                this.chatArr.push([res.name, res.msg])
             })
         },
 
@@ -137,9 +143,7 @@
                 this.chat = this.chat == '' ? this.chat : this.chat.trim()
                 if (this.chat == '') return false
 
-                console.log(this.chat)
-                this.chatArr.push(this.chat)
-                this.socket.emit('msg', this.chat)
+                this.socket.emit('msg', { msg: this.chat, name: this.userName  })
                 this.chat = ''
             },
 

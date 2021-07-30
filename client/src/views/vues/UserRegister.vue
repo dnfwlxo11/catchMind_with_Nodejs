@@ -1,15 +1,21 @@
 <template>
     <div class='container mt-3 mb-3'>
-        <div class="row justify-content-center mb-3">
-            <div>
-                <input class="mr-3" type="text" placeholder="방이름" v-model="roomName">
+        <div class="mb-5">
+            <h2>회원가입</h2>
+        </div>
+        <div class="row justify-content-center mb-5">
+            <div class="col-2">
+                <input class="mr-3 mb-3" type="text" placeholder="아이디" v-model="id">
+                <input class="mr-3" type="password" placeholder="비밀번호" v-model="pass">
+            </div>
+            <div class="col-2">
                 <button v-if="!duplicate" type="button" class="btn btn-secondary mr-3" @click="dupliCheck">중복체크</button>
                 <button v-if="duplicate" type="button" class='btn btn-secondary mr-3' @click="editName">수정</button>
                 <img v-if="duplicate" class='img' src="@/assets/idCheck.png" style="width:25px">
             </div>
         </div>
         <div class="row justify-content-center">    
-            <button type="button" class="btn btn-primary mr-3" @click="createRoom">방만들기</button>
+            <button type="button" class="btn btn-primary mr-3" @click="userRegister">회원가입</button>
             <button type="button" class="btn btn-danger" @click="$router.go(-1)">나가기</button>
         </div>
         <div class="row" style="overflow: auto; max-height: 800px">
@@ -21,23 +27,24 @@
 import axios from 'axios'
 
 export default {
-    name: 'createRoom',
+    name: 'register',
     
     data() {
         return {
             duplicate: false,
-            roomName: ''
+            id: '',
+            pass: ''
         }
     },
 
     methods: {
         async dupliCheck() {
-            if (!this.roomName) {
-                alert('방이름을 입력해주세요.')
+            if (!this.id) {
+                alert('아이디를 입력해주세요.')
                 return false
             }
 
-            let res = await axios.post('/api/rooms/checkName', { roomName: this.roomName })
+            let res = await axios.post('/api/users/check', { name: this.id })
 
             if (res.data.success) this.duplicate = true
             else {
@@ -46,25 +53,14 @@ export default {
             }
         },
 
-        async createRoom() {
-            if (!this.duplicate) {
-                alert('방이름 중복체크를 해주세요')
-                return false
-            }
+        async userRegister() {
+            let res = await axios.post('/api/users/submitRegister', { name: this.id, password: this.pass })
 
-            let res = await axios.post('/api/rooms/createRoom', { room: this.roomName })
-            
-            alert(res.data.msg)
             if (res.data.success) {
-                let res = await axios.get(`/api/rooms/join/${this.roomName}`)
-
-                if (res.data.success) {
-                    this.$router.push(`/rooms/${this.roomName}`)
-                } else {
-                    alert('방이 사라졌거나 꽉 찼습니다.\n새로고침 해주세요.')
-                    return false
-                }
+                alert('회원가입이 완료되었습니다.\n로그인 해주세요.')
+                this.$router.push('/')
             } else {
+                alert('회원가입 중 문제가 발생했습니다.\n새로고침 해주세요.')
                 return false
             }
         },
