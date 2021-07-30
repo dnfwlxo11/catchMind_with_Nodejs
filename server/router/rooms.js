@@ -13,7 +13,6 @@ router.get('/roomList', auth, (req, res) => {
 });
 
 router.post('/checkName', auth, (req, res) => {
-    console.log(req.body.roomName, typeof(req.body.roomName))
     Room.findOne({ room:  req.body.roomName}, (err, room) => {
         if (room) return res.send({ success: false, msg: '이미 존재하는 방입니다.'})
         return res.send({ success: true })
@@ -32,7 +31,9 @@ router.get('/createRoom', auth, (req, res) => {
 });
 
 router.post('/createRoom', auth, (req, res) => {
-    Room.findOne({ room: decodeURI(req.body.room) }, (err, room) => {
+    const roomName = decodeURI(req.body.room)
+
+    Room.findOne({ room: roomName }, (err, room) => {
         if (!room) {
             const new_room = new Room({
                 room: req.body.room,
@@ -106,11 +107,9 @@ router.post('/switchDrawer', (req, res) => {
 })
 
 router.get('/join/:roomName', auth, (req, res) => {
-    res.sendFile(path.join(__dirname, '../../public/html/chatRoom.html'), { room: 'test' })
-})
+    const roomName = req.params.roomName
 
-router.post('/join/:roomName', auth, (req, res) => {
-    Room.findOne({ room: req.body.room })
+    Room.findOne({ room: roomName })
         .populate('drawer')
         .exec((err, room) => {
             if (err) {
@@ -133,14 +132,14 @@ router.post('/join/:roomName', auth, (req, res) => {
                         if (err) console.log(err);
                     }).exec();
 
+                return res.send({ success: true, room: room.room });
             }
-
-            return res.cookie('drawer', room.drawer.token).json({ success: true });
         });
 });
 
 router.post('/leave', auth, (req, res) => {
     const roomName = req.body.room;
+    console.log(roomName)
 
     Room.findOne({ room: roomName })
         .populate('drawer')
@@ -164,19 +163,17 @@ router.post('/leave', auth, (req, res) => {
                 room.save(() => {
                     if (room.users.length === 0) {
                         Room.deleteOne({ room: roomName }).exec();
-                        return res.json({ last: true, move: true });
+                        return res.json({ success: true, last: true, move: true });
                     } else {
                         const idx = Math.floor(Math.random() * room.users.length);
                         const newDrawer = room.users[idx]
 
                         room.updateOne({ drawer: newDrawer }).exec();
                         return res.json({
-                            last: false, move: true 
+                            success: true, last: false, move: true 
                         });
                     }
                 });
-
-                
             }
         });
 })

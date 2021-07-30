@@ -4,10 +4,10 @@
             <button class="btn btn-primary mr-3" @click="createRoom">방만들기</button>
             <button class="btn btn-danger" @click="logout">로그아웃</button>    
         </div>
-        <div v-if="isRoom" class="justify-content-center">
-            <ul class="list-group">
-                <li class="list-group-item w-75" v-for="(item, idx) of roomList" :key="idx">
-                    <a class="w-100" @click="join">방이름 : {{item.name}}, 현재인원 : {{item.userNum}}</a>
+        <div v-if="isRoom" class="d-flex justify-content-center">
+            <ul class="list-group w-75">
+                <li class="list-group-item w-100" v-for="(item, idx) of roomList" :key="idx">
+                    <a class="w-100" @click="join" :id="item.name">방이름 : {{item.name}}, 현재인원 : {{item.userNum}}</a>
                 </li>
             </ul>
         </div>
@@ -72,8 +72,14 @@ export default {
             this.$router.push('/createRoom')
         },
 
-        join() {
-            console.log('Hi')
+        async join(e) {
+            let res = await axios.get(`/api/rooms/join/${e.target.id}`)
+
+            if (res.data.success) {
+                this.$router.push(`/rooms/${res.data.room}`)
+            } else {
+                alert('방에 입장 중 문제가 발생했습니다.\n새로고침 해주세요.')
+            }
         }
     }
 }

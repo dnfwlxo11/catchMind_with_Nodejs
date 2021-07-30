@@ -56,7 +56,7 @@ export default {
             
             alert(res.data.msg)
             if (res.data.success) {
-                let res = await axios.post(`/api/rooms/join/${this.roomName}`, { room: this.roomName })
+                let res = await axios.get(`/api/rooms/join/${this.roomName}`)
 
                 if (res.data.success) {
                     this.$router.push(`/rooms/${this.roomName}`)

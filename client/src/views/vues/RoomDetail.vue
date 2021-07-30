@@ -13,7 +13,7 @@
                     </li>
                 </ul>
                 <button v-if="isAdmin" class="btn btn-primary mb-2 w-100" @click="startGame">시작하기</button>
-                <button class="btn btn-danger mb-3 w-100">방나가기</button>
+                <button class="btn btn-danger mb-3 w-100" @click="leaveRoom">방나가기</button>
             </div>
             <div ref='canvasDiv' class="col-8">
                 <div class="row mb-4 justify-content-center">
@@ -26,7 +26,7 @@
                     <button class="btn btn-outline-primary">초기화</button>
                 </div>
                 <div class="row mb-4 justify-content-center">
-                    <div class="mr-3 palette" :ref="`palette_${item}`" v-for="(item, idx) of COLORS" :key="idx"></div>
+                    <div class="mr-3 palette" :ref="`palette_${item}`" v-for="(item, idx) of COLORS" :key="idx" @click="changeColor(item)"></div>
                 </div>
             </div>
             <div class="col-2">
@@ -42,6 +42,9 @@
 </template>
 
 <script>
+    import axios from 'axios'
+    import io from 'socket.io-client'
+
     export default {
         name: 'Room',
 
@@ -59,8 +62,18 @@
                 paintMode: true,
                 canvas: null,
                 ctx: null,
-                color: '#2C2C2C'
+                color: '#2C2C2C',
+                socket: null
             }
+        },
+        
+        created() {
+            this.socket = io('http://localhost:3000/chat')
+            this.socket.emit('joinRoom_chat')
+
+            this.socket.on('msg', (data) => {
+                console.log(data)
+            })
         },
 
         mounted() {
@@ -76,6 +89,12 @@
             this.setPalette()
         },
 
+        watch: {
+            color: function () {
+                this.ctx.strokeStyle = this.color
+            }
+        },
+
         methods: {
             init() {
                 this.canvasEvent()
@@ -88,6 +107,17 @@
                 this.$refs.canvas.addEventListener('mouseleave', this.stopPainting)
                 this.$refs.canvas.addEventListener('click', this.fillMode)
                 this.$refs.canvas.addEventListener('contextmenu', this.handleMenu)
+            },
+
+            async leaveRoom() {
+                let res = await axios.post('/api/rooms/leave', { room: this.$route.params.id })
+
+                console.log(res.data)
+                if (res.data.success) {
+                    this.$router.push('/rooms')
+                } else {
+                    alert('방 퇴장중 문제가 발생했습니다.\n새로고침 해주세요.')
+                }
             },
 
             startGame(e) {
@@ -107,7 +137,9 @@
                 this.chat = this.chat == '' ? this.chat : this.chat.trim()
                 if (this.chat == '') return false
 
+                console.log(this.chat)
                 this.chatArr.push(this.chat)
+                this.socket.emit('msg', this.chat)
                 this.chat = ''
             },
 
@@ -144,6 +176,10 @@
                 if (!this.paintMode) {
                     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
                 }
+            },
+
+            changeColor(color) {
+                this.color = color
             }
         }
     }
