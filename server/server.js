@@ -91,6 +91,16 @@ chat.on('connection', (socket) => {
         chat.to(myRoom)
             .emit('mouseMove', res)
     })
+
+    socket.on('canvasOption', (res) => {
+        chat.to(myRoom)
+            .emit('canvasOption', res)
+    })
+
+    socket.on('initCanvas', () => {
+        chat.to(myRoom)
+            .emit('initCanvas')
+    })
 })
 
 server.listen(PORT, () => {

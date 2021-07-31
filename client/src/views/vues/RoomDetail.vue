@@ -20,16 +20,16 @@
                     <canvas ref="canvas"></canvas>    
                 </div>
                 <div class="row mb-4 justify-content-center">
-                    <input type="range" class="col-3 form-control-range" min="0.2" max="10" step="0.2" v-model="canvasOption.lineWidth">
+                    <input type="range" class="col-3 form-control-range" min="0.2" max="10" step="0.2" v-model="canvasOption.lineWidth" @click="setLineWidth">
                 </div>
                 <div class="row mb-4 justify-content-center">
                     <button v-if="canvasOption.paintMode" class="btn btn-outline-primary mr-3" @click="changeMode">연필모드</button>
                     <button v-if="!canvasOption.paintMode" class="btn btn-outline-primary mr-3" @click="changeMode">채우기모드</button>
                     <!-- <button class="btn btn-outline-primary mr-3">저장하기</button> -->
-                    <button class="btn btn-outline-primary">초기화</button>
+                    <button class="btn btn-outline-primary" @click="initCanvas">초기화</button>
                 </div>
                 <div class="row mb-4 justify-content-center">
-                    <div class="mr-3 palette" :ref="`palette_${item}`" v-for="(item, idx) of COLORS" :key="idx" @click="changeColor(item)"></div>
+                    <div class="mr-3 palette" :ref="`palette_${item}`" v-for="(item, idx) of COLORS" :key="idx" @click="setColor(item)" :class="{'activeColor': canvasOption.color==item }"></div>
                 </div>
             </div>
             <div class="col-2">
@@ -57,7 +57,7 @@
 
         data() {
             return {
-                COLORS: ['#2c2c2c', '#FFFFFF', '#FF3B30', '#FF9500', '#FFCC00', '#4CD963', '#5AC8FA', '#0579FF', '#5856D6'],
+                COLORS: ['#000000', '#FFFFFF', '#FF3B30', '#FF9500', '#FFCC00', '#4CD963', '#5AC8FA', '#0579FF', '#5856D6'],
                 chatArr: [],
                 userArr: ['대인', '중인', '소인', '목캔디', '핫초코'],
                 roomName: this.$route.params.id,
@@ -71,11 +71,12 @@
                 canvas: null,
                 ctx: null,
                 canvasOption: {
-                    color: '#2C2C2C',
-                    lineWidth: 2.5,
+                    color: '#000000',
+                    lineWidth: 3,
                     paintMode: true
                 },
-                socket: null
+                socket: null,
+                drawer: VueCookies.get('userName')=='qwe'
             }
         },
         
@@ -88,9 +89,33 @@
             })
 
             this.socket.on('userNum', (res) => {
-                console.log(res)
                 this.userNum = res
-             })
+            })
+
+            this.socket.on('canvasOption', (res) => {
+                this.canvasOption = res
+            })
+
+            this.socket.on('mouseMove', (res) => {
+                const x_pos = res.x_pos
+                const y_pos = res.y_pos
+
+
+                if (!res.painting) {
+                    this.ctx.beginPath()
+                    this.ctx.moveTo(x_pos, y_pos)
+                } else {
+                    this.ctx.lineTo(x_pos, y_pos)
+                    this.ctx.stroke()
+                }
+            })
+
+            this.socket.on('initCanvas', () => {
+                this.ctx.strokeStyle = '#000000'
+                this.ctx.fillStyle = '#FFFFFF'
+                this.ctx.lineWidth = 3
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
+            })
         },
 
         mounted() {
@@ -103,11 +128,13 @@
             canvasOption: {
                 handler() {
                     this.ctx.strokeStyle = this.canvasOption.color
+                    this.ctx.fillStyle = this.canvasOption.color
                     this.ctx.lineWidth = this.canvasOption.lineWidth
+                    console.log(this.canvasOption)
                 },
                 
                 deep: true
-            },
+            }
         },
 
         methods: {
@@ -123,6 +150,8 @@
                 this.canvas.height = (this.canvasWidth / 16) * 8
                 this.canvasHeight = this.canvas.height
                 this.ctx = this.canvas.getContext('2d')
+
+                this.socket.emit('canvasOption', this.canvasOption)
             },
 
             canvasEvent() {
@@ -177,19 +206,27 @@
             },
 
             changeMode() {
-                this.canvasOption.paintMode = !this.canvasOption.paintMode
+                if (this.drawer) {
+                    this.canvasOption.paintMode = !this.canvasOption.paintMode
+                    this.socket.emit('canvasOption', this.canvasOption)
+                }
             },
 
             drawLine(e) {
-                const x_pos = e.offsetX
-                const y_pos = e.offsetY
+                if (this.drawer) {
+                    const x_pos = e.offsetX
+                    const y_pos = e.offsetY
 
-                if (!this.painting) {
-                    this.ctx.beginPath()
-                    this.ctx.moveTo(x_pos, y_pos)
-                } else {
-                    this.ctx.lineTo(x_pos, y_pos)
-                    this.ctx.stroke()
+                    this.socket.emit('mouseMove', { x_pos, y_pos, painting: this.painting })
+
+                    if (!this.painting) {
+
+                        this.ctx.beginPath()
+                        this.ctx.moveTo(x_pos, y_pos)
+                    } else {
+                        this.ctx.lineTo(x_pos, y_pos)
+                        this.ctx.stroke()
+                    }
                 }
             },
 
@@ -203,8 +240,25 @@
                 }
             },
 
-            changeColor(color) {
-                this.canvasOption.color = color
+            setColor(color) {
+                if (this.drawer) {
+                    this.canvasOption.color = color
+                    this.socket.emit('canvasOption', this.canvasOption)
+                }
+            },
+
+            setLineWidth() {
+                this.socket.emit('canvasOption', this.canvasOption)
+            },
+
+            initCanvas() {
+                if (this.drawer) {
+                    this.ctx.strokeStyle = '#000000'
+                    this.ctx.fillStyle = '#FFFFFF'
+                    this.ctx.lineWidth = 3
+                    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
+                    this.socket.emit('initCanvas')
+                }
             }
         }
     }
@@ -219,5 +273,9 @@
         height: 50px;
         border-radius: 25px;
         box-shadow: 0 4px 6px rgba(50,50,93,0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    .activeColor {
+        border: red solid 3px
     }
 </style>
