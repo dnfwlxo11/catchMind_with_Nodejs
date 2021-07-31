@@ -125,7 +125,6 @@ router.get('/join/:roomName', auth, (req, res) => {
                     msg: '해당 방은 존재하지 않습니다.'
                 })
             } else {
-                console.log(req.user.name, '가 ', room.room, '방으로 들어갑니다.')
                 Room.updateOne(
                     { _id: room._id },
                     { $addToSet: { users: req.user } }, (err) => {
@@ -158,7 +157,6 @@ router.post('/leave', auth, (req, res) => {
                     msg: '해당 방은 존재하지 않습니다.'
                 })
             } else {
-                console.log(req.user.name, '가 ', room.room, '방에서 나갑니다.')
                 room.users.pull(req.user);
                 room.save(() => {
                     if (room.users.length === 0) {

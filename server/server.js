@@ -59,10 +59,18 @@ chat.on('connection', (socket) => {
         socket.join(myRoom, (err) => {
             console.log(err)
         })
+
+        chat.to(myRoom)
+            .emit('userNum', chat.adapter.rooms.get(myRoom).size)
     })
 
     socket.on('disconnecting', () => {
+        const roomInfo = chat.adapter.rooms.get(myRoom)
+
         socket.leave(myRoom)
+        if (roomInfo != undefined) {
+            chat.to(myRoom).emit('userNum', roomInfo.size)
+        }
     })
 
     socket.on('disconnect', () => {
@@ -79,48 +87,10 @@ chat.on('connection', (socket) => {
             .emit('getUserNum', res)
     })
 
-    socket.on('canvasBtn', (res) => {
-        chat.to(myRoom)
-            .emit('canvasBtn', res)
-    })
-
-    socket.on('updateUsers', () => {
-        chat.emit('updateUsers')
-    })
-
     socket.on('mouseMove', (res) => {
         chat.to(myRoom)
             .emit('mouseMove', res)
     })
-
-    socket.on('updateRooms', (res) => {
-        chat.emit('updateRooms', {msg: '방 정보 업데이트'})
-    })
-
-    socket.on('startQuiz', (res) => {
-        console.log('퀴즈 시작')
-        chat.to(myRoom)
-            .emit('startQuiz', { word, res })
-    })
-
-    socket.on('endQuiz', (res) => {
-        console.log('퀴즈 끝')
-        chat.to(myRoom)
-            .emit('endQuiz', word)
-    })
-
-    socket.on('quizAnswer', (res) => {
-        console.log(res)
-        chat.to(myRoom)
-            .emit('quizAnswer', { result: word===res, word})
-    })
-
-    socket.on('getDrawer', (res) => {
-        chat.to(myRoom)
-            .emit('getDrawer')
-    })
-
-    
 })
 
 server.listen(PORT, () => {

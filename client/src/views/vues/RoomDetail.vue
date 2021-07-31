@@ -20,8 +20,11 @@
                     <canvas ref="canvas"></canvas>    
                 </div>
                 <div class="row mb-4 justify-content-center">
-                    <button v-if="paintMode" class="btn btn-outline-primary mr-3" @click="changeMode">연필모드</button>
-                    <button v-if="!paintMode" class="btn btn-outline-primary mr-3" @click="changeMode">채우기모드</button>
+                    <input type="range" class="col-3 form-control-range" min="0.2" max="10" step="0.2" v-model="canvasOption.lineWidth">
+                </div>
+                <div class="row mb-4 justify-content-center">
+                    <button v-if="canvasOption.paintMode" class="btn btn-outline-primary mr-3" @click="changeMode">연필모드</button>
+                    <button v-if="!canvasOption.paintMode" class="btn btn-outline-primary mr-3" @click="changeMode">채우기모드</button>
                     <!-- <button class="btn btn-outline-primary mr-3">저장하기</button> -->
                     <button class="btn btn-outline-primary">초기화</button>
                 </div>
@@ -65,10 +68,13 @@
                 chat: '',
                 isAdmin: true,
                 painting: false,
-                paintMode: true,
                 canvas: null,
                 ctx: null,
-                color: '#2C2C2C',
+                canvasOption: {
+                    color: '#2C2C2C',
+                    lineWidth: 2.5,
+                    paintMode: true
+                },
                 socket: null
             }
         },
@@ -80,30 +86,43 @@
             this.socket.on('msg', (res) => {
                 this.chatArr.push([res.name, res.msg])
             })
+
+            this.socket.on('userNum', (res) => {
+                console.log(res)
+                this.userNum = res
+             })
         },
 
         mounted() {
             this.init()
 
-            this.canvasWidth = this.$refs.canvasDiv.clientWidth
-            this.canvas = this.$refs.canvas
-            this.canvas.width  = this.canvasWidth
-            this.canvas.height = (this.canvasWidth / 16) * 8
-            this.canvasHeight = this.canvas.height
-            this.ctx = this.canvas.getContext('2d')
-
             this.setPalette()
         },
 
         watch: {
-            color: function () {
-                this.ctx.strokeStyle = this.color
-            }
+            canvasOption: {
+                handler() {
+                    this.ctx.strokeStyle = this.canvasOption.color
+                    this.ctx.lineWidth = this.canvasOption.lineWidth
+                },
+                
+                deep: true
+            },
         },
 
         methods: {
             init() {
                 this.canvasEvent()
+                this.setCanvas()
+            },
+
+            setCanvas() {
+                this.canvasWidth = this.$refs.canvasDiv.clientWidth
+                this.canvas = this.$refs.canvas
+                this.canvas.width  = this.canvasWidth
+                this.canvas.height = (this.canvasWidth / 16) * 8
+                this.canvasHeight = this.canvas.height
+                this.ctx = this.canvas.getContext('2d')
             },
 
             canvasEvent() {
@@ -120,6 +139,8 @@
 
                 console.log(res.data)
                 if (res.data.success) {
+                    // this.socket.emit('updateUserNum')
+                    this.socket.disconnect()
                     this.$router.push('/rooms')
                 } else {
                     alert('방 퇴장중 문제가 발생했습니다.\n새로고침 해주세요.')
@@ -156,7 +177,7 @@
             },
 
             changeMode() {
-                this.paintMode = !this.paintMode
+                this.canvasOption.paintMode = !this.canvasOption.paintMode
             },
 
             drawLine(e) {
@@ -177,13 +198,13 @@
             },
 
             fillMode() {
-                if (!this.paintMode) {
+                if (!this.canvasOption.paintMode) {
                     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
                 }
             },
 
             changeColor(color) {
-                this.color = color
+                this.canvasOption.color = color
             }
         }
     }
