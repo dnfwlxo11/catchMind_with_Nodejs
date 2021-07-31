@@ -1,8 +1,19 @@
 <template>
     <div class="m-3">
-        <div class="row justify-content-center mb-3" style="height: 70px">
-            <div class="col-8 bg-info">
-                <h3 class="my-auto">{{ $route.params.id }}</h3><p class="my-auto">({{ userNum }})</p>
+        <div class="row justify-content-center mb-3">
+            <div class="col-2">
+                <img class="logo" src="@/assets/logo.png">
+            </div>
+            <div class="col-8">
+                <ul class="list-group bg-primary w-100 h-100">
+                    <h2 class="my-auto">{{ $route.params.id }} ({{ userNum }})</h2>
+                </ul>
+            </div>
+            <div class="col-2">
+                <ul class="list-group bg-primary w-100 h-100">
+                    <h5 v-if="!drawer" class="my-auto">🤔</h5>
+                    <h5 v-if="drawer" class="my-auto">제시어 : 마우스</h5>
+                </ul>
             </div>
         </div>
         <div class="row justify-content-center">
@@ -266,6 +277,10 @@
 <style>
     canvas, ul, button {
         box-shadow: 0 4px 10px rgba(50,50,93,0.2), 0 1px 3px rgba(0.08, 0.08, 0.08, 0.08);
+    }
+
+    .logo {
+        width: 50%;
     }
 
     .palette {
