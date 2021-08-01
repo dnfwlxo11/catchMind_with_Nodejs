@@ -101,6 +101,11 @@ chat.on('connection', (socket) => {
         chat.to(myRoom)
             .emit('initCanvas')
     })
+
+    socket.on('getRoomList', () => {
+        console.log('업데이트')
+        socket.broadcast.emit('getRoomList')
+    })
 })
 
 server.listen(PORT, () => {

@@ -41,7 +41,7 @@
         },
 
         methods: {
-            async loginCheck() {
+            loginCheck() {
                 const token = VueCookies.get('x_auth')
                 if (token) this.$router.push('/rooms')
             },

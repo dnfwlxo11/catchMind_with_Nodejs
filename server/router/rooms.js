@@ -106,7 +106,8 @@ router.post('/switchDrawer', (req, res) => {
         });
 })
 
-router.get('/join/:roomName', auth, (req, res) => {
+router.post('/join/:roomName', auth, (req, res) => {
+    console.log('방들옴')
     const roomName = req.params.roomName
 
     Room.findOne({ room: roomName })

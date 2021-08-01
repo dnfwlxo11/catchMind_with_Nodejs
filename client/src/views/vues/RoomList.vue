@@ -20,6 +20,7 @@
 <script>
 import Vue from 'vue'
 import VueCookies from "vue-cookies"
+import io from 'socket.io-client'
 import axios from 'axios'
     
 Vue.use(VueCookies);
@@ -31,8 +32,18 @@ export default {
         return {
             roomList: null,
             isRoom: false,
-            none: ''
+            none: '',
+            socket: null
         }
+    },
+
+    create() {
+        this.socket = io('http://localhost:3000/chat')
+
+        this.socket.on('getRoomList', () => {
+            console.log('신호받음')
+            this.getRoomList()
+        })
     },
 
     mounted() {
@@ -73,7 +84,7 @@ export default {
         },
 
         async join(e) {
-            let res = await axios.get(`/api/rooms/join/${e.target.id}`)
+            let res = await axios.post(`/api/rooms/join/${e.target.id}`)
 
             if (res.data.success) {
                 this.$router.push(`/rooms/${res.data.room}`)

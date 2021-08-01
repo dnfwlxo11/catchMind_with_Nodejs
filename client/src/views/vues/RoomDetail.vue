@@ -23,7 +23,7 @@
                         <img class="mb-1" src="@/assets/user.png" style="width:50px"><p class="my-auto">{{ item }}</p>
                     </li>
                 </ul>
-                <button v-if="isAdmin" class="btn btn-primary mb-2 w-100" @click="startGame">시작하기</button>
+                <button v-if="drawer" class="btn btn-primary mb-2 w-100" @click="startGame">시작하기</button>
                 <button class="btn btn-danger mb-3 w-100" @click="leaveRoom">방나가기</button>
             </div>
             <div ref='canvasDiv' class="col-8">
@@ -92,6 +92,9 @@
         },
         
         created() {
+            window.addEventListener('beforeunload', this.refreshEvent)
+            window.addEventListener('popstate', this.popstateEvent)
+
             this.socket = io('http://localhost:3000/chat')
             this.socket.emit('joinRoom_chat', this.roomName)
 
@@ -140,18 +143,34 @@
                 handler() {
                     this.ctx.strokeStyle = this.canvasOption.color
                     this.ctx.fillStyle = this.canvasOption.color
-                    this.ctx.lineWidth = this.canvasOption.lineWidth
-                    console.log(this.canvasOption)
+                    this.ctx.lineWidth = this.canvasOption.setLineWidth
                 },
                 
                 deep: true
             }
         },
 
+        beforeDestroy() {
+            window.removeEventListener('beforeunload', this.refreshEvent)
+            window.addEventListener('popstate', this.popstateEvent)
+        },
+
         methods: {
             init() {
                 this.canvasEvent()
                 this.setCanvas()
+            },
+
+            popstateEvent(e) {
+                this.socket.disconnect()
+                this.$router.reload('/')
+            },
+
+            refreshEvent(e) {
+                e.preventDefault()
+                e.returnValue = ''
+                console.log(e)
+                this.leaveRoom()
             },
 
             setCanvas() {
@@ -175,16 +194,10 @@
             },
 
             async leaveRoom() {
-                let res = await axios.post('/api/rooms/leave', { room: this.$route.params.id })
+                await axios.post('/api/rooms/leave', { room: this.$route.params.id })
 
-                console.log(res.data)
-                if (res.data.success) {
-                    // this.socket.emit('updateUserNum')
-                    this.socket.disconnect()
-                    this.$router.push('/rooms')
-                } else {
-                    alert('방 퇴장중 문제가 발생했습니다.\n새로고침 해주세요.')
-                }
+                this.socket.disconnect()
+                this.$router.push('/')
             },
 
             startGame(e) {
@@ -231,7 +244,6 @@
                     this.socket.emit('mouseMove', { x_pos, y_pos, painting: this.painting })
 
                     if (!this.painting) {
-
                         this.ctx.beginPath()
                         this.ctx.moveTo(x_pos, y_pos)
                     } else {
