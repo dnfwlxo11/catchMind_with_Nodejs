@@ -43,8 +43,6 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log(to.name, from.name)
-
   if ((to.name=='Room'&&from.name==null) || (to.name=='Rooms'&&from.name=='Room')) next('/')
 
   next()

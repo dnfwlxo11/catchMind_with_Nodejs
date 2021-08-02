@@ -128,7 +128,7 @@ router.post('/join/:roomName', auth, (req, res) => {
                         if (err) console.log(err)
                     }).exec()
 
-                return res.send({ success: true, room: room.room })
+                return res.send({ success: true, room: room.room, name: req.user.name })
             }
         })
 })
