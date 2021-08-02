@@ -161,15 +161,11 @@
                 this.setCanvas()
             },
 
-            popstateEvent(e) {
-                this.socket.disconnect()
-                this.$router.reload('/')
+            async popstateEvent() {
+                this.leaveRoom()
             },
 
-            refreshEvent(e) {
-                e.preventDefault()
-                e.returnValue = ''
-                console.log(e)
+            refreshEvent() {
                 this.leaveRoom()
             },
 
@@ -177,7 +173,7 @@
                 this.canvasWidth = this.$refs.canvasDiv.clientWidth
                 this.canvas = this.$refs.canvas
                 this.canvas.width  = this.canvasWidth
-                this.canvas.height = (this.canvasWidth / 16) * 8
+                this.canvas.height = (this.canvasWidth / 16) * 9
                 this.canvasHeight = this.canvas.height
                 this.ctx = this.canvas.getContext('2d')
 
@@ -194,7 +190,7 @@
             },
 
             async leaveRoom() {
-                await axios.post('/api/rooms/leave', { room: this.$route.params.id })
+                await axios.post('/api/rooms/leave', { room: this.roomName })
 
                 this.socket.disconnect()
                 this.$router.push('/')

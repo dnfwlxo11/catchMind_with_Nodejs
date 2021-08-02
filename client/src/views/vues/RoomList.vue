@@ -23,7 +23,7 @@ import VueCookies from "vue-cookies"
 import io from 'socket.io-client'
 import axios from 'axios'
     
-Vue.use(VueCookies);
+Vue.use(VueCookies)
 
 export default {
     name: 'createRoom',
@@ -87,7 +87,7 @@ export default {
             let res = await axios.post(`/api/rooms/join/${e.target.id}`)
 
             if (res.data.success) {
-                this.$router.push(`/rooms/${res.data.room}`)
+                this.$router.replace(`/rooms/${res.data.room}`)
             } else {
                 alert('방에 입장 중 문제가 발생했습니다.\n새로고침 해주세요.')
             }

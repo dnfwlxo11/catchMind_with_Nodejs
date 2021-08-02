@@ -1,16 +1,16 @@
-const express = require('express');
-const path = require('path');
-const router = express.Router();
+const express = require('express')
+const path = require('path')
+const router = express.Router()
 
-const { User } = require('../models/User');
-const { Room } = require('../models/Room');
+const { User } = require('../models/User')
+const { Room } = require('../models/Room')
 const { auth } = require('../middleware/auth')
 
-let drawer;
+let drawer
 
 router.get('/roomList', auth, (req, res) => {
-    res.sendFile(path.join(__dirname, '../../public/html/roomList.html'));
-});
+    res.sendFile(path.join(__dirname, '../../public/html/roomList.html'))
+})
 
 router.post('/checkName', auth, (req, res) => {
     Room.findOne({ room:  req.body.roomName}, (err, room) => {
@@ -22,13 +22,9 @@ router.post('/checkName', auth, (req, res) => {
 router.get('/getRooms', auth, (req, res) => {
     Room.find((err, rooms) => {
         if (!rooms) return res.json({ success: false, msg: '현재 만들어진 방 없음' })
-        res.json({ success: true, rooms: rooms });
+        res.json({ success: true, rooms: rooms })
     })
 })
-
-router.get('/createRoom', auth, (req, res) => {
-    res.sendFile(path.join(__dirname, '../../public/html/createRoom.html'));
-});
 
 router.post('/createRoom', auth, (req, res) => {
     const roomName = decodeURI(req.body.room)
@@ -55,7 +51,7 @@ router.post('/createRoom', auth, (req, res) => {
                             success: true,
                             msg: '방 등록 완료',
                             roomInfo
-                        });
+                        })
                     })
                 }
             })
@@ -66,7 +62,7 @@ router.post('/createRoom', auth, (req, res) => {
             })
         }
     })
-});
+})
 
 router.get('/canPaint', (req, res) => {
     if (req.cookies.x_auth === req.cookies.drawer) {
@@ -88,22 +84,22 @@ router.post('/switchDrawer', (req, res) => {
                     err
                 })
             } else {
-                const drawer = room.drawer.token;
+                const drawer = room.drawer.token
 
                 while (true) {
-                    const idx = Math.floor(Math.random() * room.users.length);
+                    const idx = Math.floor(Math.random() * room.users.length)
                     const newDrawer = room.users[idx]
 
                     if (newDrawer.token !== drawer) {
-                        room.updateOne({ drawer: newDrawer}).exec();
+                        room.updateOne({ drawer: newDrawer}).exec()
                         return res.cookie('drawer', newDrawer.token).json({
                             success: true,
                             msg: 'Drawer 업데이트 성공'
-                        });
+                        })
                     }
                 }
             }            
-        });
+        })
 })
 
 router.post('/join/:roomName', auth, (req, res) => {
@@ -129,17 +125,18 @@ router.post('/join/:roomName', auth, (req, res) => {
                 Room.updateOne(
                     { _id: room._id },
                     { $addToSet: { users: req.user } }, (err) => {
-                        if (err) console.log(err);
-                    }).exec();
+                        if (err) console.log(err)
+                    }).exec()
 
-                return res.send({ success: true, room: room.room });
+                return res.send({ success: true, room: room.room })
             }
-        });
-});
+        })
+})
 
 router.post('/leave', auth, (req, res) => {
-    const roomName = req.body.room;
-    console.log(roomName)
+    console.log('방 나간다')
+    
+    const roomName = req.body.room
 
     Room.findOne({ room: roomName })
         .populate('drawer')
@@ -158,23 +155,23 @@ router.post('/leave', auth, (req, res) => {
                     msg: '해당 방은 존재하지 않습니다.'
                 })
             } else {
-                room.users.pull(req.user);
+                room.users.pull(req.user)
                 room.save(() => {
                     if (room.users.length === 0) {
-                        Room.deleteOne({ room: roomName }).exec();
-                        return res.json({ success: true, last: true, move: true });
+                        Room.deleteOne({ room: roomName }).exec()
+                        return res.json({ success: true, last: true, move: true })
                     } else {
-                        const idx = Math.floor(Math.random() * room.users.length);
+                        const idx = Math.floor(Math.random() * room.users.length)
                         const newDrawer = room.users[idx]
 
-                        room.updateOne({ drawer: newDrawer }).exec();
+                        room.updateOne({ drawer: newDrawer }).exec()
                         return res.json({
                             success: true, last: false, move: true 
-                        });
+                        })
                     }
-                });
+                })
             }
-        });
+        })
 })
 
 router.post('/getDrawer', (req, res) => {
@@ -202,9 +199,9 @@ router.post('/getUsers', auth, (req, res) => {
     Room.findOne({ room: req.body.room })
         .populate('drawer')
         .exec((err, room) => {
-            if (err) return res.json({ success: false, msg: '해당 방은 존재하지 않습니다.' });
-            else return res.json({ success: true, len: room.users.length, cookie: room.drawer.token, msg: '쿠키 업데이트' });
-        });
-});
+            if (err) return res.json({ success: false, msg: '해당 방은 존재하지 않습니다.' })
+            else return res.json({ success: true, len: room.users.length, cookie: room.drawer.token, msg: '쿠키 업데이트' })
+        })
+})
 
 module.exports = router
